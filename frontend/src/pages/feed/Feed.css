@@ -1,0 +1,105 @@
+.feed-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.new-tweet-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.new-tweet-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    resize: none;
+    height: 60px; /* Увеличить высоту текстового поля */
+}
+
+.tweet {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tweet-header {
+    display: flex;
+    align-items: flex-start;
+}
+
+.tweet-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.tweet-title {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.tweet-text {
+    margin: 10px 0;
+    line-height: 1.4;
+}
+
+.tweet-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-section {
+    margin-top: 10px;
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.comment-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.comment-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.comment-button, .tweet-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.comment-button:hover, .tweet-button:hover {
+    background-color: #0056b3;
+}
