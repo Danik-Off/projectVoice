@@ -14,6 +14,7 @@
     "@types/node": "^16.18.113",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
+    "mobx": "^6.13.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",

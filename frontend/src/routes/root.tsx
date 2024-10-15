@@ -1,30 +1,54 @@
-import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Feed from '../pages/feed/Feed';
 import Profile from '../pages/profile/Profile';
 import Message from '../pages/message/Message';
 import Settings from '../pages/settings/Settings';
 import Auth from '../pages/auth/Auth';
+import ProtectedRoute from '../store/ProtectedRoute';
 
 export const router = createBrowserRouter([
     {
         path: '/feed',
-        element: <Feed />,
+        element: (
+            <ProtectedRoute>
+                <Feed />
+            </ProtectedRoute>
+        ),
     },
     {
         path: '/profile',
-        element: <Profile />,
+        element: (
+            <ProtectedRoute>
+                <Profile />
+            </ProtectedRoute>
+        ),
     },
     {
         path: '/message',
-        element: <Message />,
+        element: (
+            <ProtectedRoute>
+                <Message />
+            </ProtectedRoute>
+        ),
     },
     {
         path: '/settings',
-        element: <Settings />,
+        element: (
+            <ProtectedRoute>
+                <Settings />
+            </ProtectedRoute>
+        ),
     },
     {
         path: '/auth',
         element: <Auth />,
+    },
+    {
+        path: '/',
+        element: (
+            <ProtectedRoute>
+                <Feed />
+            </ProtectedRoute>
+        ),
     },
 ]);

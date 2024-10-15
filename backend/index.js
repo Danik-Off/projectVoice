@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const { Sequelize } = require('sequelize');
 const authRoutes = require('./routes/auth');
+const cors = require('cors');
 
 // Загрузка переменных окружения
 dotenv.config();
@@ -21,6 +22,14 @@ sequelize
     .authenticate()
     .then(() => console.log('Успешное подключение к базе данных'))
     .catch((error) => console.error('Ошибка подключения к базе данных:', error));
+
+app.use(
+    cors({
+        origin: 'http://localhost:3000', // Разрешите только это происхождение
+        methods: ['GET', 'POST'], // Укажите разрешенные методы
+        credentials: true, // Укажите, если вам нужно передавать куки
+    })
+);
 
 app.use((req, res, next) => {
     console.log(`Запрос: ${req.method} ${req.url}`);
