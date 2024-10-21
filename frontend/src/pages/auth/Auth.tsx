@@ -5,7 +5,7 @@ import { authStore } from '../../store/authStore';
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);
 
-    const handleLogin = (event: React.FormEvent<HTMLFormElement>): void => {
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault(); // Предотвратить перезагрузку страницы
         const formData = event.currentTarget.elements as typeof event.currentTarget.elements & {
             email: HTMLInputElement;
@@ -19,11 +19,11 @@ const Auth = () => {
 
         if (isLogin) {
             // Обработка логина
-            console.log("🚀 ~ handleLogin ~ Email:", email, "Password:", password);
+            console.log('🚀 ~ handleLogin ~ Email:', email, 'Password:', password);
             authStore.login(email, password);
         } else {
             // Обработка регистрации
-            console.log("🚀 ~ handleLogin ~ Username:", username, "Email:", email, "Password:", password);
+            console.log('🚀 ~ handleLogin ~ Username:', username, 'Email:', email, 'Password:', password);
             // authStore.register(username, email, password); // Реализуйте эту функцию в authStore
         }
     };

@@ -20,6 +20,8 @@
         "mysql2": "^3.11.3",
         "pg": "^8.13.0",
         "sequelize": "^6.37.4",
-        "sequelize-cli": "^6.6.2"
+        "sequelize-cli": "^6.6.2",
+        "socket.io": "^4.8.0",
+        "ws": "^8.18.0"
     }
 }
