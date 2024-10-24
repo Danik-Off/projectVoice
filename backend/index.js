@@ -1,11 +1,14 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const { Sequelize } = require('sequelize');
-const authRoutes = require('./routes/auth');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
 const webrtc = require('./modules/webrtc'); // Подключение логики WebRTC
+
+//Импорт маршрутов
+const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
 
 // Загрузка переменных окружения
 dotenv.config();
@@ -48,6 +51,7 @@ app.use((req, res, next) => {
 });
 
 // Подключение маршрутов
+app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 
 // Подключаем логику WebRTC из отдельного модуля

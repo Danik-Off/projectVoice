@@ -6,7 +6,19 @@
     "scripts": {
         "start": "node index.js",
         "dev": "nodemon index.js",
-        "sequelize": "npx sequelize-cli"
+        "sequelize": "npx sequelize-cli",
+        "db:migrate": "npx sequelize-cli db:migrate",
+        "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
+        "db:migrate:status": "npx sequelize-cli db:migrate:status",
+        "db:seed": "npx sequelize-cli db:seed:all",
+        "db:seed:undo": "npx sequelize-cli db:seed:undo",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write '**/*.{js,json,md}'",
+        "prettier": "prettier --check '**/*.{js,json,md}'",
+        "build": "echo \"Build command placeholder\"",
+        "deploy": "echo \"Deploy command placeholder\""
     },
     "keywords": [],
     "author": "",
@@ -23,5 +35,9 @@
         "sequelize-cli": "^6.6.2",
         "socket.io": "^4.8.0",
         "ws": "^8.18.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.39.0",
+        "prettier": "^2.8.8"
     }
 }

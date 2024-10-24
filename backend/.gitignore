@@ -33,3 +33,6 @@ temp
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# package_lock
+package-lock.json
