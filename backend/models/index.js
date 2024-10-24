@@ -10,12 +10,21 @@ const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+
+// Обработка ошибок при подключении к базе данных
+try {
+  if (config.use_env_variable) {
+    sequelize = new Sequelize(process.env[config.use_env_variable], config);
+  } else {
+    sequelize = new Sequelize(config.database, config.username, config.password, config);
+  }
+  console.log('Соединение с базой данных успешно установлено.');
+} catch (error) {
+  console.error('Ошибка при подключении к базе данных:', error);
+  process.exit(1); // Завершить процесс, если не удалось подключиться к базе данных
 }
 
+// Чтение файлов моделей из текущей директории
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -31,13 +40,16 @@ fs
     db[model.name] = model;
   });
 
+// Установка связей между моделями, если они определены
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
 
+// Добавляем экземпляры Sequelize и sequelize в объект db
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// Экспортируем объект db для использования в других частях приложения
 module.exports = db;

@@ -24,7 +24,7 @@ const Auth = () => {
         } else {
             // Обработка регистрации
             console.log('🚀 ~ handleLogin ~ Username:', username, 'Email:', email, 'Password:', password);
-            // authStore.register(username, email, password); // Реализуйте эту функцию в authStore
+            authStore.register(username || '', email, password); // Реализуйте эту функцию в authStore
         }
     };
 

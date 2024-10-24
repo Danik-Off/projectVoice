@@ -12,6 +12,7 @@ class AuthStore {
         // Проверка наличия токена в cookies при инициализации
         this.token = getCookie('token');
         this.isAuthenticated = this.token !== null;
+       
     }
 
     async login(username: string, password: string) {
@@ -21,15 +22,34 @@ class AuthStore {
             this.token = token;
 
             // Сохранение токена в cookie
-           setCookie('token', token, 7); // Токен будет действителен 7 дней
+            setCookie('token', token, 7); // Токен будет действителен 7 дней
 
             this.isAuthenticated = true;
+
+            // Перенаправление после успешного входа
+            window.location.href = '/'; // Замените '/dashboard' на нужный URL
         } catch (error) {
             console.error('Login failed', error);
         }
     }
 
-   
+    async register(username: string, email: string, password: string) {
+        try {
+            const token = await authService.register(username, email, password);
+            this.user = { username };
+            this.token = token;
+
+            // Сохранение токена в cookie
+            setCookie('token', token, 7); // Токен будет действителен 7 дней
+
+            this.isAuthenticated = true;
+
+            // Перенаправление после успешной регистрации
+            window.location.href = '/'; // Замените '/welcome' на нужный URL
+        } catch (error) {
+            console.error('Registration failed', error);
+        }
+    }
 
     logout() {
         this.user = null;
@@ -38,6 +58,9 @@ class AuthStore {
 
         // Удаление токена из cookie
         setCookie('token', '', -1); // Устанавливаем срок действия в -1, чтобы удалить cookie
+
+        // Перенаправление после выхода
+        window.location.href = '/login'; // Замените '/login' на нужный URL
     }
 }
 
