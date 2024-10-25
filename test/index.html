@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discord-like Interface</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Server List -->
+    <div class="server-list">
+      <div class="server">S</div>
+      <div class="server">D</div>
+      <div class="server">+</div>
+    </div>
+
+    <!-- Channel List -->
+    <div class="channel-list">
+      <h2>Server Name</h2>
+      <div class="channel"># general <span class="channel-users">(3)</span></div>
+      <div class="channel"># random <span class="channel-users">(1)</span></div>
+      <div class="channel"># memes <span class="channel-users">(2)</span></div>
+
+      <!-- Voice Chat -->
+      <div class="voice-chat">
+        <h3>Voice Chat</h3>
+        <div class="voice-user">
+          User1 <span class="voice-status online">🔊</span>
+        </div>
+        <div class="voice-user">
+          User2 <span class="voice-status online">🔊</span>
+        </div>
+        <div class="voice-user">
+          User3 <span class="voice-status offline">🔕</span>
+        </div>
+      </div>
+
+      <!-- Voice Controls -->
+      <div class="voice-controls">
+        <div class="control">
+          <button class="mute-button">Mute</button>
+          <span class="mic-status">Mic: <span class="status-indicator on">On</span></span>
+        </div>
+        <button class="leave-button">Leave</button>
+      </div>
+    </div>
+
+    <!-- Chat Panel -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="profile">
+          <img src="profile-pic.jpg" alt="Profile" class="profile-pic">
+          <span class="username">User Name</span>
+        </div>
+      </div>
+      <div class="chat-content">
+        <div class="message">
+          <span class="username">User1:</span> Hello, everyone!
+        </div>
+        <div class="message">
+          <span class="username">User2:</span> Hi! What's up?
+        </div>
+        <div class="message">
+          <span class="username">User3:</span> I have a question about the project.
+        </div>
+      </div>
+      <div class="message-input">
+        <input type="text" placeholder="Type a message..." />
+        <button>Send</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

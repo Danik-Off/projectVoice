@@ -1,0 +1,62 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Укажите вашу основную ветку
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.11.1'  # Укажите нужную версию Node.js
+
+    - name: Install dependencies for frontend
+      run: |
+        cd frontend
+        npm install
+        npm run build  # Собираем фронтенд
+
+    - name: Install dependencies for backend
+      run: |
+        cd backend
+        npm install
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: |
+          frontend/build
+          backend
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # Зависимость от предыдущего job
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifacts
+
+    - name: Deploy to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Добавьте ваш закрытый ключ в Secrets
+        SERVER_USER: ${{ secrets.SERVER_USER }}  # Добавьте имя пользователя сервера в Secrets
+        SERVER_IP: ${{ secrets.SERVER_IP }}  # Добавьте IP-адрес вашего сервера в Secrets
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key
+        chmod 600 private_key
+        rsync -avz -e "ssh -i private_key" ./frontend/build/ $SERVER_USER@$SERVER_IP:/path/to/your/frontend/
+        rsync -avz -e "ssh -i private_key" ./backend/ $SERVER_USER@$SERVER_IP:/path/to/your/backend/

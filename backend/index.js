@@ -39,7 +39,7 @@ app.use(express.json());
 
 app.use(
     cors({
-        origin: 'http://localhost:3000', // Разрешите только это происхождение
+        origin: '*', // Разрешите только это происхождение
         methods: ['GET', 'POST'], // Укажите разрешенные методы
         credentials: true, // Укажите, если вам нужно передавать куки
     })
@@ -53,6 +53,14 @@ app.use((req, res, next) => {
 // Подключение маршрутов
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+
+// Настройка раздачи статических файлов фронтенда
+app.use(express.static('../frontend/build')); // Укажите путь к директории сборки
+
+// Обработка всех маршрутов для фронтенда
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html')); // Возвращаем главный файл
+});
 
 // Подключаем логику WebRTC из отдельного модуля
 webrtc(io);
