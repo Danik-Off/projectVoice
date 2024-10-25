@@ -1,0 +1,46 @@
+/* Sidebar.css */
+
+.sidebar {
+    width: 220px;
+    padding: 20px;
+    background-color: var(--sidebar-background);
+    border-right: 1px solid var(--header-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space between nav and version info */
+    height: 100%; /* Full height to align with content */
+}
+
+.nav-menu {
+    flex: 1; /* Take available space */
+}
+
+.nav-menu ul {
+    list-style: none;
+    padding: 0; /* Remove default padding */
+}
+
+.nav-menu li {
+    margin: 10px 0; /* Space between items */
+}
+
+.nav-menu li a {
+    text-decoration: none; /* Remove underline from links */
+    font-size: 18px;
+    color: var(--nav-item-color);
+    padding: 10px 15px; /* Add padding for clickable area */
+    border-radius: 5px; /* Slightly rounded corners */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.nav-menu li a:hover {
+    background-color: var(--nav-item-hover-color); /* Highlight background on hover */
+    color: #fff; /* Change text color on hover */
+}
+
+.version-info {
+    margin-top: 20px; /* Space above version info */
+    font-size: 14px; /* Smaller font size */
+    color: var(--text-color); /* Use variable for consistent text color */
+    text-align: center; /* Center the version text */
+}

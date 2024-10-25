@@ -1,0 +1,50 @@
+/* Main.css */
+
+/* Color Variables */
+:root {
+    --background-color: #e6ecf0;
+    --header-background: #fff;
+    --header-border: #ddd;
+    --logo-color: #1da1f2;
+    --sidebar-background: #f5f8fa;
+    --nav-item-color: #333;
+    --nav-item-hover-color: #1da1f2;
+    --post-background: #fff;
+    --post-border: #eee;
+    --text-color: #333;
+}
+
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+}
+
+.main-page {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Content Area */
+.content {
+    display: flex;
+    flex: 1; /* Take the remaining height */
+}
+
+/* Feed Section */
+.feed {
+    flex: 1;
+    padding: 20px;
+    background-color: var(--post-background);
+    display: flex;
+    flex-direction: column; /* Align posts vertically */
+}

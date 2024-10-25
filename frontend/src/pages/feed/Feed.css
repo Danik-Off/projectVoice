@@ -1,105 +1,70 @@
-.feed-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    border: 1px solid #e1e1e1;
-    border-radius: 10px;
-    background-color: #f9f9f9;
+/* Feed.css */
+
+.feed {
+    padding: 20px; /* Add padding to the feed */
+    background-color: #fff; /* White background for posts */
 }
 
-.new-tweet-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+.feed-header {
+    margin-bottom: 20px; /* Space below the header */
 }
 
-.new-tweet-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    resize: none;
-    height: 60px; /* Увеличить высоту текстового поля */
+.feed-header h2 {
+    font-size: 24px; /* Header font size */
+    color: #333; /* Header text color */
 }
 
-.tweet {
-    background: white;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.post-list {
+    max-height: 600px; /* Maximum height for the post list */
+    overflow-y: auto; /* Scroll if necessary */
 }
 
-.tweet-header {
-    display: flex;
-    align-items: flex-start;
+.post {
+    margin-bottom: 15px; /* Space between posts */
+    padding: 15px; /* Inner padding for posts */
+    border: 1px solid #e1e8ed; /* Light border around posts */
+    border-radius: 8px; /* Rounded corners for posts */
+    background-color: #f7f9fa; /* Light background for posts */
+    transition: box-shadow 0.2s; /* Smooth transition for hover effect */
 }
 
-.tweet-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
+.post:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow on hover */
 }
 
-.tweet-title {
-    font-size: 1.2em;
-    margin: 0;
+.post-header {
+    display: flex; /* Flex display for username and timestamp */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 10px; /* Space below header */
 }
 
-.tweet-text {
-    margin: 10px 0;
-    line-height: 1.4;
+.username {
+    font-weight: bold; /* Bold username */
+    color: #1DA1F2; /* Use platform color for username */
 }
 
-.tweet-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.post-timestamp {
+    font-size: 12px; /* Smaller font size for timestamp */
+    color: #657786; /* Gray color for timestamp */
 }
 
-.comment-section {
-    margin-top: 10px;
+.post-actions {
+    margin-top: 15px; /* Space above actions */
+    display: flex; /* Flex display for action buttons */
+    justify-content: flex-start; /* Align buttons to the left */
 }
 
-.comment {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
+.action-button {
+    background-color: transparent; /* Transparent background for buttons */
+    border: none; /* Remove border */
+    color: #1DA1F2; /* Use platform color for text */
+    cursor: pointer; /* Pointer cursor for interaction */
+    font-size: 14px; /* Font size for buttons */
+    margin-right: 15px; /* Space between buttons */
+    transition: color 0.2s; /* Smooth color transition on hover */
 }
 
-.comment-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.comment-input-container {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.comment-input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 5px;
-}
-
-.comment-button, .tweet-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.comment-button:hover, .tweet-button:hover {
-    background-color: #0056b3;
+.action-button:hover {
+    color: #0d8ecf; /* Darker shade on hover */
 }

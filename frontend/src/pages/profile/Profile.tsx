@@ -1,22 +1,30 @@
 import React from 'react';
+import './Profile.css';
 
 const Profile = () => {
     return (
-        <div>
-            <h1>Profile</h1>
+        <div className="profile-container">
+            <div className="cover-photo"></div>
             <div className="profile-header">
-                <img src="/path/to/profile-picture.jpg" alt="Profile" />
-                <h2>Username</h2>
-                <p>@username</p>
-                <p>Bio: Short bio about the user.</p>
-                <button>Edit Profile</button>
-            </div>
-            <div className="tweets">
-                <h3>Tweets</h3>
-                <div className="tweet">
-                    <p>This is a user’s tweet...</p>
+                <img className="profile-picture" src="/path/to/profile-picture.jpg" alt="Profile" />
+                <div className="profile-info">
+                    <h2 className="username">Username</h2>
+                    <p className="tag">@username</p>
+                    <p className="bio">Bio: Short bio about the user.</p>
+                    <button className="edit-button">Edit Profile</button>
                 </div>
-                {/* Add more tweets */}
+            </div>
+            <div className="navigation">
+                <span>Tweets</span>
+                <span>Following</span>
+                <span>Followers</span>
+                <span>Likes</span>
+            </div>
+            <div className="activity-section">
+                <h3 className="activity-title">Recent Activity</h3>
+                <div className="activity-item">
+                    <p>This is a user’s recent activity...</p>
+                </div>
             </div>
         </div>
     );

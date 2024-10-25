@@ -1,0 +1,47 @@
+/* Header.css */
+
+.header {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space out the logo, search, and profile icon */
+    padding: 10px 20px; /* Add padding for better spacing */
+    background-color: var(--header-background); /* Variable for background color */
+    border-bottom: 1px solid var(--header-border); /* Bottom border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+.logo {
+    font-size: 24px; /* Increased font size for the logo */
+    font-weight: bold; /* Bold font for emphasis */
+    color: var(--logo-color); /* Use variable for logo color */
+}
+
+.header-search-bar {
+    flex: 1; /* Take remaining space */
+    margin: 0 20px; /* Spacing on the sides */
+    padding: 10px; /* Inner padding for the input */
+    border-radius: 20px; /* Rounded corners */
+    border: 1px solid var(--header-border); /* Border for the input */
+    outline: none; /* Remove outline */
+    transition: border-color 0.3s; /* Smooth transition for focus effect */
+}
+
+.header-search-bar:focus {
+    border-color: var(--logo-color); /* Change border color on focus */
+}
+
+.profile-icon {
+    padding: 10px 15px; /* Add padding for clickable area */
+    background-color: var(--profile-background); /* Use variable for background color */
+    border-radius: 50%; /* Round shape */
+    cursor: pointer; /* Pointer cursor for interaction */
+    display: flex; /* Flex display for centering text */
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.profile-icon:hover {
+    background-color: var(--logo-color); /* Change background on hover */
+    color: #fff; /* Change text color on hover */
+}
