@@ -60,7 +60,7 @@ class AuthStore {
         setCookie('token', '', -1); // Устанавливаем срок действия в -1, чтобы удалить cookie
 
         // Перенаправление после выхода
-        window.location.href = '/login'; // Замените '/login' на нужный URL
+        window.location.href = '/auth'; // Замените '/login' на нужный URL
     }
 }
 

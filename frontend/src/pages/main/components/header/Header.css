@@ -2,46 +2,79 @@
 
 .header {
     display: flex;
-    align-items: center; /* Center items vertically */
-    justify-content: space-between; /* Space out the logo, search, and profile icon */
-    padding: 10px 20px; /* Add padding for better spacing */
-    background-color: var(--header-background); /* Variable for background color */
-    border-bottom: 1px solid var(--header-border); /* Bottom border */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #fff; /* or use var(--header-background) */
+    border-bottom: 1px solid var(--header-border);
 }
 
 .logo {
-    font-size: 24px; /* Increased font size for the logo */
-    font-weight: bold; /* Bold font for emphasis */
-    color: var(--logo-color); /* Use variable for logo color */
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--logo-color); /* Change to your variable */
 }
 
 .header-search-bar {
-    flex: 1; /* Take remaining space */
-    margin: 0 20px; /* Spacing on the sides */
-    padding: 10px; /* Inner padding for the input */
-    border-radius: 20px; /* Rounded corners */
-    border: 1px solid var(--header-border); /* Border for the input */
-    outline: none; /* Remove outline */
-    transition: border-color 0.3s; /* Smooth transition for focus effect */
-}
-
-.header-search-bar:focus {
-    border-color: var(--logo-color); /* Change border color on focus */
+    flex: 1;
+    margin: 0 20px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--input-border); /* Use a variable for consistency */
+    outline: none;
 }
 
 .profile-icon {
-    padding: 10px 15px; /* Add padding for clickable area */
-    background-color: var(--profile-background); /* Use variable for background color */
-    border-radius: 50%; /* Round shape */
-    cursor: pointer; /* Pointer cursor for interaction */
-    display: flex; /* Flex display for centering text */
-    align-items: center; /* Center text vertically */
-    justify-content: center; /* Center text horizontally */
+    padding: 10px;
+    background-color: var(--profile-icon-background); /* Use a variable */
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative; /* Necessary for positioning dropdown */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute; /* Absolute positioning */
+    top: 60px; /* Adjust to align below the profile icon */
+    right: 20px; /* Align to the right */
+    background-color: #fff; /* Background color of dropdown */
+    border: 1px solid var(--header-border); /* Border for dropdown */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 5px; /* Rounded corners */
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 10px; /* Padding for dropdown */
+    margin: 0; /* Remove margin */
+}
+
+.dropdown-menu li {
+    padding: 10px; /* Padding for each item */
+    cursor: pointer; /* Pointer cursor for clickable items */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
-.profile-icon:hover {
-    background-color: var(--logo-color); /* Change background on hover */
+.dropdown-menu li:hover {
+    background-color: var(--nav-item-hover-color); /* Change background on hover */
     color: #fff; /* Change text color on hover */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .header-search-bar {
+        width: 100%; /* Full width on mobile */
+        margin: 10px 0; /* Space around the search bar */
+    }
+
+    .profile-icon {
+        width: 100%; /* Full width for the profile icon */
+        text-align: center; /* Center text in profile icon */
+    }
 }

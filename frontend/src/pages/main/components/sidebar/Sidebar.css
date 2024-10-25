@@ -1,7 +1,7 @@
 /* Sidebar.css */
 
 .sidebar {
-    width: 220px;
+    width: 220px; /* Default width for desktop */
     padding: 20px;
     background-color: var(--sidebar-background);
     border-right: 1px solid var(--header-border);
@@ -9,8 +9,43 @@
     flex-direction: column;
     justify-content: space-between; /* Space between nav and version info */
     height: 100%; /* Full height to align with content */
+    transition: transform 0.3s ease; /* Smooth transition for opening/closing */
+    position: relative; /* Set position relative for toggle button */
 }
 
+/* Toggle Button */
+.toggle-button {
+    display: none; /* Hide toggle button on desktop */
+    background-color: var(--nav-item-color);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px; /* Space below the button */
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        top: 0; /* Align with top of the viewport */
+        left: 0; /* Align with left side */
+        height: 100vh; /* Full height on mobile */
+        transform: translateX(-100%); /* Hide sidebar off-screen */
+        z-index: 1000; /* Ensure it appears above other elements */
+    }
+
+    .sidebar.open {
+        transform: translateX(0); /* Show the sidebar */
+    }
+
+    .toggle-button {
+        display: block; /* Show toggle button on mobile */
+    }
+}
+
+/* Common styles for sidebar items */
 .nav-menu {
     flex: 1; /* Take available space */
 }
@@ -31,6 +66,7 @@
     padding: 10px 15px; /* Add padding for clickable area */
     border-radius: 5px; /* Slightly rounded corners */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
+    display: block; /* Ensure the entire area is clickable */
 }
 
 .nav-menu li a:hover {
