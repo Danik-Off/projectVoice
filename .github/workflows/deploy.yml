@@ -22,7 +22,14 @@ jobs:
       run: |
         cd frontend
         npm install
+
+    - name: Build frontend
+      run: |
+        cd frontend
         npm run build  # Собираем фронтенд
+
+    - name: List frontend directory after build
+      run: ls -la frontend  # Проверяем содержимое директории frontend
 
     - name: Upload frontend build
       uses: actions/upload-artifact@v3
@@ -52,6 +59,7 @@ jobs:
       with:
         name: backend-files
         path: backend
+
   deploy-frontend:
     runs-on: ubuntu-latest
     needs: build-frontend  # Зависимость от job build-frontend
@@ -63,7 +71,7 @@ jobs:
         name: frontend-build
 
     - name: List build directory
-      run: ls -la frontend/build
+      run: ls -la frontend/build  # Проверяем содержимое директории frontend/build
 
     - name: Deploy frontend to server
       env:
@@ -79,8 +87,6 @@ jobs:
         # Копируем фронтенд
         set -e
         rsync -avz -e "ssh -i private_key" frontend/build/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/frontend/ || { echo "rsync failed"; exit 1; }
-
-
 
   deploy-backend:
     runs-on: ubuntu-latest
