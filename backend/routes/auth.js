@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(201).json({ token });
     } catch (error) {
-        console.error('Ошибка регистрации:', error);
+        console.log('Ошибка регистрации:', error);
         res.status(500).json({ error: 'Ошибка сервера.' });
     }
 });
@@ -52,7 +52,7 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token });
     } catch (error) {
-        console.error('Ошибка логина:', error);
+        console.log('!!!Ошибка логина:', error);
         res.status(500).json({ error: 'Ошибка сервера.' });
     }
 });

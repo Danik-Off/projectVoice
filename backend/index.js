@@ -51,8 +51,9 @@ app.use((req, res, next) => {
 });
 
 // Подключение маршрутов
-app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+
 
 // Настройка раздачи статических файлов фронтенда
 app.use(express.static('../frontend/build')); // Укажите путь к директории сборки
