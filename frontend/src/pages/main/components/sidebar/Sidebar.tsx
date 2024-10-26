@@ -7,15 +7,15 @@ const Sidebar = () => {
     const sidebarRef = useRef(null);
     const startX = useRef(0); // Track starting position for swipe detection
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
+    // const toggleSidebar = () => {
+    //     setIsOpen(!isOpen);
+    // };
 
-    const handleTouchStart = (e:any) => {
+    const handleTouchStart = (e: any) => {
         startX.current = e.touches[0].clientX; // Get starting touch position
     };
 
-    const handleTouchMove = (e:any) => {
+    const handleTouchMove = (e: any) => {
         const currentX = e.touches[0].clientX;
         const diffX = currentX - startX.current; // Calculate the difference
         if (isOpen && diffX < -50) {
