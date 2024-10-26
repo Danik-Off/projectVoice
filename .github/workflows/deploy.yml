@@ -71,7 +71,7 @@ jobs:
         name: frontend-build
 
     - name: List build directory
-      run: ls -la frontend/build  # Проверяем содержимое директории frontend/build
+      run: ls -la ./  # Проверяем содержимое директории frontend/build
 
     - name: Deploy frontend to server
       env:
@@ -86,7 +86,7 @@ jobs:
         ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
         # Копируем фронтенд
         set -e
-        rsync -avz -e "ssh -i private_key" frontend/build/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/frontend/ || { echo "rsync failed"; exit 1; }
+        rsync -avz -e "ssh -i private_key" ./ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/frontend/ || { echo "rsync failed"; exit 1; }
 
   deploy-backend:
     runs-on: ubuntu-latest
