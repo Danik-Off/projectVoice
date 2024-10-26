@@ -110,8 +110,4 @@ jobs:
         mkdir -p ~/.ssh
         ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
         # Копируем бэкенд
-        set -e
-        rsync -avz -e "ssh -i private_key" ./ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/ || { echo "rsync failed"; exit 1; }
-        
-        # Запускаем npm install на сервере
-        ssh -i private_key $SERVER_USER@$SERVER_IP "cd /www/wwwroot/projectVoice/backend && npm install"
+        rsync -avz -e "ssh -i private_key" ./ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/
