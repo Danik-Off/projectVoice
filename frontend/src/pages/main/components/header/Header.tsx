@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './Header.css'; // CSS styles for the Header
 import { authStore } from '../../../../store/authStore';
 import { Link } from 'react-router-dom';
 
+// eslint-disable-next-line max-lines-per-function
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -15,19 +16,19 @@ const Header = () => {
     };
 
     // Close dropdown if clicking outside
-    const handleClickOutside = (event:any) => {
+    const handleClickOutside = useCallback((event: any) => {
         if (dropdownOpen && !event.target.closest('.dropdown-menu') && !event.target.closest('.profile-icon')) {
             setDropdownOpen(false);
         }
-    };
+    }, [dropdownOpen]); // Добавьте dropdownOpen как зависимость
 
     // Attach event listener to handle clicks outside the dropdown
-    React.useEffect(() => {
+    useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [dropdownOpen]);
+    }, [handleClickOutside]); // Используйте handleClickOutside в зависимостях
 
     return (
         <header className="header">

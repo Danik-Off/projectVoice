@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Auth.css'; // Добавьте файл стилей для оформления
 import { authStore } from '../../store/authStore';
 
+// eslint-disable-next-line max-lines-per-function
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);
 

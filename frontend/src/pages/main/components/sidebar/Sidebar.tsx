@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
 
+// eslint-disable-next-line max-lines-per-function
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true); // Initially, sidebar is open
     const sidebarRef = useRef(null);

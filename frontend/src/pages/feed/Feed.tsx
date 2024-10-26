@@ -24,8 +24,8 @@ const mockPosts = [
 ];
 
 const Feed = () => {
-    const [posts, setPosts] = useState(mockPosts);
-
+    const [posts] = useState(mockPosts);//, setPosts
+    
     return (
         <div className="feed">
             <div className="feed-header">
