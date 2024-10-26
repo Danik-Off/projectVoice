@@ -23,17 +23,7 @@ const io = new Server(server, {
         credentials: true, // Укажите, если нужно передавать куки
     },
 });
-// Инициализация Sequelize для PostgreSQL
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    dialect: 'mysql',
-});
 
-// Проверка подключения к базе данных
-sequelize
-    .authenticate()
-    .then(() => console.log('Успешное подключение к базе данных'))
-    .catch((error) => console.error('Ошибка подключения к базе данных:', error));
 
 app.use(express.json());
 
@@ -53,7 +43,6 @@ app.use((req, res, next) => {
 // Подключение маршрутов
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-
 
 // Настройка раздачи статических файлов фронтенда
 app.use(express.static('../frontend/build')); // Укажите путь к директории сборки

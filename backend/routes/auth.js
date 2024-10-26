@@ -17,10 +17,12 @@ router.post('/register', async (req, res) => {
         }
 
         // Создание нового пользователя
+        console.log('🚀 ~ router.post ~ Создание нового пользователя');
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ username, email, password: hashedPassword });
 
         // Создание JWT токена
+        console.log('🚀 ~ router.post ~ // Создание JWT токена:');
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(201).json({ token });
     } catch (error) {
