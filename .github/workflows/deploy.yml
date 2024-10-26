@@ -71,6 +71,9 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
+        # Добавляем сервер в known_hosts
+        mkdir -p ~/.ssh
+        ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
         # Копируем фронтенд
         rsync -avz -e "ssh -i private_key" ./frontend/build/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/frontend/
 
@@ -92,5 +95,8 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
+        # Добавляем сервер в known_hosts
+        mkdir -p ~/.ssh
+        ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
         # Копируем бэкенд
         rsync -avz -e "ssh -i private_key" ./backend/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/
