@@ -69,6 +69,6 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
         # Копируем фронтенд
-        rsync -avz -e "ssh -i private_key" ./frontend/build/ $SERVER_USER@$SERVER_IP:/path/to/your/frontend/
+        rsync -avz -e "ssh -i private_key" ./frontend/build/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/frontend/
         # Копируем бэкенд
-        rsync -avz -e "ssh -i private_key" ./backend/ $SERVER_USER@$SERVER_IP:/path/to/your/backend/
+        rsync -avz -e "ssh -i private_key" ./backend/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/
