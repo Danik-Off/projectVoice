@@ -30,7 +30,7 @@ jobs:
         name: frontend-build
         path: frontend/build
 
-  install-backend:
+  build-backend:
     runs-on: ubuntu-latest
 
     steps:
@@ -47,20 +47,23 @@ jobs:
         cd backend
         npm install
 
-  deploy:
+    - name: Upload backend files
+      uses: actions/upload-artifact@v3
+      with:
+        name: backend-files
+        path: backend
+
+  deploy-frontend:
     runs-on: ubuntu-latest
-    needs: [build-frontend, install-backend]  # Зависимость от обоих jobs
+    needs: build-frontend  # Зависимость от job build-frontend
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
     - name: Download frontend build
       uses: actions/download-artifact@v3
       with:
         name: frontend-build
 
-    - name: Deploy to server
+    - name: Deploy frontend to server
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Добавьте ваш закрытый ключ в Secrets
         SERVER_USER: ${{ secrets.SERVER_USER }}  # Добавьте имя пользователя сервера в Secrets
@@ -70,5 +73,24 @@ jobs:
         chmod 600 private_key
         # Копируем фронтенд
         rsync -avz -e "ssh -i private_key" ./frontend/build/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/frontend/
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: build-backend  # Зависимость от job build-backend
+
+    steps:
+    - name: Download backend files
+      uses: actions/download-artifact@v3
+      with:
+        name: backend-files
+
+    - name: Deploy backend to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Добавьте ваш закрытый ключ в Secrets
+        SERVER_USER: ${{ secrets.SERVER_USER }}  # Добавьте имя пользователя сервера в Secrets
+        SERVER_IP: ${{ secrets.SERVER_IP }}  # Добавьте IP-адрес вашего сервера в Secrets
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key
+        chmod 600 private_key
         # Копируем бэкенд
         rsync -avz -e "ssh -i private_key" ./backend/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/
