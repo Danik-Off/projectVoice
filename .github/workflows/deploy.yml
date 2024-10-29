@@ -49,11 +49,6 @@ jobs:
       with:
         node-version: '20.11.1'  # Укажите нужную версию Node.js
 
-    - name: Install dependencies for backend
-      run: |
-        cd backend
-        npm install
-
     - name: Upload backend files
       uses: actions/upload-artifact@v3
       with:
@@ -111,3 +106,5 @@ jobs:
         ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
         # Копируем бэкенд
         rsync -avz -e "ssh -i private_key" ./ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/
+        # Запуск установки зависимостей
+        npm i
