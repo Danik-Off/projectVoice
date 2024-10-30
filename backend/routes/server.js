@@ -1,9 +1,12 @@
 const express = require('express');
-const { Server } = require('../models'); // Импортируем модель Server
+const jwt = require('jsonwebtoken');
+const { Server, User } = require('../models');
+const authenticateToken = require('../middleware/auth');
+
 const router = express.Router();
 
 // Получить все серверы
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     try {
         const servers = await Server.findAll();
         res.status(200).json(servers);
@@ -13,10 +16,10 @@ router.get('/', async (req, res) => {
 });
 
 // Создать новый сервер
-router.post('/', async (req, res) => {
-    const { name, ownerId, description, icon } = req.body;
+router.post('/', authenticateToken, async (req, res) => {
+    const { name, description, icon } = req.body;
     try {
-        const newServer = await Server.create({ name, ownerId, description, icon });
+        const newServer = await Server.create({ name, ownerId: req.user.userId, description, icon });
         res.status(201).json(newServer);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -24,7 +27,7 @@ router.post('/', async (req, res) => {
 });
 
 // Получить сервер по ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
     try {
         const server = await Server.findByPk(req.params.id);
         if (!server) {
@@ -36,34 +39,38 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Проверка прав владельца сервера или администратора
+const checkServerOwnership = async (req, res, next) => {
+    const server = await Server.findByPk(req.params.id);
+
+    if (!server) {
+        return res.status(404).json({ message: 'Server not found' });
+    }
+
+    if (server.ownerId !== req.user.userId && !req.user.isAdmin) {
+        return res.status(403).json({ error: 'Access denied' });
+    }
+
+    req.server = server;
+    next();
+};
+
 // Обновить сервер по ID
-router.put('/:id', async (req, res) => {
-    const { name, ownerId, description, icon } = req.body;
+router.put('/:id', authenticateToken, checkServerOwnership, async (req, res) => {
+    const { name, description, icon } = req.body;
     try {
-        const [updated] = await Server.update(
-            { name, ownerId, description, icon },
-            { where: { id: req.params.id } }
-        );
-        if (updated) {
-            const updatedServer = await Server.findByPk(req.params.id);
-            return res.status(200).json(updatedServer);
-        }
-        throw new Error('Server not found');
+        await req.server.update({ name, description, icon });
+        res.status(200).json(req.server);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 
 // Удалить сервер по ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, checkServerOwnership, async (req, res) => {
     try {
-        const deleted = await Server.destroy({
-            where: { id: req.params.id },
-        });
-        if (deleted) {
-            return res.status(204).send();
-        }
-        throw new Error('Server not found');
+        await req.server.destroy();
+        res.status(204).send();
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
