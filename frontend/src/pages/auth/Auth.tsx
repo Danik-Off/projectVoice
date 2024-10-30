@@ -5,9 +5,12 @@ import { authStore } from '../../store/authStore';
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);
 
-    const handleLogin = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    const handleLogin = async (
+        event: React.FormEvent<HTMLFormElement>
+    ): Promise<void> => {
         event.preventDefault();
-        const formData = event.currentTarget.elements as typeof event.currentTarget.elements & {
+        const formData = event.currentTarget
+            .elements as typeof event.currentTarget.elements & {
             email: HTMLInputElement;
             password: HTMLInputElement;
             username?: HTMLInputElement;
@@ -27,18 +30,43 @@ const Auth = () => {
     return (
         <div className="auth-container">
             <div className="auth-box">
-                <h1 className="auth-title">{isLogin ? 'Welcome back!' : 'Create an account'}</h1>
+                <h1 className="auth-title">
+                    {isLogin ? 'Welcome back!' : 'Create an account'}
+                </h1>
                 <form onSubmit={handleLogin}>
                     {!isLogin && (
-                        <input type="text" name="username" placeholder="Username" className="auth-input" required />
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            className="auth-input"
+                            required
+                        />
                     )}
-                    <input type="email" name="email" placeholder="Email" className="auth-input" required />
-                    <input type="password" name="password" placeholder="Password" className="auth-input" required />
-                    <button type="submit" className="auth-button">{isLogin ? 'Login' : 'Sign Up'}</button>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        className="auth-input"
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        className="auth-input"
+                        required
+                    />
+                    <button type="submit" className="auth-button">
+                        {isLogin ? 'Login' : 'Sign Up'}
+                    </button>
                 </form>
                 <p className="auth-switch">
                     {isLogin ? 'Need an account?' : 'Already have an account?'}{' '}
-                    <a href={isLogin ? '#register' : '#login'} onClick={() => setIsLogin(!isLogin)}>
+                    <a
+                        href={isLogin ? '#register' : '#login'}
+                        onClick={() => setIsLogin(!isLogin)}
+                    >
                         {isLogin ? 'Sign Up' : 'Login'}
                     </a>
                 </p>
