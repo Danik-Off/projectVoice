@@ -1,57 +1,48 @@
 import React, { useState } from 'react';
-import './Auth.css'; // Добавьте файл стилей для оформления
+import './Auth.css';
 import { authStore } from '../../store/authStore';
 
-// eslint-disable-next-line max-lines-per-function
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-        event.preventDefault(); // Предотвратить перезагрузку страницы
+        event.preventDefault();
         const formData = event.currentTarget.elements as typeof event.currentTarget.elements & {
             email: HTMLInputElement;
             password: HTMLInputElement;
-            username?: HTMLInputElement; // Для регистрации
+            username?: HTMLInputElement;
         };
 
         const email = formData.email.value;
         const password = formData.password.value;
-        const username = isLogin ? undefined : formData.username?.value; // Проверка для регистрации
+        const username = isLogin ? undefined : formData.username?.value;
 
         if (isLogin) {
-            // Обработка логина
-            console.log('🚀 ~ handleLogin ~ Email:', email, 'Password:', password);
             authStore.login(email, password);
         } else {
-            // Обработка регистрации
-            console.log('🚀 ~ handleLogin ~ Username:', username, 'Email:', email, 'Password:', password);
-            authStore.register(username || '', email, password); // Реализуйте эту функцию в authStore
+            authStore.register(username || '', email, password);
         }
     };
 
     return (
         <div className="auth-container">
-            <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
-            <form onSubmit={handleLogin}>
-                {isLogin ? (
-                    <>
-                        <input type="email" name="email" placeholder="Email" required />
-                        <input type="password" name="password" placeholder="Password" required />
-                        <button type="submit">Login</button>
-                    </>
-                ) : (
-                    <>
-                        <input type="text" name="username" placeholder="Username" required />
-                        <input type="email" name="email" placeholder="Email" required />
-                        <input type="password" name="password" placeholder="Password" required />
-                        <button type="submit">Sign Up</button>
-                    </>
-                )}
-            </form>
-            <br />
-            <a href={isLogin ? '#login' : '#register'} onClick={() => setIsLogin(!isLogin)}>
-                {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Login'}
-            </a>
+            <div className="auth-box">
+                <h1 className="auth-title">{isLogin ? 'Welcome back!' : 'Create an account'}</h1>
+                <form onSubmit={handleLogin}>
+                    {!isLogin && (
+                        <input type="text" name="username" placeholder="Username" className="auth-input" required />
+                    )}
+                    <input type="email" name="email" placeholder="Email" className="auth-input" required />
+                    <input type="password" name="password" placeholder="Password" className="auth-input" required />
+                    <button type="submit" className="auth-button">{isLogin ? 'Login' : 'Sign Up'}</button>
+                </form>
+                <p className="auth-switch">
+                    {isLogin ? 'Need an account?' : 'Already have an account?'}{' '}
+                    <a href={isLogin ? '#register' : '#login'} onClick={() => setIsLogin(!isLogin)}>
+                        {isLogin ? 'Sign Up' : 'Login'}
+                    </a>
+                </p>
+            </div>
         </div>
     );
 };

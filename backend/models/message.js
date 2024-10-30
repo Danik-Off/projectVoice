@@ -1,37 +1,38 @@
-module.exports = (sequelize, DataTypes)=>{
-    const Message = sequelize.define('Message', {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+    const Message = sequelize.define(
+        'Message',
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                autoIncrement: true,
+            },
+            content: {
+                type: DataTypes.TEXT,
+                allowNull: false,
+            },
+            read: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false,
+            },
         },
-        username: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          unique: true,
-          validate: {
-            len: [3, 25],
-          },
-        },
-        email: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          unique: true,
-          validate: {
-            isEmail: true,
-          },
-        },
-        password: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          validate: {
-            len: [6, 100],
-          },
-        },
-      }, {
-        timestamps: true,  
-      });
-    
-    
-      return Message;
-}
+        {
+            tableName: 'Messages',
+            timestamps: true,
+        }
+    );
+
+    Message.associate = (models) => {
+        Message.belongsTo(models.User, {
+            foreignKey: 'senderId',
+            as: 'sender',
+        });
+        Message.belongsTo(models.User, {
+            foreignKey: 'receiverId',
+            as: 'receiver',
+        });
+    };
+
+    return Message;
+};

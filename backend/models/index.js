@@ -5,15 +5,17 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
+require('dotenv').config();
+const env = process.env.NODE_ENV;
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 let sequelize;
 
+console.log(env);
+
 // Обработка ошибок при подключении к базе данных
 try {
-    console.log(config);
     sequelize = new Sequelize(config.database, config.username, config.password, config);
     console.log('Соединение с базой данных успешно установлено.');
 } catch (error) {

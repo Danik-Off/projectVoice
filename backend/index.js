@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const { Sequelize } = require('sequelize');
+const path = require('path'); 
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -9,6 +10,7 @@ const webrtc = require('./modules/webrtc'); // Подключение логик
 //Импорт маршрутов
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
+
 
 // Загрузка переменных окружения
 dotenv.config();
@@ -39,7 +41,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Подключение маршрутов
+// Подключение маршрутов Api
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
@@ -48,7 +50,7 @@ app.use(express.static('../frontend/build')); // Укажите путь к ди
 
 // Обработка всех маршрутов для фронтенда
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html')); // Возвращаем главный файл
+    res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html')); // Возвращаем главный файл
 });
 
 // Подключаем логику WebRTC из отдельного модуля
