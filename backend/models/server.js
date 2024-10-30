@@ -1,37 +1,40 @@
-module.exports = (sequelize, DataTypes)=>{
-    const Server = sequelize.define('Server', {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
-        },
-        username: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          unique: true,
-          validate: {
-            len: [3, 25],
-          },
-        },
-        email: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          unique: true,
-          validate: {
-            isEmail: true,
-          },
-        },
-        password: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          validate: {
-            len: [6, 100],
-          },
-        },
-      }, {
-        timestamps: true,  
-      });
-    
-    
-      return Server;
-}
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const Server = sequelize.define('Server', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true, // Сделаем имя уникальным, чтобы избежать дубликатов
+      validate: {
+        len: [3, 50], // Длина имени сервера
+      },
+    },
+    ownerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false, // Поле обязательно для связи с пользователем
+      references: {
+        model: 'Users', // Связь с моделью User
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true, // Можно изменить на false, если поле обязательно
+    },
+    icon: {
+      type: DataTypes.STRING,
+      allowNull: true, // Можно изменить на false, если поле обязательно
+    },
+  }, {
+    timestamps: true,
+  });
+
+  return Server;
+};
