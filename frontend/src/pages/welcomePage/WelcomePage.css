@@ -1,0 +1,46 @@
+/* WelcomePage.css */
+
+.welcome-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Полная высота окна */
+    background-color: #2f3136; /* Темный фон, как в Discord */
+    color: #ffffff; /* Белый цвет текста */
+    text-align: center; /* Центрирование текста */
+    padding: 20px; /* Внутренние отступы */
+    flex: 1;
+}
+
+h1 {
+    font-size: 2.5rem; /* Большой заголовок */
+    margin-bottom: 1rem; /* Отступ снизу заголовка */
+}
+
+p {
+    font-size: 1.25rem; /* Средний размер текста */
+    margin-bottom: 2rem; /* Отступ снизу абзаца */
+    max-width: 600px; /* Ограничение ширины */
+}
+
+.get-started-button {
+    padding: 10px 20px; /* Отступ кнопки */
+    font-size: 1rem; /* Размер текста кнопки */
+    background-color: #5865f2; /* Цвет кнопки, как в Discord */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убрать границу */
+    border-radius: 5px; /* Закругленные углы */
+    cursor: pointer; /* Изменить курсор на указатель */
+    transition: background-color 0.3s, transform 0.2s; /* Плавный переход при наведении */
+    outline: none; /* Убрать контур */
+}
+
+.get-started-button:hover {
+    background-color: #4752c4; /* Более тёмный цвет при наведении */
+    transform: scale(1.05); /* Увеличение кнопки при наведении */
+}
+
+.get-started-button:active {
+    transform: scale(0.95); /* Уменьшение кнопки при нажатии */
+}

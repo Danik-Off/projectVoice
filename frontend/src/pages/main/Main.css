@@ -7,103 +7,22 @@
 
 .main-page {
     display: flex;
-    height: 100vh;
-    background-color: #36393f;
-    color: #dcddde;
-}
-
-.server-sidebar {
-    width: 72px;
-    background-color: #202225;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 1rem;
-}
-
-.server-icon {
-    width: 48px;
-    height: 48px;
-    background-color: #5865f2;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 8px;
-}
-
-.server-icon.active {
-    border: 2px solid #ffffff;
-}
-
-.channel-sidebar {
-    width: 240px;
-    background-color: #2f3136;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.channel-header {
-    font-size: 1.1rem;
-    color: #b9bbbe;
-    margin-bottom: 1rem;
-}
-
-.channel-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.channel {
-    padding: 8px;
-    font-size: 0.95rem;
-    color: #b9bbbe;
-    cursor: pointer;
-}
-
-.channel:hover {
-    background-color: #3a3c42;
-    border-radius: 4px;
-    color: #dcddde;
+    height: 100vh; /* Full height */
 }
 
 .content {
-    flex: 1;
-    background-color: #36393f;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    overflow-y: auto;
+    flex: 1; /* Fills the remaining space */
+    background-color: #36393f; /* Main content background color */
+    color: white;
 }
 
-.message-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.message {
-    margin-bottom: 0.8rem;
-    color: #dcddde;
-}
-
-.user-sidebar {
-    width: 240px;
-    background-color: #2f3136;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.user-info {
-    background-color: #202225;
-    padding: 1rem;
-    border-radius: 4px;
-    color: #dcddde;
-    text-align: center;
+.settings-button {
+    position: absolute; /* Position it wherever you'd like */
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
 }

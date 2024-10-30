@@ -1,44 +1,47 @@
 import { apiClient } from '../utils/apiClient';
 
 export const serverService = {
-    //создание сервера
-    create: async (token: string, id: number | null = null) => {
-        const data = await apiClient(`/servers${id}`, {
-            method: 'GET',
+    // Создание сервера
+    create: async (data: any) => {
+        const response = await apiClient('/servers', {
+            method: 'POST',
+            body: JSON.stringify(data), // Assuming data is the server details
             headers: {
-                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
+        });
+        return response;
+    },
+    // Получение списка серверов
+    get: async () => {
+        const data = await apiClient('/servers', {
+            method: 'GET',
         });
         return data;
     },
-    //получение списка серверов
-    get: async (token: string, id: number | null = null) => {
-        const data = await apiClient(`/servers${id}`, {
+    // Получение сервера по ID
+    getBy: async (id: number) => {
+        const data = await apiClient(`/servers/${id}`, {
             method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
         });
         return data;
     },
-    //получение сервера по id
-    getBy: async (token: string, id: number | null = null) => {
-        const data = await apiClient(`/servers${id}`, {
-            method: 'GET',
+    // Обновление информации о сервере
+    update: async (id: number, data: any) => {
+        const response = await apiClient(`/servers/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data), // Assuming data is the updated server details
             headers: {
-                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
         });
-        return data;
+        return response;
     },
-    //обновление информации о сервере
-    update: async (token: string, id: number | null = null) => {
-        const data = await apiClient(`/servers${id}`, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+    // Удаление сервера
+    delete: async (id: number) => {
+        const response = await apiClient(`/servers/${id}`, {
+            method: 'DELETE',
         });
-        return data;
+        return response;
     },
 };

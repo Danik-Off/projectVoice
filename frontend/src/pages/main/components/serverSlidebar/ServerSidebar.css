@@ -1,0 +1,91 @@
+.server-sidebar {
+    width: 80px; /* Width for the server sidebar */
+    background-color: #2f3136; /* Dark sidebar background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    position: relative; /* For modal positioning */
+}
+
+.server-icon {
+    width: 40px; /* Size of the server icons */
+    height: 40px;
+    border-radius: 50%; /* Circle shape */
+    background-color: #40444b; /* Icon background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff; /* Icon color */
+    margin-bottom: 10px; /* Spacing between icons */
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.server-icon:hover {
+    background-color: #5c5f63; /* Change color on hover */
+}
+
+.server-icon.active {
+    background-color: #7289da; /* Active server icon color */
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed; /* Cover the entire screen */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: #40444b; /* Modal background color */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+    width: 300px; /* Modal width */
+}
+
+.modal h2 {
+    color: #ffffff; /* Modal title color */
+    margin-bottom: 10px; /* Spacing below title */
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal input {
+    margin-bottom: 10px; /* Spacing below input */
+    padding: 10px; /* Padding inside input */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.modal button {
+    padding: 10px; /* Padding inside button */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor change on hover */
+    margin-top: 5px; /* Spacing above buttons */
+}
+
+.modal button[type="submit"] {
+    background-color: #7289da; /* Button color */
+    color: white; /* Text color */
+}
+
+.modal button[type="button"] {
+    background-color: #d9534f; /* Cancel button color */
+    color: white; /* Text color */
+}
+
+.modal button:hover {
+    opacity: 0.9; /* Slightly change opacity on hover */
+}

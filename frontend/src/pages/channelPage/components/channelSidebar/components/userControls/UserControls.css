@@ -1,0 +1,73 @@
+/* src/components/ChannelSidebar/UserControls.css */
+
+.user-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    background-color: #2f3136; /* Цвет фона как в Discord */
+    border-top: 1px solid #202225; /* Разделительная линия */
+}
+
+.voice-control {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px; /* Отступ снизу для профиля */
+}
+
+.mic-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    margin-right: 10px;
+}
+
+.mic-button.active {
+    color: green; /* Цвет для активного микрофона */
+}
+
+.mic-button.inactive {
+    color: red; /* Цвет для выключенного микрофона */
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* Для расширения ползунка */
+}
+
+.volume-slider {
+    margin: 0 10px;
+    cursor: pointer;
+    width: 100%; /* Устанавливаем ширину на 100% */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Для выравнивания под элемент управления */
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    color: white; /* Цвет текста */
+    font-weight: bold;
+    margin-right: auto; /* Заставляем имя пользователя занимать все доступное пространство */
+}
+
+.settings-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+}

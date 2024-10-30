@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import Feed from '../pages/feed/Feed';
-import Profile from '../pages/profile/Profile';
-import Message from '../pages/message/Message';
 import Settings from '../pages/settings/Settings';
 import Auth from '../pages/auth/Auth';
 import ProtectedRoute from '../store/ProtectedRoute';
 import Layout from '../pages/main/Main';
+import ChannelPage from '../pages/channelPage/ChannelPage';
+import WelcomePage from '../pages/welcomePage/WelcomePage';
+
 
 export const router = createBrowserRouter([
     {
@@ -18,16 +18,12 @@ export const router = createBrowserRouter([
         ),
         children: [
             {
-                path: 'feed',
-                element: <Feed />,
+                path: '/',
+                element: <WelcomePage />,
             },
             {
-                path: 'profile',
-                element: <Profile />,
-            },
-            {
-                path: 'message',
-                element: <Message />,
+                path: 'server/:id',
+                element: <ChannelPage />,
             },
             {
                 path: 'settings',
