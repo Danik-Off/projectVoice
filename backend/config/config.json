@@ -9,7 +9,7 @@
     "test": {
         "username": "db_projectVoice",
         "password": "WcEPyjFmtcK72ytr",
-        "database": "db_projectVoice",
+        "database": "db_projectvoice",
         "host": "45.143.93.171",
         "dialect": "mysql"
     },
