@@ -52,19 +52,6 @@
     justify-content: center;
 }
 
-.modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 300px;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
 .cancel-button {
     background-color: #f04747;
     color: white;
@@ -111,6 +98,4 @@
 .mic-button:hover,
 .settings-button:hover {
     color: #7289da; /* Change color on hover */
-}
-.channel-sidebar__footer {
 }

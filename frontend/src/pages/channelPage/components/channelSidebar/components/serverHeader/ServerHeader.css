@@ -1,0 +1,56 @@
+/* src/components/ChannelSidebar/ServerHeader.css */
+
+.server-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background-color: #2c2f33; /* Dark background */
+    border-radius: 8px;
+    color: #ffffff; /* White text */
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    margin-bottom: 15px;
+}
+
+.server-info {
+    display: flex;
+    align-items: center;
+}
+
+.server-icon {
+    font-size: 24px; /* Icon size */
+    margin-right: 10px; /* Space between icon and name */
+}
+
+.server-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.edit-server-button {
+    background: #7289da; /* Discord blurple */
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 8px 12px; /* More padding for a button-like feel */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition effects */
+    display: flex;
+    align-items: center;
+}
+
+.edit-server-button:hover {
+    background: #5b6eae; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarges button on hover */
+}
+
+.no-server {
+    color: #ffffff; /* White color when no server is selected */
+    font-size: 16px; /* Font size for no server text */
+    text-align: center; /* Centered text */
+    flex-grow: 1; /* Center it properly */
+}

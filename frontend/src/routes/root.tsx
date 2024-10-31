@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
                 element: <WelcomePage />,
             },
             {
-                path: 'server/:id',
+                path: 'server/:serverId',
                 element: <ChannelPage />,
             },
             {

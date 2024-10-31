@@ -1,10 +1,12 @@
 // src/components/ChannelSidebar/ChannelSidebar.tsx
 import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 
 import './ChannelSidebar.css';
 import ChannelList from './components/channelList/ChannelList';
-// import VoiceChannelList from './components/voiceChannelList/voiceChannelList';
 import UserControls from './components/userControls/UserControls';
+import serverStore from '../../../../store/serverStore';
+import ServerHeader from './components/serverHeader/ServerHeader';
 
 const ChannelSidebar: React.FC = () => {
     const [textChannels, setTextChannels] = useState<string[]>([
@@ -31,24 +33,32 @@ const ChannelSidebar: React.FC = () => {
         setModalOpen(false);
     };
 
+    const handleEditServer = () => {
+        // Implement server edit functionality
+        alert(`Edit server: ${serverStore.currentServer?.name}`);
+    };
+
+    const currentServer = serverStore.currentServer;
+
     return (
         <aside className="channel-sidebar">
-            <div>
-                <div className="channel-header">Server Name</div>
-
-                <ChannelList channels={textChannels} />
-                <button
-                    className="add-channel-button"
-                    onClick={() => setModalOpen(true)}
-                >
-                    + Add Channel
-                </button>
-            </div>
-            <div>
-                <UserControls />
-            </div>
+            {currentServer ? (
+                <div>
+                    <ServerHeader></ServerHeader>
+                    <ChannelList />
+                    <button
+                        className="add-channel-button"
+                        onClick={() => setModalOpen(true)}
+                    >
+                        + Add Channel
+                    </button>
+                </div>
+            ) : (
+                <div className="channel-header">No Server Selected</div>
+            )}
+            <UserControls />
         </aside>
     );
 };
 
-export default ChannelSidebar;
+export default observer(ChannelSidebar);

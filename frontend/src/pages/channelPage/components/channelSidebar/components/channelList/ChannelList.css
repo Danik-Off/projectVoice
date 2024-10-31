@@ -1,0 +1,25 @@
+/* src/components/ChannelSidebar/ChannelList.css */
+
+.channel-list {
+    padding: 10px; /* Padding for the channel list */
+}
+
+.text-channel {
+    padding: 5px;
+    color: #99aab5; /* Color for text channels */
+    border-bottom: 1px solid #40444b; /* Subtle divider between channels */
+    cursor: pointer;
+}
+
+.voice-channel {
+    padding: 5px;
+    color: #43b581; /* Color for voice channels */
+    border-bottom: 1px solid #40444b; /* Subtle divider between channels */
+    cursor: pointer;
+}
+
+h3 {
+    color: #ffffff; /* Header color */
+    font-size: 16px; /* Font size for headers */
+    margin: 10px 0; /* Margin for spacing */
+}

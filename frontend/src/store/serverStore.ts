@@ -4,6 +4,7 @@ import { Server } from '../types/server';
 
 class ServerStore {
     servers: Server[] = [];
+    currentServer: Server | null = null;
     loading: boolean = false;
     error: string | null = null;
 
@@ -25,6 +26,19 @@ class ServerStore {
         }
     }
 
+    // Fetch a specific server by ID
+    async fetchServerById(id: number): Promise<void> {
+        this.loading = true;
+        this.error = null;
+        try {
+            const data: Server = await serverService.getBy(id);
+            this.currentServer = data;
+        } catch (error) {
+            this.error = (error as Error).message;
+        } finally {
+            this.loading = false;
+        }
+    }
     // Create a new server
     async createServer(
         serverData: Omit<Server, 'id' | 'ownerId'>

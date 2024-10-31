@@ -1,5 +1,6 @@
 // src/components/ServerSidebar/ServerCreateModal.tsx
 import React, { useState } from 'react';
+import './ServerCreateModal.css';
 
 interface ServerCreateModalProps {
     isOpen: boolean;
