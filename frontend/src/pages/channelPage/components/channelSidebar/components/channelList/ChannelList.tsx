@@ -8,7 +8,7 @@ import './ChannelList.css'; // Import the CSS file for styling
 import CreateChannelForm from './components/сreateChannelForm/CreateChannelForm';
 import SocketClient from '../../../../../../utils/socket';
 
-const socketClient = new SocketClient();
+export const socketClient =  new SocketClient();
 
 const ChannelList: React.FC = observer(() => {
     const [isFormVisible, setIsFormVisible] = useState<boolean>(false);

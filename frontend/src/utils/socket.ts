@@ -1,12 +1,36 @@
 import { io, Socket } from 'socket.io-client';
 import { getCookie } from './cookie';
+import { SocketClientState } from '../types/socket.types';
+import { iceServers } from '../configs/iceServers';
 
 class SocketClient {
+    public users = [];
+
+    public onStateChange: ((state: SocketClientState) => void) | null = null;
+
+    // Getter for state
+    public get state(): SocketClientState {
+        return this._state;
+    }
+
+    // Public setter for state
+    public set state(newState: SocketClientState) {
+        this._state = newState; // Update the state
+        if (this.onStateChange) {
+            this.onStateChange(this._state); // Invoke the handler if set
+        }
+    }
+
+    private _state: SocketClientState;
+
     private token: string;
     private socket: Socket | null;
     private peerConnections: { [key: string]: RTCPeerConnection }; // Storage for multiple peer connections
     private localStream: MediaStream | null;
     private remoteStreams: { [key: string]: MediaStream }; // Store remote user streams
+
+    public isMuteMicro = false;
+
     private readonly streamConstraints = {
         audio: true,
     };
@@ -17,6 +41,29 @@ class SocketClient {
         this.peerConnections = {};
         this.localStream = null;
         this.remoteStreams = {};
+        this._state = SocketClientState.INIT;
+    }
+
+    public muteMicrophone() {
+        if (this.localStream) {
+            this.localStream.getAudioTracks().forEach((track) => {
+                track.enabled = false; // Mute the audio track
+            });
+            console.log('Микрофон отключен');
+            this.socket?.emit('mute');
+            this.isMuteMicro = true;
+        }
+    }
+
+    public unmuteMicrophone() {
+        if (this.localStream) {
+            this.localStream.getAudioTracks().forEach((track) => {
+                track.enabled = true; // Unmute the audio track
+            });
+            console.log('Микрофон включен');
+            this.socket?.emit('unmute');
+            this.isMuteMicro = false;
+        }
     }
 
     public connect(channelId: number) {
@@ -25,8 +72,7 @@ class SocketClient {
             return;
         }
 
-        // const url = `https://projectvoice.suzenebl.ru`;
-        const url = `http://localhost:5555`;
+        const url = `https://projectvoice.suzenebl.ru`;
         this.socket = io(url, {
             path: '/socket',
             query: { token: this.token },
@@ -68,10 +114,12 @@ class SocketClient {
     }
 
     private async initializeMedia() {
+        this.state = SocketClientState.MEDIA_INITIALIZING;
         try {
             this.localStream = await navigator.mediaDevices.getUserMedia(
                 this.streamConstraints
             );
+            this.state = SocketClientState.MEDIA_INITIALIZED;
             if (this.localStream) {
                 for (const socketId in this.peerConnections) {
                     this.localStream.getTracks().forEach((track) => {
@@ -83,14 +131,21 @@ class SocketClient {
                     });
                 }
             }
+            if (this.isMuteMicro) {
+                this.localStream.getAudioTracks().forEach((track) => {
+                    track.enabled = false; // Mute the audio track
+                });
+            }
         } catch (error) {
             console.error('Ошибка доступа к локальному медиа:', error);
+            this.state = SocketClientState.MEDIA_ERROR;
         }
     }
 
     private createPeerConnection(targetUserId: string): RTCPeerConnection {
+        this.state = SocketClientState.PEER_CONNECTION_CREATING;
         const peerConnection = new RTCPeerConnection({
-            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+            iceServers: iceServers,
         });
 
         peerConnection.onicecandidate = (event) => {
@@ -131,6 +186,7 @@ class SocketClient {
         }
 
         this.peerConnections[targetUserId] = peerConnection; // Save PeerConnection for the user
+        this.state = SocketClientState.PEER_CONNECTION_ESTABLISHED;
         return peerConnection;
     }
 
@@ -218,6 +274,7 @@ class SocketClient {
         Object.values(this.remoteStreams).forEach((stream) => {
             stream.getTracks().forEach((track) => track.stop());
         });
+        this.state = SocketClientState.PEER_CONNECTION_CLOSED;
         this.remoteStreams = {};
     }
 }

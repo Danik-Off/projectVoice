@@ -1,6 +1,33 @@
 const rooms = {}; // { roomId: [{ token: string, micToggle: boolean, socketId: string }] }
 
 module.exports = (io) => {
+    const getUserByToken = (token) => {
+        for (const roomId in rooms) {
+            if (rooms.hasOwnProperty(roomId)) {
+                for (const socketId in rooms[roomId]) {
+                    if (rooms[roomId].hasOwnProperty(socketId)) {
+                        const user = rooms[roomId][socketId];
+                        if (user.token === token) {
+                            return { roomId, socketId, ...user }; // Возвращаем объект пользователя с roomId и socketId
+                        }
+                    }
+                }
+            }
+        }
+        return null; // Если пользователь не найден
+    };
+    const getUserBySocketId = (socketId) => {
+        for (const roomId in rooms) {
+            if (rooms.hasOwnProperty(roomId)) {
+                const user = rooms[roomId].find((user) => user.socketId === socketId);
+                if (user) {
+                    return { roomId, ...user }; // Возвращаем объект пользователя с roomId
+                }
+            }
+        }
+        return null; // Если пользователь не найден
+    };
+
     io.on('connection', (socket) => {
         console.log('Пользователь подключен: ', socket.id);
 
@@ -23,6 +50,7 @@ module.exports = (io) => {
                 token: user.token,
                 micToggle: user.micToggle,
                 socketId: user.socketId,
+                user: getUserByToken(token),
             }));
             socket.emit('created', { roomId, participants });
             console.log(`Отправлен список участников комнаты ${roomId} для пользователя ${socket.id}`);
@@ -61,36 +89,48 @@ module.exports = (io) => {
         // Обработка сигналов WebRTC
         socket.on('signal', (data) => {
             const { to, type, ...payload } = data;
-            console.log('🚀 ~ socket.on ~ data:', data);
 
-            // Ищем socketId пользователя, которому нужно отправить сигнал
-            if(to==socket.id){
-                console.log("самому себе не надо");
-                return;
-            }
-            console.log("aaaaaaaaa")
             if (to) {
-                io.to(to).emit('signal', { from: socket.id, type,...payload});
+                io.to(to).emit('signal', { from: socket.id, type, ...payload });
                 console.log(`Сигнал от ${socket.id} отправлен пользователю с socketId ${to}`);
                 console.log(data);
             } else {
                 console.log(`Пользователь  ${to} не найден в комнатах`);
             }
         });
+        
+        // Функция для получения пользователя и обновления состояния micToggle
+        const toggleMicForUser = (socketId, newMicToggle) => {
+            for (const roomId in rooms) {
+                if (rooms.hasOwnProperty(roomId)) {
+                    const user = rooms[roomId].find((user) => user.socketId === socketId);
+                    if (user) {
+                        // Обновляем состояние micToggle
+                        user.micToggle = newMicToggle;
+                        console.log(
+                            `Состояние микрофона для пользователя ${socketId} в комнате ${roomId} изменено на ${
+                                user.micToggle ? 'включен' : 'выключен'
+                            }`
+                        );
 
-        // Обработка переключения микрофона
-        socket.on('toggle-mic', (roomId, token) => {
-            const user = rooms[roomId]?.find((user) => user.socketId === socket.id);
-            if (user) {
-                user.micToggle = !user.micToggle;
-                console.log(
-                    `Пользователь ${socket.id} в комнате ${roomId} переключил микрофон на ${
-                        user.micToggle ? 'включен' : 'выключен'
-                    }`
-                );
-                // Уведомляем других пользователей о переключении микрофона
-                socket.to(roomId).emit('mic-toggled', { token, micToggle: user.micToggle });
+                        // Уведомляем других пользователей о переключении микрофона
+                        socket
+                            .to(roomId)
+                            .emit('mic-toggled', { token: user.token, micToggle: user.micToggle });
+                        return; // Выходим из функции после обновления
+                    }
+                }
             }
+            console.log(`Пользователь с socketId ${socketId} не найден`);
+        };
+        // Обработка события отключения микрофона
+        socket.on('mute', () => {
+            toggleMicForUser(socket.id, false); // Устанавливаем micToggle в false
+        });
+
+        // Обработка события включения микрофона
+        socket.on('unmute', () => {
+            toggleMicForUser(socket.id, true); // Устанавливаем micToggle в true
         });
     });
 };

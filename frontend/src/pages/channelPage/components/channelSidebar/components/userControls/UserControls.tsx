@@ -1,13 +1,30 @@
-// src/components/ChannelSidebar/UserControls.tsx
-import React, { useState } from 'react';
-import './UserControls.css'; // Создайте этот CSS файл для стилей
+import React, { useEffect, useState } from 'react';
+import './UserControls.css';
+import { socketClient } from '../channelList/ChannelList';
+import { stateMessages } from '../../../../../../types/socket.types';
 
 const UserControls: React.FC = () => {
     const [isMicOn, setMicOn] = useState(true);
-    const [volume, setVolume] = useState(100); // Громкость от 0 до 100
+    const [volume, setVolume] = useState(100);
+    const [socketState, setSocketState] = useState(socketClient.state);
+
+    useEffect(() => {
+        const updateState = () => {
+            setSocketState(socketClient.state);
+        };
+
+        socketClient.onStateChange = updateState;
+
+        return () => {
+            socketClient.onStateChange = null;
+        };
+    }, []);
 
     const handleMicToggle = () => {
         setMicOn(!isMicOn);
+        isMicOn
+            ? socketClient.muteMicrophone()
+            : socketClient.unmuteMicrophone();
     };
 
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,12 +33,19 @@ const UserControls: React.FC = () => {
 
     return (
         <div className="user-controls">
+            {/* Status Bar */}
+            <div className="status-bar">
+                <span className="status-message">
+                    {stateMessages[socketState]}
+                </span>
+            </div>
+
             <div className="voice-control">
                 <button
                     className={`mic-button ${isMicOn ? 'active' : 'inactive'}`}
                     onClick={handleMicToggle}
                 >
-                    {isMicOn ? '🎤' : '🔇'}
+                    {`${isMicOn ? '🎙️' : '❌'}`}
                 </button>
                 <div className="volume-control">
                     <input
@@ -32,7 +56,7 @@ const UserControls: React.FC = () => {
                         onChange={handleVolumeChange}
                         className="volume-slider"
                     />
-                    <span>{volume}</span>
+                    <span className="volume-label">{volume}</span>
                 </div>
             </div>
             <div className="user-info">

@@ -1,73 +1,105 @@
-/* src/components/ChannelSidebar/UserControls.css */
-
 .user-controls {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    background-color: #2f3136; /* Dark background color */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+   
+    color: #ffffff; /* White text */
+}
+
+.status-bar {
+    background-color: #202225; /* Darker gray for status bar */
+    color: #7289da; /* Discord's blue color */
     padding: 10px;
-    background-color: #2f3136; /* Цвет фона как в Discord */
-    border-top: 1px solid #202225; /* Разделительная линия */
+    border-radius: 5px;
+   
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px; /* Spacing below the status bar */
 }
 
 .voice-control {
     display: flex;
     align-items: center;
-    width: 100%;
-    margin-bottom: 10px; /* Отступ снизу для профиля */
+    justify-content: space-between;
+   
+    margin-bottom: 15px; /* Spacing below the voice control */
 }
 
 .mic-button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
+    background-color: #7289da; /* Discord blue */
     color: white;
-    margin-right: 10px;
+    border: none;
+    border-radius: 50%;
+    padding: 12px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 30px; /* Make the button round */
+    height: 30px; /* Make the button round */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.mic-button.active {
-    color: green; /* Цвет для активного микрофона */
-}
-
-.mic-button.inactive {
-    color: red; /* Цвет для выключенного микрофона */
+.mic-button:hover {
+    background-color: #5b6eae; /* Darker shade on hover */
 }
 
 .volume-control {
     display: flex;
     align-items: center;
-    flex-grow: 1; /* Для расширения ползунка */
 }
 
 .volume-slider {
     margin: 0 10px;
+    -webkit-appearance: none;
+    width: 150px; /* Width for the volume slider */
+    height: 5px;
+    border-radius: 5px;
+    background: #7289da; /* Slider color */
     cursor: pointer;
-    width: 100%; /* Устанавливаем ширину на 100% */
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px; /* Thumb size */
+    height: 15px;
+    border-radius: 50%;
+    background: white; /* Thumb color */
+    cursor: pointer;
+}
+
+.volume-label {
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    width: 100%; /* Для выравнивания под элемент управления */
+    margin-top: 15px; /* Space above user info */
 }
 
 .avatar {
-    width: 40px;
+    width: 40px; /* Avatar size */
     height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
+    border-radius: 50%; /* Circular avatar */
+    margin-right: 10px; /* Space between avatar and username */
 }
 
 .username {
-    color: white; /* Цвет текста */
     font-weight: bold;
-    margin-right: auto; /* Заставляем имя пользователя занимать все доступное пространство */
 }
 
 .settings-button {
     background: transparent;
     border: none;
+    font-size: 1.5rem;
     cursor: pointer;
-    font-size: 24px;
-    color: white;
+    color: #ffffff; /* White icon */
 }
