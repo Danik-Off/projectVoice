@@ -2,7 +2,7 @@ const express = require('express');
 const { Channel } = require('../models'); // Импортируем модель Channel
 const router = express.Router();
 const authenticateToken = require('../middleware/auth');
-const {  isModerator } = require('../middleware/checkRole'); // Импортируйте необходимые проверки ролейа
+const { isModerator } = require('../middleware/checkRole'); // Импортируйте необходимые проверки ролейа
 
 // Получить все каналы
 router.get('/', authenticateToken, async (req, res) => {

@@ -1,19 +1,12 @@
 // src/components/ChannelSidebar/ChannelList.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import TextChannel from './components/textChannel/TextChannel';
 import VoiceChannel from './components/voiceChannel/VoiceChannel';
 
 const ChannelList: React.FC = () => {
     // Internal state for text and voice channels
-    const [textChannels, setTextChannels] = useState<string[]>([
-        '# general',
-        '# memes',
-        '# gaming',
-    ]);
-    const [voiceChannels, setVoiceChannels] = useState<string[]>([
-        '🔊 General',
-        '🔊 Gaming',
-    ]);
+    const textChannels = ['# general', '# memes', '# gaming'];
+    const voiceChannels = ['🔊 General', '🔊 Gaming'];
 
     return (
         <div className="channel-list">
