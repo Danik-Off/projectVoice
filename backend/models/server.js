@@ -44,10 +44,6 @@ module.exports = (sequelize, DataTypes) => {
     Server.associate = (models) => {
         Server.hasMany(models.ServerMember, { foreignKey: 'serverId', as: 'members' }); // Сервер может иметь множество участников
         Server.hasMany(models.Channel, { foreignKey: 'serverId', as: 'channels' });
-        Server.hasMany(models.ServerMember, {
-            foreignKey: 'serverId',
-            as: 'members',
-        });
         Server.belongsToMany(models.User, {
             through: models.ServerMember,
             foreignKey: 'serverId',
