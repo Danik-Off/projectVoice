@@ -1,9 +1,11 @@
 const express = require('express');
 const { Channel } = require('../models'); // Импортируем модель Channel
 const router = express.Router();
+const authenticateToken = require('../middleware/auth');
+const {  isModerator } = require('../middleware/checkRole'); // Импортируйте необходимые проверки ролейа
 
 // Получить все каналы
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     try {
         const channels = await Channel.findAll();
         res.status(200).json(channels);
@@ -13,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Создать новый канал
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, isModerator, async (req, res) => {
     const { name, type, serverId } = req.body;
     try {
         const newChannel = await Channel.create({ name, type, serverId });
@@ -37,7 +39,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Обновить канал по ID
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticateToken, isModerator, async (req, res) => {
     const { name, type, serverId } = req.body;
     try {
         const [updated] = await Channel.update({ name, type, serverId }, { where: { id: req.params.id } });
@@ -52,7 +54,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Удалить канал по ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, isModerator, async (req, res) => {
     try {
         const deleted = await Channel.destroy({
             where: { id: req.params.id },

@@ -32,5 +32,10 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Channels', // Убедитесь, что имя таблицы соответствует миграции
   });
 
+  // Определение ассоциаций
+  Channel.associate = (models) => {
+    Channel.belongsTo(models.Server, { foreignKey: 'serverId', as: 'server' });
+  };
+
   return Channel;
 };

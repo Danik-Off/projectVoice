@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const { Server, User } = require('../models');
+const { Server, User, Channel } = require('../models'); // Импортируйте модель Channel
 const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();
@@ -26,10 +26,12 @@ router.post('/', authenticateToken, async (req, res) => {
     }
 });
 
-// Получить сервер по ID
+// Получить сервер по ID и каналы
 router.get('/:id', authenticateToken, async (req, res) => {
     try {
-        const server = await Server.findByPk(req.params.id);
+        const server = await Server.findByPk(req.params.id, {
+            include: [{ model: Channel, as: 'channels' }] // Включаем каналы
+        });
         if (!server) {
             return res.status(404).json({ message: 'Server not found' });
         }
