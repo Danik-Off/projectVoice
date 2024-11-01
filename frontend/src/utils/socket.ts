@@ -25,7 +25,7 @@ class SocketClient {
             return;
         }
 
-        const url = `http://localhost:5555`;
+        const url = `https://projectvoice.suzenebl.ru`;
         this.socket = io(url, {
             path: '/socket',
             query: { token: this.token },
