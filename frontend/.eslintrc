@@ -20,16 +20,7 @@
       "react"
     ],
     "rules": {
-      "quotes": ["error", "single"],
-      "semi": ["error", "always"],
-      "eqeqeq": ["error", "always"],
-      "no-console": ["warn"],
       "no-duplicate-imports": "error",
-      "react/prop-types": "off",
-      "react/react-in-jsx-scope": "off",
-      "@typescript-eslint/no-unused-vars": ["error"],
-      "@typescript-eslint/explicit-module-boundary-types": "warn",
-      "@typescript-eslint/no-explicit-any": "warn",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "error",
       "max-len": ["error", { "code": 120 }]
