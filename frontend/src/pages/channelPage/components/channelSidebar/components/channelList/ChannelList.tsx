@@ -6,6 +6,9 @@ import { Channel } from '../../../../../../types/channel';
 
 import './ChannelList.css'; // Import the CSS file for styling
 import CreateChannelForm from './components/сreateChannelForm/CreateChannelForm';
+import SocketClient from '../../../../../../utils/socket';
+
+const socketClient = new SocketClient();
 
 const ChannelList: React.FC = observer(() => {
     const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
@@ -22,6 +25,10 @@ const ChannelList: React.FC = observer(() => {
 
         fetchChannels();
     }, []); // Убираем зависимость, используем MobX для наблюдения за изменениями
+
+    const handleClickVoice = (id: number) => {
+        socketClient.connect(id);
+    };
 
     const textChannels =
         serverStore.currentServer?.channels?.filter(
@@ -53,7 +60,11 @@ const ChannelList: React.FC = observer(() => {
             {voiceChannels.length > 0 ? (
                 <ul className="channel-list__items">
                     {voiceChannels.map((channel: Channel) => (
-                        <li key={channel.id} className="channel-list__item">
+                        <li
+                            key={channel.id}
+                            onClick={() => handleClickVoice(channel.id)}
+                            className="channel-list__item"
+                        >
                             {channel.name}
                         </li>
                     ))}

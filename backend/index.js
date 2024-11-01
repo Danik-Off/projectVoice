@@ -17,10 +17,14 @@ const serverMembersRoutes = require('./routes/serverMembers');
 // Загрузка переменных окружения
 dotenv.config();
 
+
+const WEBSOCKET_PATH = `/socket`;
+
 // Инициализация Express
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
+    path: WEBSOCKET_PATH,
     cors: {
         origin: '*', // Разрешите доступ с любого источника
         methods: ['GET', 'POST'], // Укажите разрешенные методы
