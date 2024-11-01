@@ -17,9 +17,6 @@ const ChannelSidebar: React.FC = () => {
                 <div>
                     <ServerHeader></ServerHeader>
                     <ChannelList />
-                    <button className="add-channel-button">
-                        + Add Channel
-                    </button>
                 </div>
             ) : (
                 <div className="channel-header">No Server Selected</div>

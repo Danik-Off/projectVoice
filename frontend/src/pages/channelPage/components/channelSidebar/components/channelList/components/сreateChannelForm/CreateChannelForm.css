@@ -1,0 +1,75 @@
+/* CreateChannelForm.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark background with transparency */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure the modal is on top */
+}
+
+.modal-content {
+    background-color: #2f3136; /* Dark gray background */
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px; /* Fixed width for the modal */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    color: #ffffff; /* White text */
+}
+
+h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.input-field,
+.select-field {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #40444b; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #40444b; /* Input background */
+    color: #ffffff; /* Input text color */
+}
+
+.input-field:focus,
+.select-field:focus {
+    border-color: #7289da; /* Highlight border color */
+    outline: none; /* Remove default outline */
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submit-button {
+    background-color: #43b581; /* Green button */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: #747f8d; /* Gray button */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover,
+.cancel-button:hover {
+    opacity: 0.8; /* Slightly fade on hover */
+}

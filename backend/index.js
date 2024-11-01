@@ -11,6 +11,8 @@ const webrtc = require('./modules/webrtc'); // Подключение логик
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
 const serverRoutes = require('./routes/server');
+const channeRoutes = require('./routes/channel');
+const serverMembersRoutes = require('./routes/serverMembers');
 
 // Загрузка переменных окружения
 dotenv.config();
@@ -45,6 +47,8 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/servers', serverRoutes);
+app.use('/api/servers', channeRoutes);
+app.use('/api/servers', serverMembersRoutes);
 
 // Настройка раздачи статических файлов фронтенда
 app.use(express.static('../frontend/build')); // Укажите путь к директории сборки

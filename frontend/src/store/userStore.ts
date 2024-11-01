@@ -18,7 +18,7 @@ class AuthStore {
     async get(id: number | null) {
         try {
             if (this.isAuthenticated && this.token) {
-                const user = await userService.get(this.token, id);
+                const user = await userService.get(id);
 
                 if (user) {
                     this.user = user; // Сохранение полученного пользователя

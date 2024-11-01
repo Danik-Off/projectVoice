@@ -2,21 +2,23 @@ const express = require('express');
 const { Channel } = require('../models'); // Импортируем модель Channel
 const router = express.Router();
 const authenticateToken = require('../middleware/auth');
-const { isModerator } = require('../middleware/checkRole'); // Импортируйте необходимые проверки ролейа
+const { isModerator } = require('../middleware/checkRole'); // Импортируйте необходимые проверки ролей
 
-// Получить все каналы
-router.get('/', authenticateToken, async (req, res) => {
+// Получить все каналы по serverId
+router.get('/:serverId/channels', authenticateToken, async (req, res) => {
+    const { serverId } = req.params; // Получаем serverId из параметров
     try {
-        const channels = await Channel.findAll();
+        const channels = await Channel.findAll({ where: { serverId } });
         res.status(200).json(channels);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Создать новый канал
-router.post('/', authenticateToken, isModerator, async (req, res) => {
-    const { name, type, serverId } = req.body;
+// Создать новый канал в указанном сервере
+router.post('/:serverId/channels', authenticateToken, isModerator, async (req, res) => {
+    const { name, type } = req.body; // serverId теперь в URL
+    const { serverId } = req.params; // Получаем serverId из параметров
     try {
         const newChannel = await Channel.create({ name, type, serverId });
         res.status(201).json(newChannel);
@@ -25,10 +27,11 @@ router.post('/', authenticateToken, isModerator, async (req, res) => {
     }
 });
 
-// Получить канал по ID
-router.get('/:id', async (req, res) => {
+// Получить канал по ID в рамках конкретного сервера
+router.get('/:serverId/channels/:channelId', async (req, res) => {
+    const { channelId } = req.params; // Получаем channelId из параметров
     try {
-        const channel = await Channel.findByPk(req.params.id);
+        const channel = await Channel.findByPk(channelId);
         if (!channel) {
             return res.status(404).json({ message: 'Channel not found' });
         }
@@ -38,13 +41,14 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Обновить канал по ID
-router.put('/:id', authenticateToken, isModerator, async (req, res) => {
-    const { name, type, serverId } = req.body;
+// Обновить канал по ID в рамках конкретного сервера
+router.put('/:serverId/channels/:channelId', authenticateToken, isModerator, async (req, res) => {
+    const { name, type } = req.body; // serverId теперь в URL
+    const { channelId } = req.params; // Получаем channelId из параметров
     try {
-        const [updated] = await Channel.update({ name, type, serverId }, { where: { id: req.params.id } });
+        const [updated] = await Channel.update({ name, type }, { where: { id: channelId } });
         if (updated) {
-            const updatedChannel = await Channel.findByPk(req.params.id);
+            const updatedChannel = await Channel.findByPk(channelId);
             return res.status(200).json(updatedChannel);
         }
         throw new Error('Channel not found');
@@ -53,11 +57,12 @@ router.put('/:id', authenticateToken, isModerator, async (req, res) => {
     }
 });
 
-// Удалить канал по ID
-router.delete('/:id', authenticateToken, isModerator, async (req, res) => {
+// Удалить канал по ID в рамках конкретного сервера
+router.delete('/:serverId/channels/:channelId', authenticateToken, isModerator, async (req, res) => {
+    const { channelId } = req.params; // Получаем channelId из параметров
     try {
         const deleted = await Channel.destroy({
-            where: { id: req.params.id },
+            where: { id: channelId },
         });
         if (deleted) {
             return res.status(204).send();

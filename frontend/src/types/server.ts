@@ -1,3 +1,5 @@
+import { Channel } from './channel';
+
 // Define types for the server data
 export type Server = {
     id: number;
@@ -5,4 +7,5 @@ export type Server = {
     ownerId: number;
     description?: string;
     icon?: string;
+    channels?: Channel[];
 };
