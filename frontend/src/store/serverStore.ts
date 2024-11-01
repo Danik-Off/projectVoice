@@ -1,12 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 import { serverService } from '../services/serverService'; // Путь к серверному сервису
-import { channelService } from '../services/channelService'; // Путь к сервису каналов
-import { userService } from '../services/userService'; // Путь к сервису пользователей
+import { channelService } from '../services/channelService'; // Путь к сервису каналов сервису пользователей
 import { Server } from '../types/server';
 import { User } from '../types/user'; // Предполагается, что у вас есть типы для пользователей
-import { channelMembersService } from '../services/channelMembers';
+
 import { Channel } from '../types/channel';
 import { ChannelMember } from '../types/channelMember';
+import { serverMembersService } from '../services/serverMembers';
 
 class ServerStore {
     servers: Server[] = [];
@@ -106,7 +106,9 @@ class ServerStore {
         this.error = null;
         try {
             if (this.currentServer) {
-                const data: Channel[] = await channelService.getByServer(this.currentServer.id);
+                const data: Channel[] = await channelService.getByServer(
+                    this.currentServer.id
+                );
                 this.channels = data;
             }
         } catch (error) {
@@ -158,8 +160,12 @@ class ServerStore {
         this.loading = true;
         this.error = null;
         try {
-            const data: User[] = await userService.get(); // Метод для получения списка пользователей
-            this.users = data;
+            if (this.currentServer) {
+                const data: User[] = await serverMembersService.getMembers(
+                    this.currentServer.id
+                ); // Метод для получения списка пользователей
+                this.users = data;
+            }
         } catch (error) {
             this.error = (error as Error).message;
         } finally {
@@ -168,18 +174,13 @@ class ServerStore {
     }
 
     // Add a member to a channel
-    async addChannelMember(
-        channelId: number,
-        userId: number,
-        role: string
-    ): Promise<void> {
+    async addChannelMember(userId: number, role: string): Promise<void> {
         this.loading = true;
         this.error = null;
         try {
             if (this.currentServer) {
-                await channelMembersService.addMember(
+                await serverMembersService.addMember(
                     this.currentServer.id,
-                    channelId,
                     userId,
                     role
                 );
@@ -192,15 +193,14 @@ class ServerStore {
     }
 
     // Fetch members of a channel
-    async fetchChannelMembers(channelId: number): Promise<void> {
+    async fetchChannelMembers(): Promise<void> {
         this.loading = true;
         this.error = null;
         try {
             if (this.currentServer) {
                 const members: ChannelMember[] =
-                    await channelMembersService.getMembers(
-                        this.currentServer.id,
-                        channelId
+                    await serverMembersService.getMembers(
+                        this.currentServer.id
                     );
                 // Handle channel members (you might want to store them in the state)
                 console.log(members); // or handle accordingly
@@ -221,9 +221,8 @@ class ServerStore {
         this.error = null;
         try {
             if (this.currentServer) {
-                await channelMembersService.removeMember(
+                await serverMembersService.removeMember(
                     this.currentServer.id,
-                    channelId,
                     memberId
                 );
             }

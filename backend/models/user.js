@@ -44,10 +44,18 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
 
-
     User.associate = (models) => {
-        User.hasMany(models.ServerMember, { foreignKey: 'userId', as: 'serverMembers' }); // Пользователь может быть участником множества серверов
+        User.hasMany(models.ServerMember, {
+            foreignKey: 'userId',
+            as: 'serverMembers',
+        });
+        User.belongsToMany(models.Server, {
+            through: models.ServerMember,
+            foreignKey: 'userId',
+            otherKey: 'serverId',
+            as: 'servers',
+        });
     };
-    
+
     return User;
 };

@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "projectVoice",
+  "name": "projectVoice - Платформа для голосового общения",
+  "description": "projectVoice - современная платформа для голосового общения и организации сообществ, предоставляющая возможности для общения в реальном времени, аналогично Discord.",
   "icons": [
     {
       "src": "favicon.ico",

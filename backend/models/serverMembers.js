@@ -30,6 +30,17 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     timestamps: true,
   });
+// models/ServerMember.js
+ServerMember.associate = (models) => {
+  ServerMember.belongsTo(models.User, {
+    foreignKey: 'userId',
+    as: 'user',
+  });
+  ServerMember.belongsTo(models.Server, {
+    foreignKey: 'serverId',
+    as: 'server',
+  });
+};
 
   return ServerMember;
 };
