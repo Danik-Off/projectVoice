@@ -25,7 +25,8 @@ class SocketClient {
             return;
         }
 
-        const url = `https://projectvoice.suzenebl.ru`;
+        // const url = `https://projectvoice.suzenebl.ru`;
+        const url = `http://localhost:5555`;
         this.socket = io(url, {
             path: '/socket',
             query: { token: this.token },
@@ -35,6 +36,11 @@ class SocketClient {
         this.socket.on('connect', () => {
             console.log('Соединение с Socket.IO установлено');
             this.socket?.emit('join-room', channelId, this.token);
+        });
+
+        this.socket.on('created', async (user: { socketId: string }) => {
+            console.log(`Пользователь ${user.socketId} подключен`);
+            await this.initializeMedia(); // Initialize media
         });
 
         this.socket.on('user-connected', async (user: { socketId: string }) => {
@@ -67,10 +73,15 @@ class SocketClient {
                 this.streamConstraints
             );
             if (this.localStream) {
-                console.log('Локальный поток получен');
-                this.localStream.getTracks().forEach((track) => {
-                    // Tracks will be added to each PeerConnection when created
-                });
+                for (const socketId in this.peerConnections) {
+                    this.localStream.getTracks().forEach((track) => {
+                        this.localStream &&
+                            this.peerConnections[socketId].addTrack(
+                                track,
+                                this.localStream
+                            );
+                    });
+                }
             }
         } catch (error) {
             console.error('Ошибка доступа к локальному медиа:', error);
@@ -84,7 +95,10 @@ class SocketClient {
 
         peerConnection.onicecandidate = (event) => {
             if (event.candidate) {
-                console.log("🚀 ~ SocketClient ~ createPeerConnection ~ candidate:", event.candidate)
+                console.log(
+                    '🚀 ~ SocketClient ~ createPeerConnection ~ candidate:',
+                    event.candidate
+                );
                 this.socket?.emit('signal', {
                     to: targetUserId,
                     type: 'candidate',
