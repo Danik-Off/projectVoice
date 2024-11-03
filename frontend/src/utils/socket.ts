@@ -72,7 +72,8 @@ class SocketClient {
             return;
         }
 
-        const url = `https://projectvoice.suzenebl.ru`;
+        // const url = `https://projectvoice.suzenebl.ru`;
+        const url = `http://localhost:5555`;
         this.socket = io(url, {
             path: '/socket',
             query: { token: this.token },
@@ -101,6 +102,7 @@ class SocketClient {
         });
 
         this.socket.on('signal', (data) => {
+            console.log(data);
             this.handleSignal(data);
         });
 

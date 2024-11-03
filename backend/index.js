@@ -5,7 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
-const webrtc = require('./modules/webrtc'); // Подключение логики WebRTC
+const webrtc = require('./modules/webrtc/webrtc'); // Подключение логики WebRTC
 
 //Импорт маршрутов
 const userRoutes = require('./routes/user');

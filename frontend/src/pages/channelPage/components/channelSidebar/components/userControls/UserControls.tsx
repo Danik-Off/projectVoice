@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './UserControls.css';
 import { socketClient } from '../channelList/ChannelList';
 import { stateMessages } from '../../../../../../types/socket.types';
+import voiceRoomStore from '../../../../../../store/roomStore';
 
 const UserControls: React.FC = () => {
     const [isMicOn, setMicOn] = useState(true);
@@ -23,8 +24,8 @@ const UserControls: React.FC = () => {
     const handleMicToggle = () => {
         setMicOn(!isMicOn);
         isMicOn
-            ? socketClient.muteMicrophone()
-            : socketClient.unmuteMicrophone();
+            ? voiceRoomStore.muteMicrophone()
+            : voiceRoomStore.unmuteMicrophone();
     };
 
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {

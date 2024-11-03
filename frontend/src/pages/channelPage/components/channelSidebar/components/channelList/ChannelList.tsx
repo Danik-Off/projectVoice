@@ -7,8 +7,9 @@ import { Channel } from '../../../../../../types/channel';
 import './ChannelList.css'; // Import the CSS file for styling
 import CreateChannelForm from './components/сreateChannelForm/CreateChannelForm';
 import SocketClient from '../../../../../../utils/socket';
+import voiceRoomStore from '../../../../../../store/roomStore';
 
-export const socketClient =  new SocketClient();
+export const socketClient = new SocketClient();
 
 const ChannelList: React.FC = observer(() => {
     const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
@@ -27,7 +28,8 @@ const ChannelList: React.FC = observer(() => {
     }, []); // Убираем зависимость, используем MobX для наблюдения за изменениями
 
     const handleClickVoice = (id: number) => {
-        socketClient.connect(id);
+       // socketClient.connect(id);
+        voiceRoomStore.connectToRoom(id);
     };
 
     const textChannels =

@@ -16,6 +16,7 @@ module.exports = (io) => {
         }
         return null; // Если пользователь не найден
     };
+
     const getUserBySocketId = (socketId) => {
         for (const roomId in rooms) {
             if (rooms.hasOwnProperty(roomId)) {
@@ -47,12 +48,12 @@ module.exports = (io) => {
 
             // Отправляем только подключившемуся пользователю список участников комнаты
             const participants = rooms[roomId].map((user) => ({
-                token: user.token,
                 micToggle: user.micToggle,
                 socketId: user.socketId,
                 user: getUserByToken(token),
             }));
             socket.emit('created', { roomId, participants });
+
             console.log(`Отправлен список участников комнаты ${roomId} для пользователя ${socket.id}`);
 
             // Сообщаем всем остальным в комнате, что новый пользователь присоединился
