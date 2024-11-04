@@ -1,5 +1,5 @@
 const express = require('express');
-const { Server } = require('../models');
+const { User, Server } = require('../models');
 const authenticateToken = require('../middleware/auth'); // JWT middleware для проверки токена
 
 const router = express.Router();
@@ -27,7 +27,7 @@ router.get('/user-servers', authenticateToken, async (req, res) => {
 // Получить информацию о сервере по ID
 router.get('/:id', authenticateToken, async (req, res) => {
     try {
-        const server = await Server.findByPk(req.params.id);
+        const server = await User.findByPk(req.params.id);
 
         if (!server) {
             return res.status(404).json({ error: 'Сервер не найден.' });

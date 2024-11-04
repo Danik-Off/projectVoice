@@ -1,0 +1,67 @@
+/* Основные цвета Discord */
+:root {
+    --discord-blue: #7289da; /* Главный синий цвет */
+    --discord-dark: #2c2f33; /* Темный фон */
+    --discord-light-gray: #99aab5; /* Светло-серый текст */
+    --discord-gray: #72767d; /* Темный серый текст */
+    --discord-white: #ffffff; /* Белый цвет */
+}
+
+/* Сброс стилей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Основной фон приложения */
+body {
+    background-color: var(--discord-dark);
+    color: var(--discord-white);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--discord-dark);
+}
+
+/* Заголовки */
+h1, h2, h3, h4 {
+    color: var(--discord-white);
+}
+
+/* Стили для кнопок */
+button {
+    background-color: var(--discord-blue);
+    color: var(--discord-white);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #5b6eae; /* Более темный синий для эффекта при наведении */
+}
+
+/* Поля ввода */
+input {
+    background-color: #40444b; /* Темный фон для полей ввода */
+    color: var(--discord-white);
+    border: 1px solid var(--discord-gray);
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+input::placeholder {
+    color: var(--discord-light-gray); /* Цвет для плейсхолдера */
+}
+
+/* Стили для ссылок */
+a {
+    color: var(--discord-blue);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; /* Подчеркнуть ссылку при наведении */
+}

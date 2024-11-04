@@ -2,7 +2,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import './ChannelSidebar.css';
+import './ChannelSidebar.scss';
 import ChannelList from './components/channelList/ChannelList';
 import UserControls from './components/userControls/UserControls';
 import serverStore from '../../../../store/serverStore';

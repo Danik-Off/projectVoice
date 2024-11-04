@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
 
         // Создание JWT токена
         console.log('🚀 ~ router.post ~ // Создание JWT токена:');
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.status(201).json({ token });
     } catch (error) {
         console.log('Ошибка регистрации:', error);
