@@ -2,8 +2,8 @@ import { io, Socket } from 'socket.io-client';
 import { getCookie } from './cookie';
 
 class SocketClient {
-    // private url = `https://projectvoice.suzenebl.ru`; //todo вынести в конфиг
-    private url = `http://localhost:5555`
+    private url = `https://projectvoice.suzenebl.ru`; //todo вынести в конфиг
+    // private url = `http://localhost:5555`
 
     private token: string;
     private socket: Socket | null;
