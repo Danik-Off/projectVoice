@@ -1,0 +1,61 @@
+.voice-room {
+    padding: 20px;
+    background-color: #2c2f33; /* Темный фон как у Discord */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.voice-room h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.user-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #36393f;
+    border-radius: 8px;
+    padding: 10px;
+    width: 250px;
+    height: 150px;
+    color: #ffffff;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.user-box.speaking {
+    background-color: #5865f2; /* Цвет для говорящих пользователей */
+    transform: scale(1.05); /* Лёгкая анимация при разговоре */
+}
+
+.user-avatar {
+    background-color: #7289da;
+    width: 40px;
+    height: 40px;
+    border-radius:50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.user-name {
+    margin-top: 0.5rem;
+    font-size: 16px;
+}

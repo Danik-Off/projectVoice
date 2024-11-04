@@ -152,10 +152,6 @@ class SocketClient {
 
         peerConnection.onicecandidate = (event) => {
             if (event.candidate) {
-                console.log(
-                    '🚀 ~ SocketClient ~ createPeerConnection ~ candidate:',
-                    event.candidate
-                );
                 this.socket?.emit('signal', {
                     to: targetUserId,
                     type: 'candidate',

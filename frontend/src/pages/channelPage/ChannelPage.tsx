@@ -5,6 +5,7 @@ import MessageList from './components/messageList/MessageList';
 import UserSidebar from './components/userSidebar/UserSidebar';
 import { useEffect } from 'react';
 import serverStore from '../../store/serverStore';
+import VoiceRoom from './components/voiceRoom/VoiceRoom';
 
 const ChannelPage = () => {
     const { serverId } = useParams<{ serverId: string }>();
@@ -14,7 +15,8 @@ const ChannelPage = () => {
     return (
         <div className="channel-page">
             <ChannelSidebar></ChannelSidebar>
-            <MessageList></MessageList>
+            {/* <MessageList></MessageList> */}
+            <VoiceRoom></VoiceRoom>
             <UserSidebar></UserSidebar>
         </div>
     );

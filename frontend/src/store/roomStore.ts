@@ -4,6 +4,10 @@ import { getCookie } from '../utils/cookie';
 import WebRTCClient from '../utils/WebRTCClient';
 
 class VoiceRoomStore {
+    public participants: any[] = [];
+
+    public state = '';
+
     private socketClient: SocketClient = new SocketClient();
     private webRTCClient: WebRTCClient = new WebRTCClient();
 
@@ -12,6 +16,7 @@ class VoiceRoomStore {
         this.socketClient.connect();
         this.setupServerResponseListeners();
         this.setupWebRTCSenders();
+        this.webRTCClient.initializeMedia();
     }
 
     public connectToRoom(roomId: number): void {
@@ -38,20 +43,23 @@ class VoiceRoomStore {
         });
         this.socketClient.socketOn('created', (room) => {
             console.log(`Вы подключены `, room);
-            this.webRTCClient.initializeMedia();
+            this.participants = room.participants;
         });
         this.socketClient.socketOn(
             'user-connected',
             (user: { socketId: string }) => {
                 console.log(user);
                 console.log(`Пользователь ${user.socketId} подключен`);
-                this.webRTCClient.initializeMedia();
                 this.webRTCClient.createOffer(user.socketId);
+                this.participants.push(user);
             }
         );
         this.socketClient.socketOn('user-disconnected', (socketId: string) => {
-            console.log(`Пользователь ${socketId} подключен`);
+            console.log(`Пользователь ${socketId} отключен`);
             this.webRTCClient.disconnectPeer(socketId);
+            this.participants = this.participants.filter(
+                (user) => user.socketId !== socketId
+            );
         });
         this.socketClient.socketOn('signal', (data) => {
             console.log(`Сигнал`, data);
@@ -67,6 +75,9 @@ class VoiceRoomStore {
     private setupWebRTCSenders() {
         this.webRTCClient.sendSignal = (signal) => {
             this.socketClient.socketEmit('signal', signal);
+        };
+        this.webRTCClient.changeState = (id, event) => {
+            console.log(`Изменен статус ${id}`, event);
         };
     }
 }

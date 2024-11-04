@@ -5,49 +5,43 @@ import { STREAM_CONSTRAINTS } from './constants/WebRTCClient.constants';
 class WebRTCClient {
     public sendSignal: null | ((signal: Signal) => void) = null;
 
+    public changeState: null | ((id: string, signal: Event) => void) = null;
+
     private readonly remoteStreams: Map<string, MediaStream> = new Map();
     private readonly peerConnections: Map<string, RTCPeerConnection> =
         new Map();
 
-    private localStream: MediaStream | null;
+    private localStream: MediaStream | null = null;
 
-    constructor() {
-        this.localStream = null;
-    }
+    private isMuteMicro = false;
 
     //управление Медиа
     public async initializeMedia() {
         try {
             this.localStream =
                 await navigator.mediaDevices.getUserMedia(STREAM_CONSTRAINTS);
-            if (this.localStream) {
-                for (const socketId in this.peerConnections) {
-                    const peerConnection = this.peerConnections.get(socketId);
-                    this.localStream.getTracks().forEach((track) => {
-                        this.localStream &&
-                            peerConnection &&
-                            peerConnection.addTrack(track, this.localStream);
-                    });
-                }
-            }
+
+            console.log(this.localStream);
         } catch (error) {
             console.error('Ошибка доступа к локальному медиа:', error);
         }
     }
 
     public muteMicrophone() {
+        this.isMuteMicro = true;
         if (this.localStream) {
             this.localStream.getAudioTracks().forEach((track) => {
-                track.enabled = false; // Mute the audio track
+                track.enabled = !this.isMuteMicro; // Mute the audio track
             });
             console.log('Микрофон отключен');
         }
     }
 
     public unmuteMicrophone() {
+        this.isMuteMicro = false;
         if (this.localStream) {
             this.localStream.getAudioTracks().forEach((track) => {
-                track.enabled = true; // Unmute the audio track
+                track.enabled = !this.isMuteMicro; // Unmute the audio track
             });
             console.log('Микрофон включен');
         }
@@ -61,7 +55,7 @@ class WebRTCClient {
         });
 
         newPeerConnection.onicecandidate = (event) => {
-            console.log('КААААААААНННННДИИИИИДАТ');
+            console.log(event);
             if (!event.candidate) {
                 console.error('candidate не существует');
                 return;
@@ -70,10 +64,6 @@ class WebRTCClient {
                 console.error('sendSignal не существует');
                 return;
             }
-            console.log(
-                '🚀 ~ SocketClient ~ createPeerConnection ~ candidate:',
-                event.candidate
-            );
             this.sendSignal({
                 to: id,
                 type: 'candidate',
@@ -81,7 +71,12 @@ class WebRTCClient {
             });
         };
 
+        newPeerConnection.onconnectionstatechange = (state) => {
+            this.changeState && this.changeState(id, state);
+        };
+
         newPeerConnection.ontrack = (event) => {
+            console.log('ontrack', id);
             this.addRemoteStream(event.track, id);
         };
 
@@ -119,10 +114,6 @@ class WebRTCClient {
 
     public async createAnswer(id: string) {
         const peerConnection = this.peerConnections.get(id);
-        console.log(
-            '🚀 ~ WebRTCClient ~ createAnswer ~ peerConnection:',
-            peerConnection
-        );
         if (!peerConnection) {
             console.error('peerConnection не существует при создании ответа');
             return;
@@ -153,14 +144,8 @@ class WebRTCClient {
 
     public async handleSignal(data: any) {
         const { from, type, sdp, candidate } = data;
-        console.log('🚀 ~ WebRTCClient ~ handleSignal ~ data:', data);
 
         let peerConnection = this.peerConnections.get(from) || false;
-        console.log(
-            '🚀 ~ WebRTCClient ~ handleSignal ~ peerConnection:',
-            peerConnection
-        );
-
         if (!peerConnection) {
             peerConnection = await this.createPeerConnection(from); // Create PeerConnection if it doesn't exist
         }
@@ -170,14 +155,9 @@ class WebRTCClient {
                 await peerConnection.setRemoteDescription(
                     new RTCSessionDescription({ type, sdp })
                 );
-                console.log(
-                    '🚀 ~ WebRTCClient ~ handleSignal ~ peerConnection:',
-                    peerConnection
-                );
                 await this.createAnswer(from);
                 break;
             case 'answer':
-                console.log('🚀 ~ SocketClient ~ handleSignal ~ data:', data);
                 await peerConnection.setRemoteDescription(
                     new RTCSessionDescription({ type, sdp })
                 );
@@ -202,20 +182,29 @@ class WebRTCClient {
             audioElement.srcObject = remoteStream;
             audioElement.autoplay = true;
             document.body.appendChild(audioElement);
+        } else {
+            console.log('remoteStream не существует ');
         }
 
         remoteStream.addTrack(track);
     }
 
     private addLocalStream(id: string): void {
+        const peerConnection = this.peerConnections.get(id);
         if (this.localStream) {
-            const peerConnection = this.peerConnections.get(id);
             this.localStream.getTracks().forEach((track) => {
                 //Если существет локальный стрим и пир для подключения то рассылаем стрим
                 this.localStream &&
                     peerConnection &&
                     peerConnection.addTrack(track, this.localStream);
+                track.enabled = !this.isMuteMicro;
             });
+        } else {
+            console.log(
+                '🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:',
+                this.localStream
+            );
+            console.error('чего то нет ');
         }
     }
 
