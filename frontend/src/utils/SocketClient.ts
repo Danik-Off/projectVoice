@@ -1,9 +1,9 @@
 import { io, Socket } from 'socket.io-client';
 import { getCookie } from './cookie';
+import { BASE_URL } from '../configs/apiConfig';
 
 class SocketClient {
-    private url = `https://projectvoice.suzenebl.ru`; //todo вынести в конфиг
-    // private url = `http://localhost:5555`
+    // private url = `https://projectvoice.suzenebl.ru`; //todo вынести в конфиг
 
     private token: string;
     private socket: Socket | null;
@@ -19,7 +19,7 @@ class SocketClient {
             return;
         }
 
-        this.socket = io(this.url, {
+        this.socket = io(BASE_URL, {
             path: '/socket',
             query: { token: this.token },
             transports: ['websocket'],

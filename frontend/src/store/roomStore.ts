@@ -25,10 +25,9 @@ class VoiceRoomStore {
         this.socketClient.socketEmit('join-room', roomId, token);
     }
     public disconnectToRoom(): void {
+        this.socketClient.socketEmit('leave-room') 
         this.webRTCClient.disconect();
 
-        // eslint-disable-next-line max-len
-        // this.socketClient.socketEmit('') TODO сделать на сервере инфорсмацию о том что пользователь отключился от комнаты
     }
     public muteMicrophone() {
         this.webRTCClient.muteMicrophone();

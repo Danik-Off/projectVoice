@@ -41,6 +41,7 @@ module.exports = (io) => {
                 `Уведомление отправлено остальным пользователям в комнате ${roomId} о том, что ${socket.id} подключился`
             );
             socket.on('disconnect', handleDisconnect);
+            socket.on('leave-room', handleDisconnect);
             function handleDisconnect() {
                 console.log(`Пользователь ${socket.id} отключился `);
 
