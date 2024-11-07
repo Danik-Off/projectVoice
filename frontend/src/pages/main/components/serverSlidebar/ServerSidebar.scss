@@ -1,0 +1,64 @@
+@import '../../../../styles/main';
+.server-sidebar {
+    width: 60px; /* Ширина боковой панели */
+    background-color: $sidebar-bg; /* Фон боковой панели */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    position: relative; /* Для позиционирования модального окна */
+    box-shadow: 2px 0 0 rgba(0, 0, 0, 0.1);
+
+    .server-icon:hover {
+        background-color: $button-hover-bg; /* Цвет при наведении */
+    }
+
+    .server-icon.active {
+        background-color: $button-bg; /* Цвет активного значка */
+    }
+    .settings-button {
+        position: absolute;
+        bottom: 1rem; /* Закрепить кнопку на дне */
+        background-color: $box-bg;
+        border: none;
+        border-radius: 50%;
+        padding: 10px;
+        color: $text-color;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition:
+            background-color 0.3s ease,
+            transform 0.2s ease;
+
+        &:hover {
+            background-color: $button-hover-bg;
+            transform: scale(1.1);
+        }
+    }
+
+    .add-button {
+        width: 48px; /* Размер кнопки */
+        height: 48px;
+        border-radius: 50%; /* Круглая форма */
+        background-color: $box-bg; /* Цвет фона кнопки */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white; /* Цвет текста или иконки */
+        font-size: 24px; /* Размер текста/иконки */
+        cursor: pointer;
+
+        transition:
+            background-color 0.3s ease,
+            transform 0.2s ease;
+
+        &:hover {
+            background-color: #4752c4; /* Цвет фона при наведении */
+            transform: scale(1.1); /* Увеличение кнопки при наведении */
+        }
+
+        &:active {
+            background-color: #3b45a2; /* Цвет фона при клике */
+        }
+    }
+}

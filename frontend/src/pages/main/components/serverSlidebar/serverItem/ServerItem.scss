@@ -1,0 +1,45 @@
+@import '../../../../../styles/main';
+
+.server-item {
+    width: 48px; /* Размер значка сервера */
+    height: 48px;
+    border-radius: 50%; /* Круглая форма */
+    margin: 8px 0; /* Отступы для разделения */
+    cursor: pointer;
+    position: relative;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    &:hover {
+        transform: scale(1.1); /* Увеличение значка при наведении */
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.3); /* Легкая тень при наведении */
+    }
+
+    .server-icon {
+        width: 100%; /* Размер изображения */
+        height: 100%;
+        border-radius: 50%; /* Круглый контейнер для изображения */
+        object-fit: cover; /* Изображение заполняет контейнер, сохраняя пропорции */
+        transition: opacity 0.3s ease;
+    }
+
+    .server-icon-placeholder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color:$box-bg; /* Тёмный фон для заглушки */
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Эффект для заглушки при наведении */
+    &:hover .server-icon-placeholder {
+        background-color: $button-hover-bg; /* Цвет фона при наведении */
+    }
+}

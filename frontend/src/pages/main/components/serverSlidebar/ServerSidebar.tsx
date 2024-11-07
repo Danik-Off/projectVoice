@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import serverStore from '../../../../store/serverStore';
-import './ServerSidebar.css';
+import './ServerSidebar.scss';
 import ServerItem from './serverItem/ServerItem';
 import ServerCreateModal from './serverCreateModal/ServerCreateModal';
 
@@ -15,7 +15,7 @@ const ServerSidebar: React.FC = observer(() => {
 
     return (
         <aside className="server-sidebar">
-            <div className="server-icon" onClick={() => setModalOpen(true)}>
+            <div className="add-button" onClick={() => setModalOpen(true)}>
                 +
             </div>
             {serverStore.servers.map((server) => (
@@ -28,6 +28,10 @@ const ServerSidebar: React.FC = observer(() => {
                     await serverStore.createServer({ name });
                 }}
             />
+            {/* Кнопка настроек внизу */}
+            <div className="settings-button" onClick={() => alert('Открыть настройки')}>
+                ⚙️
+            </div>
         </aside>
     );
 });

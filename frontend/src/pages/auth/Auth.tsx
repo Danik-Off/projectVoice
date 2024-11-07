@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { authStore } from '../../store/authStore';
 import Spinner from '../../components/spinner/Spinner';
-import './Auth.css';
+import './Auth.scss';
 import LoginForm from './components/loginForm/LoginForm';
 import RegisterForm from './components/registerForm/RegisterForm';
 
@@ -14,7 +14,7 @@ const AuthPage: React.FC = observer(() => {
     return (
         <div className="auth-container">
             {authStore.loading && (
-                <div className="spinner-conteiner">
+                <div className="spinner-container">
                     <Spinner />
                 </div>
             )}

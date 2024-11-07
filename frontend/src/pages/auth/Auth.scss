@@ -1,24 +1,25 @@
-/* Auth.css */
+@import '../../styles/main.scss';
+
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #36393f;
-    color: #b9bbbe;
+    background-color: $background-color;
+    color: $secondary-text;
 }
 
 .auth-box {
-    background-color: #2f3136;
-    padding: 2rem;
-    width: 400px;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    background-color: $box-bg;
+    padding: $container-padding;
+    width: $auth-box-width;
+    border-radius: $container-border-radius;
+    box-shadow: $box-shadow;
     text-align: center;
 }
 
 .auth-title {
-    color: #ffffff;
+    color: $primary-text;
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
@@ -26,43 +27,43 @@
 
 .auth-input {
     width: 100%;
-    padding: 0.8rem;
+    padding: $input-padding;
     margin-bottom: 1rem;
     border: none;
-    border-radius: 4px;
-    background-color: #202225;
-    color: #dcddde;
+    border-radius: $border-radius;
+    background-color: $input-bg;
+    color: $input-text;
 }
 
 .auth-input::placeholder {
-    color: #72767d;
+    color: $placeholder-text;
 }
 
 .auth-button {
     width: 100%;
-    padding: 0.8rem;
+    padding: $button-padding;
     margin-top: 1rem;
-    background-color: #5865f2;
+    background-color: $button-bg;
     border: none;
-    border-radius: 4px;
-    color: white;
+    border-radius: $border-radius;
+    color: $primary-text;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
 }
 
 .auth-button:hover {
-    background-color: #4752c4;
+    background-color: $button-hover-bg;
 }
 
 .auth-switch {
     margin-top: 1rem;
     font-size: 0.9rem;
-    color: #b9bbbe;
+    color: $secondary-text;
 }
 
 .auth-switch a {
-    color: #5865f2;
+    color: $link-color;
     text-decoration: none;
     font-weight: 500;
 }
@@ -70,9 +71,10 @@
 .auth-switch a:hover {
     text-decoration: underline;
 }
-.spinner-conteiner {
+
+.spinner-container {
     position: fixed;
-    background-color: rgba(128, 128, 128, 0.438);
+    background-color: $spinner-overlay-bg;
     width: 100%;
     height: 100%;
     display: flex;

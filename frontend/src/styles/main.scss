@@ -1,0 +1,35 @@
+@import 'theme/_dark'; // По умолчанию импорт  тёмной темы, можно динамически менять на _dark
+@import 'colors';
+@import 'sizes';
+@import 'typography';
+
+
+// Основные стили
+body {
+  font-family: $font-family;
+  background-color: $background-color;
+  color: $text-color;
+}
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: $sidebar-bg;
+}
+
+.message {
+  background-color: $message-bg;
+  color: $message-text;
+  padding: $message-padding;
+  border-radius: 5px;
+}
+
+.button {
+  background-color: $button-bg;
+  color: $button-text;
+  padding: $button-padding;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: darken($button-bg, 5%);
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import './index.css'
+import './styles/main.scss'
 import reportWebVitals from './reportWebVitals';
 import { router } from './routes/root';
 import ToastNotifications from './components/toastNotifications/ToastNotifications';
