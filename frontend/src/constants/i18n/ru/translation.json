@@ -1,0 +1,25 @@
+{
+    "createServerModal": {
+        "title": "Создать сервер",
+        "titlePlaceholder": "Введите название сервера...",
+        "descriptionPlaceholder": "Введите описание сервера...",
+        "avatarLabel": "Загрузить аватарку",
+        "privacyLabel": "Настройки приватности",
+        "publicOption": "Публичный",
+        "privateOption": "Приватный",
+        "btnCreate": "Создать",
+        "btnCancel": "Отмена"
+    },
+    "authPage": {
+        "welcomeBack": "Добро пожаловать обратно!",
+        "createAccount": "Создать аккаунт",
+        "needAccount": "Нет аккаунта?",
+        "alreadyHaveAccount": "Уже есть аккаунт?",
+        "signUp": "Зарегистрироваться",
+        "login": "Войти",
+        "email": "почта",
+        "password": "пароль",
+        "repeatPassword": "повторите пароль",
+        "btnLogin": "Войти"
+    }
+}

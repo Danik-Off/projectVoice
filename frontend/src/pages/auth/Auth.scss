@@ -81,3 +81,18 @@
     align-items: center;
     justify-content: center;
 }
+.language-toggle {
+    background-color: #2f3136; /* Цвет фона */
+    color: white; /* Цвет текста */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #4f545c; /* Цвет фона при наведении */
+    }
+}

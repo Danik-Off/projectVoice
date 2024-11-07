@@ -2,34 +2,23 @@
 @import 'colors';
 @import 'sizes';
 @import 'typography';
-
-
+@import 'basic';
 // Основные стили
 body {
-  font-family: $font-family;
-  background-color: $background-color;
-  color: $text-color;
+    font-family: $font-family;
+    background-color: $background-color;
+    color: $text-color;
 }
 
 .sidebar {
-  width: $sidebar-width;
-  background-color: $sidebar-bg;
+    width: $sidebar-width;
+    background-color: $sidebar-bg;
 }
 
 .message {
-  background-color: $message-bg;
-  color: $message-text;
-  padding: $message-padding;
-  border-radius: 5px;
+    background-color: $message-bg;
+    color: $message-text;
+    padding: $message-padding;
+    border-radius: 5px;
 }
 
-.button {
-  background-color: $button-bg;
-  color: $button-text;
-  padding: $button-padding;
-  border-radius: 4px;
-
-  &:hover {
-    background-color: darken($button-bg, 5%);
-  }
-}

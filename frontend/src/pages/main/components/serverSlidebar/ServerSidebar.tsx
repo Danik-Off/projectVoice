@@ -18,20 +18,19 @@ const ServerSidebar: React.FC = observer(() => {
             <div className="add-button" onClick={() => setModalOpen(true)}>
                 +
             </div>
-            {serverStore.servers.map((server) => (
-                <ServerItem key={server.id} server={server} />
-            ))}
-            <ServerCreateModal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-                onCreate={async (name: string) => {
-                    await serverStore.createServer({ name });
-                }}
-            />
-            {/* Кнопка настроек внизу */}
+            <div className="server-sidebar__server-list">
+                {serverStore.servers.map((server) => (
+                    <ServerItem key={server.id} server={server} />
+                ))}
+            </div>
             <div className="settings-button" onClick={() => alert('Открыть настройки')}>
                 ⚙️
             </div>
+            <ServerCreateModal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+              
+            />
         </aside>
     );
 });

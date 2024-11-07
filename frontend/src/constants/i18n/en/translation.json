@@ -1,0 +1,24 @@
+{
+    "createServerModal": {
+        "title": "Create Server",
+        "titlePlaceholder": "Enter server name...",
+        "descriptionPlaceholder": "Enter server description...",
+        "avatarLabel": "Upload Avatar",
+        "privacyLabel": "Privacy Settings",
+        "publicOption": "Public",
+        "privateOption": "Private",
+        "btnCreate": "Create",
+        "btnCancel": "Cancel"
+    },
+    "authPage": {
+        "welcomeBack": "Welcome back!",
+        "createAccount": "Create an account",
+        "needAccount": "Need an account?",
+        "alreadyHaveAccount": "Already have an account?",
+        "signUp": "Sign Up",
+        "login": "Login",
+        "email": "email",
+        "password": "password",
+        "btnLogin": "Login"
+    }
+}

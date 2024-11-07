@@ -7,7 +7,7 @@
     align-items: center;
     padding-top: 10px;
     position: relative; /* Для позиционирования модального окна */
-    box-shadow: 2px 0 0 rgba(0, 0, 0, 0.1);
+    border-right: 1px solid $border-color;
 
     .server-icon:hover {
         background-color: $button-hover-bg; /* Цвет при наведении */
