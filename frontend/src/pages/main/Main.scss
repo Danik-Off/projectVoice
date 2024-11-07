@@ -10,9 +10,10 @@
     height: 100vh; /* Full height */
 }
 
-.content {
-    flex: 1; /* Fills the remaining space */
-    background-color: #36393f; /* Main content background color */
-    color: white;
+.content-page {
+   flex: 1;
+   overflow: auto;
+   display: flex;
+   
 }
 

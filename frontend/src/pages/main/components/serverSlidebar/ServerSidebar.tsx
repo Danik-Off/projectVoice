@@ -5,10 +5,15 @@ import serverStore from '../../../../store/serverStore';
 import './ServerSidebar.scss';
 import ServerItem from './serverItem/ServerItem';
 import ServerCreateModal from './serverCreateModal/ServerCreateModal';
+import { useNavigate } from 'react-router-dom';
 
 const ServerSidebar: React.FC = observer(() => {
+    const navigate = useNavigate();
     const [isModalOpen, setModalOpen] = useState(false);
 
+    const handleSetting = () => {
+        navigate(`/settings`);
+    };
     useEffect(() => {
         serverStore.fetchServers();
     }, []);
@@ -23,14 +28,10 @@ const ServerSidebar: React.FC = observer(() => {
                     <ServerItem key={server.id} server={server} />
                 ))}
             </div>
-            <div className="settings-button" onClick={() => alert('Открыть настройки')}>
+            <div className="settings-button" onClick={handleSetting}>
                 ⚙️
             </div>
-            <ServerCreateModal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-              
-            />
+            <ServerCreateModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
         </aside>
     );
 });
