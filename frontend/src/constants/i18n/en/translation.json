@@ -1,0 +1,43 @@
+{
+    "createServerModal": {
+        "title": "Create Server",
+        "titlePlaceholder": "Enter server name...",
+        "descriptionPlaceholder": "Enter server description...",
+        "avatarLabel": "Upload Avatar",
+        "privacyLabel": "Privacy Settings",
+        "publicOption": "Public",
+        "privateOption": "Private",
+        "btnCreate": "Create",
+        "btnCancel": "Cancel"
+    },
+    "authPage": {
+        "welcomeBack": "Welcome back!",
+        "createAccount": "Create an account",
+        "needAccount": "Need an account?",
+        "alreadyHaveAccount": "Already have an account?",
+        "signUp": "Sign Up",
+        "login": "Login",
+        "email": "email",
+        "password": "password",
+        "btnLogin": "Login"
+    },
+
+    "settingsPage": {
+        "title": "Settings",
+        "language": {
+            "title": "Language",
+            "english": "English",
+            "russian": "Russian"
+        },
+        "audio": {
+            "title": "Audio Settings",
+            "microphone": "Microphone:",
+            "defaultMic": "Default Microphone",
+            "speaker": "Speaker:",
+            "defaultSpeaker": "Default Speaker",
+            "volume": "Volume:",
+            "mute": "Mute:",
+            "testAudio": "Test Audio"
+        }
+    }
+}

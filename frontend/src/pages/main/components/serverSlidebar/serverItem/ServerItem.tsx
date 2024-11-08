@@ -1,7 +1,7 @@
-// src/components/ServerSidebar/ServerItem.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Server } from '../../../../../types/server';
+import './ServerItem.scss';
 
 interface ServerItemProps {
     server: Server;
@@ -17,9 +17,9 @@ const ServerItem: React.FC<ServerItemProps> = ({ server }) => {
     };
 
     return (
-        <div className="server-icon" onClick={handleNavigate}>
+        <div className="server-item" onClick={handleNavigate}>
             {serverIcon ? (
-                <img src={serverIcon} alt={`${server.name} icon`} className="server-icon-image" />
+                <img src={serverIcon} alt={`${server.name} icon`} className="server-icon" />
             ) : (
                 <div className="server-icon-placeholder">{serverNameInitial}</div>
             )}

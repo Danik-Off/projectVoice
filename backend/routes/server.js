@@ -21,7 +21,7 @@ router.post('/', authenticateToken, async (req, res) => {
     try {
         // Создаем новый сервер
         const newServer = await Server.create({ name, ownerId: req.user.userId, description, icon });
-        
+
         // Добавляем создателя как участника с ролью владельца
         await ServerMember.create({
             userId: req.user.userId,
@@ -91,5 +91,6 @@ router.delete('/:id', authenticateToken, checkServerOwnership, async (req, res) 
         res.status(500).json({ error: error.message });
     }
 });
+
 
 module.exports = router;

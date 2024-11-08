@@ -1,0 +1,39 @@
+.input[type='text'] {
+    width: 100%;
+    padding: $input-padding;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: $border-radius;
+    background-color: $input-bg;
+    color: $input-text;
+
+    &::placeholder {
+        color: $placeholder-text;
+    }
+}
+.textArea {
+    width: 100%;
+    padding: $input-padding;
+    border: none;
+    border-radius: $border-radius;
+    background-color: $input-bg;
+    color: $input-text;
+
+    &::placeholder {
+        color: $placeholder-text;
+    }
+}
+.button {
+    background-color: #7289da;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: $button-hover-bg;
+    }
+}

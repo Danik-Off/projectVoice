@@ -1,20 +1,32 @@
-// src/components/ServerSidebar/ServerCreateModal.tsx
 import React, { useState } from 'react';
-import './ServerCreateModal.css';
+import './ServerCreateModal.scss';
+import { useTranslation } from 'react-i18next';
 
 interface ServerCreateModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onCreate: (name: string) => void;
+    // onCreate: (data: { name: string; description: string; avatar: File | null; isPrivate: boolean }) => void;
 }
 
-const ServerCreateModal: React.FC<ServerCreateModalProps> = ({ isOpen, onClose, onCreate }) => {
+const ServerCreateModal: React.FC<ServerCreateModalProps> = ({ isOpen, onClose }) => {
+    const { t } = useTranslation();
+
     const [serverName, setServerName] = useState('');
+    const [serverDescription, setServerDescription] = useState('');
+    const [avatar, setAvatar] = useState<File | null>(null);
+    const [isPrivate, setIsPrivate] = useState(false);
+
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null;
+        if (file) {
+            setAvatar(file);
+        }
+    };
 
     const handleCreateServer = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await onCreate(serverName);
-        setServerName('');
+
+        // onCreate({ name: serverName, description: serverDescription, avatar, isPrivate });
         onClose();
     };
 
@@ -23,19 +35,29 @@ const ServerCreateModal: React.FC<ServerCreateModalProps> = ({ isOpen, onClose, 
     return (
         <div className="modal-overlay">
             <div className="modal">
-                <h2>Create Server</h2>
+                <h2>{t('createServerModal.title')}</h2>
                 <form onSubmit={handleCreateServer}>
                     <input
+                        className="input"
                         type="text"
-                        placeholder="Server Name"
+                        placeholder={t('createServerModal.titlePlaceholder')}
                         value={serverName}
                         onChange={(e) => setServerName(e.target.value)}
                         required
                     />
+                    <textarea
+                        className="textArea description"
+                        placeholder={t('createServerModal.descriptionPlaceholder')}
+                        value={serverDescription}
+                        onChange={(e) => setServerDescription(e.target.value)}
+                        required
+                    />
                     <div className="modal-buttons">
-                        <button type="submit">Create</button>
-                        <button type="button" className="cancel-button" onClick={onClose}>
-                            Cancel
+                        <button type="submit" className="button">
+                            {t('createServerModal.btnCreate')}
+                        </button>
+                        <button type="button" className="button" onClick={onClose}>
+                            {t('createServerModal.btnCancel')}
                         </button>
                     </div>
                 </form>

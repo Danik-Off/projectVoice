@@ -32,11 +32,11 @@ module.exports = (sequelize, DataTypes) => {
             },
             profilePicture: {
                 type: DataTypes.STRING,
-                allowNull: true, // Можно изменить на false, если поле обязательно
+                allowNull: true,
             },
             bio: {
                 type: DataTypes.TEXT,
-                allowNull: true, // Можно изменить на false, если поле обязательно
+                allowNull: true,
             },
         },
         {

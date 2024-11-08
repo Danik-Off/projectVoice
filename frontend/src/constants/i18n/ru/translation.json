@@ -1,0 +1,51 @@
+{
+    "createServerModal": {
+        "title": "Создать сервер",
+        "titlePlaceholder": "Введите название сервера...",
+        "descriptionPlaceholder": "Введите описание сервера...",
+        "avatarLabel": "Загрузить аватарку",
+        "privacyLabel": "Настройки приватности",
+        "publicOption": "Публичный",
+        "privateOption": "Приватный",
+        "btnCreate": "Создать",
+        "btnCancel": "Отмена"
+    },
+    "authPage": {
+        "welcomeBack": "Добро пожаловать обратно!",
+        "createAccount": "Создать аккаунт",
+        "needAccount": "Нет аккаунта?",
+        "alreadyHaveAccount": "Уже есть аккаунт?",
+        "signUp": "Зарегистрироваться",
+        "login": "Войти",
+        "email": "почта",
+        "password": "пароль",
+        "repeatPassword": "повторите пароль",
+        "btnLogin": "Войти"
+    },
+    "settingsPage": {
+        "title": "Настройки",
+        "language": {
+            "title": "Язык",
+            "english": "Английский",
+            "russian": "Русский"
+        },
+        "audio": {
+            "title": "Настройки аудио",
+            "microphone": "Микрофон:",
+            "defaultMic": "Микрофон по умолчанию",
+            "speaker": "Динамик:",
+            "defaultSpeaker": "Динамик по умолчанию",
+            "volume": "Громкость:",
+            "mute": "Выключить звук:",
+            "testAudio": "Тест звука"
+        }
+    },
+    "channelsPage": {
+        "channelList": {
+            "textTitle": "Текстовые комнаты",
+            "voiceTitle": "Голосовые комнаты",
+            "createBtn": "Создать комнату",
+            "cancelBtn": "Отмена"
+        }
+    }
+}

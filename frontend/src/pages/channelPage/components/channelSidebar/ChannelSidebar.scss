@@ -1,82 +1,9 @@
 .channel-sidebar {
-    width: 250px;
+    width: 300px;
     background-color: #2f3136;
     color: white;
     display: flex;
     flex-direction: column;
-    padding: 10px;
     justify-content: space-between;
+   
 }
-
-.channel-header,
-.voice-channel-header {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.channel,
-.voice-channel {
-    padding: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.channel:hover,
-.voice-channel:hover {
-    background-color: #40444b;
-}
-
-.add-channel-button {
-    margin-top: 10px;
-    padding: 8px;
-    background-color: #7289da;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.add-channel-button:hover {
-    background-color: #5b6eae;
-}
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cancel-button {
-    background-color: #f04747;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-.controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: auto; /* push controls to the bottom */
-    padding: 10px 0;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-}
-
-.avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-

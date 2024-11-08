@@ -1,30 +1,40 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-// AuthPage.tsx
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { authStore } from '../../store/authStore';
 import Spinner from '../../components/spinner/Spinner';
-import './Auth.css';
+import './Auth.scss';
 import LoginForm from './components/loginForm/LoginForm';
 import RegisterForm from './components/registerForm/RegisterForm';
+import { useTranslation } from 'react-i18next';
 
 const AuthPage: React.FC = observer(() => {
     const [isLogin, setIsLogin] = useState(true);
+    const { t, i18n } = useTranslation();
+
+    const toggleLanguage = () => {
+        const newLanguage = i18n.language === 'en' ? 'ru' : 'en'; // Переключение между английским и русским
+        i18n.changeLanguage(newLanguage);
+    };
 
     return (
         <div className="auth-container">
             {authStore.loading && (
-                <div className="spinner-conteiner">
+                <div className="spinner-container">
                     <Spinner />
                 </div>
             )}
             <div className="auth-box">
-                <h1 className="auth-title">{isLogin ? 'Welcome back!' : 'Create an account'}</h1>
+                <h1 className="auth-title">{isLogin ? t('authPage.welcomeBack') : t('authPage.createAccount')}</h1>
                 {isLogin ? <LoginForm /> : <RegisterForm />}
                 <p className="auth-switch">
-                    {isLogin ? 'Need an account?' : 'Already have an account?'}{' '}
-                    <a onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Sign Up' : 'Login'}</a>
+                    {isLogin ? t('authPage.needAccount') : t('authPage.alreadyHaveAccount')}{' '}
+                    <a onClick={() => setIsLogin(!isLogin)}>{isLogin ? t('authPage.signUp') : t('authPage.login')}</a>
                 </p>
+
+                {/* Кнопка для переключения языка */}
+                <button onClick={toggleLanguage} className="language-toggle">
+                    {i18n.language === 'en' ? 'Русский' : 'English'}
+                </button>
             </div>
         </div>
     );

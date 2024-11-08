@@ -1,0 +1,98 @@
+@import '../../styles/main.scss';
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: $background-color;
+    color: $secondary-text;
+}
+
+.auth-box {
+    background-color: $box-bg;
+    padding: $container-padding;
+    width: $auth-box-width;
+    border-radius: $container-border-radius;
+    box-shadow: $box-shadow;
+    text-align: center;
+}
+
+.auth-title {
+    color: $primary-text;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.auth-input {
+    width: 100%;
+    padding: $input-padding;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: $border-radius;
+    background-color: $input-bg;
+    color: $input-text;
+}
+
+.auth-input::placeholder {
+    color: $placeholder-text;
+}
+
+.auth-button {
+    width: 100%;
+    padding: $button-padding;
+    margin-top: 1rem;
+    background-color: $button-bg;
+    border: none;
+    border-radius: $border-radius;
+    color: $primary-text;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.auth-button:hover {
+    background-color: $button-hover-bg;
+}
+
+.auth-switch {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: $secondary-text;
+}
+
+.auth-switch a {
+    color: $link-color;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+.spinner-container {
+    position: fixed;
+    background-color: $spinner-overlay-bg;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.language-toggle {
+    background-color: #2f3136; /* Цвет фона */
+    color: white; /* Цвет текста */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #4f545c; /* Цвет фона при наведении */
+    }
+}

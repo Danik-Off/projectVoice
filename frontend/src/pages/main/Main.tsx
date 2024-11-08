@@ -6,9 +6,10 @@ import './Main.scss'; // Main CSS for layout
 const Layout = () => {
     return (
         <div className="main-page">
-            {/* Render server sidebar */}
             <ServerSidebar />
-            <Outlet /> {/* This will render the matched child route */}
+            <div className="content-page">
+                <Outlet />
+            </div>
         </div>
     );
 };

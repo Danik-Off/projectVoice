@@ -1,0 +1,39 @@
+/* ChannelList.css */
+
+.channel-list {
+    background-color: #2f3136; /* Dark gray background */
+    color: #ffffff; /* White text */
+    padding: 20px; /* Add some padding */
+    border-radius: 8px; /* Rounded corners */
+    width: 300px; /* Fixed width for the channel list */
+    max-height: 80vh; /* Limit height */
+    overflow-y: auto; /* Scroll if necessary */
+    display: flex;
+    flex-direction: column;
+    
+    h2 {
+        font-size: 18px; /* Font size for headings */
+        margin: 10px 0; /* Margin for headings */
+        font-weight: 600; /* Bold text */
+    }
+
+    .channel-list__items {
+        list-style: none; /* Remove default list styles */
+        padding: 0; /* Remove default padding */
+        margin: 0; /* Remove default margin */
+    }
+
+    .channel-list__item {
+        padding: 10px; /* Padding for each channel item */
+        border-radius: 5px; /* Rounded corners for items */
+        transition: background-color 0.2s; /* Smooth transition for hover effect */
+    }
+
+    .channel-list__item:hover {
+        background-color: #40444b; /* Background on hover */
+    }
+
+    .channel-list__empty {
+        color: #b9bbbe; /* Lighter color for empty state text */
+    }
+}

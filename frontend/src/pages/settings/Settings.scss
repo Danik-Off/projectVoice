@@ -1,0 +1,51 @@
+@import '../../styles/main.scss';
+.settings-page {
+    width: 100%;
+    padding: 1rem;
+    color: $text-color;
+    display: flex;
+    flex-direction: column;
+    // Заголовок страницы настроек
+    .settings-title {
+        font-size: 24px;
+        font-family: 'Whitney', sans-serif; // Популярный шрифт, похожий на Discord
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    // Группа настроек
+    .settings-group {
+        padding: 15px 0;
+        border-bottom: 1px solid $border-color;
+
+        // Заголовок группы
+        &__title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        // Опции в группе настроек
+        &__option {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            select {
+                padding: 0.5rem;
+                background-color: $button-bg;
+                color: $text-color;
+                border-radius: 4px;
+                option {
+                    padding: 1rem;
+                }
+                &:hover {
+                    background-color: $button-hover-bg;
+                }
+            }
+        }
+    }
+}

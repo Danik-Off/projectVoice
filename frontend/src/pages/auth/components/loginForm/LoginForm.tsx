@@ -1,8 +1,11 @@
 // LoginForm.tsx
 import React from 'react';
 import { authStore } from '../../../../store/authStore';
+import { useTranslation } from 'react-i18next';
 
 const LoginForm: React.FC = () => {
+    const { t } = useTranslation();
+
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = event.currentTarget.elements as typeof event.currentTarget.elements & {
@@ -18,10 +21,16 @@ const LoginForm: React.FC = () => {
 
     return (
         <form onSubmit={handleLogin}>
-            <input type="email" name="email" placeholder="Email" className="auth-input" required />
-            <input type="password" name="password" placeholder="Password" className="auth-input" required />
+            <input type="email" name="email" placeholder={t('authPage.email')} className="auth-input" required />
+            <input
+                type="password"
+                name="password"
+                placeholder={t('authPage.password')}
+                className="auth-input"
+                required
+            />
             <button type="submit" className="auth-button">
-                Login
+            {t("authPage.btnLogin")}
             </button>
         </form>
     );
