@@ -1,5 +1,8 @@
+/* eslint-disable max-len */
 import React from 'react';
-
+import './MicButton.scss';
+import MicIcon from '../../../../../../../../icons/Micro';
+// Типы пропсов для компонента
 interface MicButtonProps {
     isMicOn: boolean;
     onMicToggle: () => void;
@@ -12,7 +15,7 @@ const MicButton: React.FC<MicButtonProps> = ({ isMicOn, onMicToggle }) => {
             onClick={onMicToggle}
             aria-label={isMicOn ? 'Mute microphone' : 'Unmute microphone'}
         >
-            {isMicOn ? '🎙️' : '❌'}
+            <MicIcon isMuted={!isMicOn}></MicIcon>
         </button>
     );
 };

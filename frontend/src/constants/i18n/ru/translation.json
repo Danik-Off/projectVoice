@@ -21,5 +21,31 @@
         "password": "пароль",
         "repeatPassword": "повторите пароль",
         "btnLogin": "Войти"
+    },
+    "settingsPage": {
+        "title": "Настройки",
+        "language": {
+            "title": "Язык",
+            "english": "Английский",
+            "russian": "Русский"
+        },
+        "audio": {
+            "title": "Настройки аудио",
+            "microphone": "Микрофон:",
+            "defaultMic": "Микрофон по умолчанию",
+            "speaker": "Динамик:",
+            "defaultSpeaker": "Динамик по умолчанию",
+            "volume": "Громкость:",
+            "mute": "Выключить звук:",
+            "testAudio": "Тест звука"
+        }
+    },
+    "channelsPage": {
+        "channelList": {
+            "textTitle": "Текстовые комнаты",
+            "voiceTitle": "Голосовые комнаты",
+            "createBtn": "Создать комнату",
+            "cancelBtn": "Отмена"
+        }
     }
 }

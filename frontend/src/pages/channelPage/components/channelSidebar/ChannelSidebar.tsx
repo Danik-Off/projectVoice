@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite';
 
 import './ChannelSidebar.scss';
 import ChannelList from './components/channelList/ChannelList';
-import UserControls from './components/userControls/UserControls';
 import serverStore from '../../../../store/serverStore';
 import ServerHeader from './components/serverHeader/ServerHeader';
+import VoiceControls from './components/voiceControls/VoiceControls';
 
 const ChannelSidebar: React.FC = () => {
     const currentServer = serverStore.currentServer;
@@ -19,9 +19,9 @@ const ChannelSidebar: React.FC = () => {
                     <ChannelList />
                 </div>
             ) : (
-                <div className="channel-header">No Server Selected</div>
+                <>a</>
             )}
-            <UserControls />
+            <VoiceControls />
         </aside>
     );
 };

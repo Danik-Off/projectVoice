@@ -1,18 +1,16 @@
 import React from 'react';
-import './UserControls.scss';
+import './VoiceControls.scss';
 
 import VoiceControl from './components/voiceControl/VoiceControl';
-import UserInfo from './components/userInfo/UserInfo';
 import StatusBar from './components/statusBar/StatusBar';
 
-const UserControls: React.FC = () => {
+const VoiceControls: React.FC = () => {
     return (
-        <div className="user-controls">
+        <div className="voice-controls">
             <StatusBar />
             <VoiceControl />
-            <UserInfo />
         </div>
     );
 };
 
-export default UserControls;
+export default VoiceControls;

@@ -20,5 +20,24 @@
         "email": "email",
         "password": "password",
         "btnLogin": "Login"
+    },
+
+    "settingsPage": {
+        "title": "Settings",
+        "language": {
+            "title": "Language",
+            "english": "English",
+            "russian": "Russian"
+        },
+        "audio": {
+            "title": "Audio Settings",
+            "microphone": "Microphone:",
+            "defaultMic": "Default Microphone",
+            "speaker": "Speaker:",
+            "defaultSpeaker": "Default Speaker",
+            "volume": "Volume:",
+            "mute": "Mute:",
+            "testAudio": "Test Audio"
+        }
     }
 }

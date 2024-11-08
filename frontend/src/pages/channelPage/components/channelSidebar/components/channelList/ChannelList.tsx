@@ -4,12 +4,14 @@ import { observer } from 'mobx-react';
 import serverStore from '../../../../../../store/serverStore';
 import { Channel } from '../../../../../../types/channel';
 
-import './ChannelList.css'; // Import the CSS file for styling
+import './ChannelList.scss'; // Import the CSS file for styling
 import CreateChannelForm from './components/сreateChannelForm/CreateChannelForm';
 import voiceRoomStore from '../../../../../../store/roomStore';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ChannelList: React.FC = observer(() => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
 
@@ -57,7 +59,10 @@ const ChannelList: React.FC = observer(() => {
 
     return (
         <div className="channel-list">
-            <h2>Text Channels</h2>
+            <button className="button " onClick={() => setIsFormVisible(!isFormVisible)}>
+                {t('channelsPage.channelList.' + (isFormVisible ? 'cancel' : 'create') + 'Btn')}
+            </button>
+            <h2>{t('channelsPage.channelList.textTitle')}</h2>
             {textChannels.length > 0 ? (
                 <ul className="channel-list__items">
                     {textChannels.map((channel: Channel) => (
@@ -70,7 +75,7 @@ const ChannelList: React.FC = observer(() => {
                 <p className="channel-list__empty">No text channels available.</p>
             )}
 
-            <h2>Voice Channels</h2>
+            <h2>{t('channelsPage.channelList.voiceTitle')}</h2>
             {voiceChannels.length > 0 ? (
                 <ul className="channel-list__items">
                     {voiceChannels.map((channel: Channel) => (
@@ -83,9 +88,6 @@ const ChannelList: React.FC = observer(() => {
                 <p className="channel-list__empty">No voice channels available.</p>
             )}
 
-            <button className="channel-list__create-button" onClick={() => setIsFormVisible(!isFormVisible)}>
-                {isFormVisible ? 'Cancel' : 'Create Channel'}
-            </button>
             {isFormVisible && <CreateChannelForm onClose={() => setIsFormVisible(false)} />}
         </div>
     );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MicButton from '../micButton/MicButton';
 import VolumeControl from '../volumeControl/VolumeControl';
 import voiceRoomStore from '../../../../../../../../store/roomStore';
+import './VoiceControl.scss';
 
 const VoiceControl: React.FC = () => {
     const [isMicOn, setMicOn] = useState<boolean>(true);

@@ -1,0 +1,50 @@
+.mic-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+
+    &.active {
+        background-color: #3ba55c;  // Зеленый цвет, как в Discord
+        &:hover {
+            background-color: #4cae73;  // Немного темнее при наведении
+        }
+    }
+
+    &.inactive {
+        background-color: #40444b;  // Тёмный фон, как в Discord
+        &:hover {
+            background-color: #2f3136;  // Немного темнее при наведении
+        }
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+        transition: fill 0.3s ease;
+
+        &.active {
+            fill: #fff;  // Белый цвет для активного состояния
+        }
+
+        &.inactive {
+            fill: #b9bbbe;  // Серый цвет для неактивного состояния
+        }
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover svg {
+        fill: #fff;  // Иконка становится белой при наведении
+    }
+}

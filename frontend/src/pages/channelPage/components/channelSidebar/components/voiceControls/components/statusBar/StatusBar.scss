@@ -1,0 +1,11 @@
+@import '../../../../../../../../styles/main.scss';
+.status-bar {
+    display: flex;
+    width: 100%;
+    &__message {
+        padding: 1rem;
+        flex: 1;
+        background-color: $input-bg;
+       ;
+    }
+}

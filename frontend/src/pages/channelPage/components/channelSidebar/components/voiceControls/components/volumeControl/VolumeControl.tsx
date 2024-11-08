@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './VolumeControl.scss';
 interface VolumeControlProps {
     volume: number;
     onVolumeChange: (volume: number) => void;
