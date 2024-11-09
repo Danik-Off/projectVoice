@@ -89,7 +89,11 @@ const MicrophoneVisualizer: React.FC = () => {
         };
     }, []);
 
-    return <canvas style={{backgroundColor:"white"}} ref={canvasRef} width="600" height="10" />; // Adjusted height for horizontal bar
+    return (
+        <div>
+            <canvas style={{ backgroundColor: 'white' }} ref={canvasRef} width="800" height="10" />
+        </div>
+    ); // Adjusted height for horizontal bar
 };
 
 export default MicrophoneVisualizer;
