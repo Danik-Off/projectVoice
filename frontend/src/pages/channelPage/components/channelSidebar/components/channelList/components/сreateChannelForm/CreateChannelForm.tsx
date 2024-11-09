@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import serverStore from '../../../../../../../../store/serverStore';
 import { Channel } from '../../../../../../../../types/channel';
 import './CreateChannelForm.css'; // Import the CSS file for styling
+import channelsStore from '../../../../../../../../store/channelsStore';
 
 interface CreateChannelFormProps {
     onClose: () => void; // Callback to close the form
@@ -25,7 +26,7 @@ const CreateChannelForm: React.FC<CreateChannelFormProps> = ({ onClose }) => {
                 description,
             };
 
-            await serverStore.createChannel(newChannel);
+            await channelsStore.createChannel(serverStore.currentServer.id, newChannel);
             setChannelName(''); // Сброс поля
             setDescription(''); // Сброс описания
             onClose(); // Закрыть форму после создания канала
@@ -54,11 +55,7 @@ const CreateChannelForm: React.FC<CreateChannelFormProps> = ({ onClose }) => {
                             Channel Type:
                             <select
                                 value={channelType}
-                                onChange={(e) =>
-                                    setChannelType(
-                                        e.target.value as 'text' | 'voice'
-                                    )
-                                }
+                                onChange={(e) => setChannelType(e.target.value as 'text' | 'voice')}
                                 className="select-field"
                             >
                                 <option value="text">Text</option>
@@ -81,11 +78,7 @@ const CreateChannelForm: React.FC<CreateChannelFormProps> = ({ onClose }) => {
                         <button type="submit" className="submit-button">
                             Create Channel
                         </button>
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="cancel-button"
-                        >
+                        <button type="button" onClick={onClose} className="cancel-button">
                             Cancel
                         </button>
                     </div>

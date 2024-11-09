@@ -17,7 +17,9 @@
     .settings-group {
         padding: 15px 0;
         border-bottom: 1px solid $border-color;
-
+        display: flex;
+        flex-direction: column;
+    
         // Заголовок группы
         &__title {
             font-size: 18px;

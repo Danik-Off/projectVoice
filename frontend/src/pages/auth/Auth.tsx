@@ -28,7 +28,9 @@ const AuthPage: React.FC = observer(() => {
                 {isLogin ? <LoginForm /> : <RegisterForm />}
                 <p className="auth-switch">
                     {isLogin ? t('authPage.needAccount') : t('authPage.alreadyHaveAccount')}{' '}
-                    <a onClick={() => setIsLogin(!isLogin)}>{isLogin ? t('authPage.signUp') : t('authPage.login')}</a>
+                    <span onClick={() => setIsLogin(!isLogin)}>
+                        {isLogin ? t('authPage.signUp') : t('authPage.login')}
+                    </span>
                 </p>
 
                 {/* Кнопка для переключения языка */}

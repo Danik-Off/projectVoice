@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './ServerCreateModal.scss';
 import { useTranslation } from 'react-i18next';
-import serverStore from '../../../../../store/serverStore';
 
 interface ServerCreateModalProps {
     isOpen: boolean;
@@ -18,7 +17,7 @@ const ServerCreateModal: React.FC<ServerCreateModalProps> = ({ isOpen, onClose }
     const handleCreateServer = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        serverStore.createServer({ name: serverName, description: serverDescription});
+        // onCreate({ name: serverName, description: serverDescription, avatar, isPrivate });
         onClose();
     };
 
