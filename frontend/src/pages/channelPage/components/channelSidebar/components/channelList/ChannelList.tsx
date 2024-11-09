@@ -10,6 +10,10 @@ import voiceRoomStore from '../../../../../../store/roomStore';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import channelsStore from '../../../../../../store/channelsStore';
+import Spinner from '../../../../../../components/spinner/Spinner';
+
+
 const ChannelList: React.FC = observer(() => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -21,7 +25,7 @@ const ChannelList: React.FC = observer(() => {
             // Получаем сервер из Store
             if (serverStore.currentServer) {
                 // Получаем каналы сервера
-                await serverStore.fetchChannels();
+                await channelsStore.fetchChannels(serverStore.currentServer.id);
             }
         };
 
@@ -57,7 +61,7 @@ const ChannelList: React.FC = observer(() => {
     const voiceChannels =
         serverStore.currentServer?.channels?.filter((channel: Channel) => channel.type === 'voice') || [];
 
-    return (
+    const channelList = (
         <div className="channel-list">
             <button className="button " onClick={() => setIsFormVisible(!isFormVisible)}>
                 {t('channelsPage.channelList.' + (isFormVisible ? 'cancel' : 'create') + 'Btn')}
@@ -91,6 +95,12 @@ const ChannelList: React.FC = observer(() => {
             {isFormVisible && <CreateChannelForm onClose={() => setIsFormVisible(false)} />}
         </div>
     );
+    const loadingList = (
+        <div className="spinner-conteiner">
+            <Spinner></Spinner>
+        </div>
+    );
+    return channelsStore.loading ? loadingList : channelList;
 });
 
 export default ChannelList;

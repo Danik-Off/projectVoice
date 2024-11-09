@@ -1,6 +1,7 @@
+import { reaction } from 'mobx';
 import { iceServers } from '../configs/iceServers';
 import { Signal } from '../types/WebRTCClient.types';
-import { STREAM_CONSTRAINTS } from './constants/WebRTCClient.constants';
+import audioSettingsStore from '../store/AudioSettingsStore';
 
 class WebRTCClient {
     public sendSignal: null | ((signal: Signal) => void) = null;
@@ -8,8 +9,7 @@ class WebRTCClient {
     public changeState: null | ((id: string, signal: Event) => void) = null;
 
     private readonly remoteStreams: Map<string, MediaStream> = new Map();
-    private readonly peerConnections: Map<string, RTCPeerConnection> =
-        new Map();
+    private readonly peerConnections: Map<string, RTCPeerConnection> = new Map();
 
     private localStream: MediaStream | null = null;
 
@@ -17,34 +17,13 @@ class WebRTCClient {
 
     //управление Медиа
     public async initializeMedia() {
-        try {
-            this.localStream =
-                await navigator.mediaDevices.getUserMedia(STREAM_CONSTRAINTS);
-
-            console.log(this.localStream);
-        } catch (error) {
-            console.error('Ошибка доступа к локальному медиа:', error);
-        }
-    }
-
-    public muteMicrophone() {
-        this.isMuteMicro = true;
-        if (this.localStream) {
-            this.localStream.getAudioTracks().forEach((track) => {
-                track.enabled = !this.isMuteMicro; // Mute the audio track
-            });
-            console.log('Микрофон отключен');
-        }
-    }
-
-    public unmuteMicrophone() {
-        this.isMuteMicro = false;
-        if (this.localStream) {
-            this.localStream.getAudioTracks().forEach((track) => {
-                track.enabled = !this.isMuteMicro; // Unmute the audio track
-            });
-            console.log('Микрофон включен');
-        }
+        reaction(
+            () => audioSettingsStore.stream,
+            (val) => {
+                console.log('🚀 ~ WebRTCClient ~ initializeMedia ~ val:', val);
+                this.resendlocalStream();
+            },
+        );
     }
 
     //Логика подключения
@@ -152,20 +131,14 @@ class WebRTCClient {
 
         switch (type) {
             case 'offer':
-                await peerConnection.setRemoteDescription(
-                    new RTCSessionDescription({ type, sdp })
-                );
+                await peerConnection.setRemoteDescription(new RTCSessionDescription({ type, sdp }));
                 await this.createAnswer(from);
                 break;
             case 'answer':
-                await peerConnection.setRemoteDescription(
-                    new RTCSessionDescription({ type, sdp })
-                );
+                await peerConnection.setRemoteDescription(new RTCSessionDescription({ type, sdp }));
                 break;
             case 'candidate':
-                await peerConnection.addIceCandidate(
-                    new RTCIceCandidate(candidate)
-                );
+                await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
                 break;
         }
     }
@@ -189,21 +162,31 @@ class WebRTCClient {
         remoteStream.addTrack(track);
     }
 
+    private resendlocalStream() {
+        if (audioSettingsStore.stream) {
+            this.peerConnections.forEach((peerConnection) => {
+                const newAudioTrack = audioSettingsStore.stream.getAudioTracks()[0];
+                const sender = peerConnection.getSenders().find((s) => s.track?.kind === 'audio');
+                if (sender) {
+                    sender.replaceTrack(newAudioTrack);
+                }
+            });
+        } else {
+            console.log('🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:', this.localStream);
+            console.error('чего то нет ');
+        }
+    }
+
     private addLocalStream(id: string): void {
         const peerConnection = this.peerConnections.get(id);
-        if (this.localStream) {
-            this.localStream.getTracks().forEach((track) => {
+        if (audioSettingsStore.stream) {
+            audioSettingsStore.stream.getTracks().forEach((track) => {
                 //Если существет локальный стрим и пир для подключения то рассылаем стрим
-                this.localStream &&
-                    peerConnection &&
-                    peerConnection.addTrack(track, this.localStream);
+                peerConnection && peerConnection.addTrack(track, audioSettingsStore.stream);
                 track.enabled = !this.isMuteMicro;
             });
         } else {
-            console.log(
-                '🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:',
-                this.localStream
-            );
+            console.log('🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:', this.localStream);
             console.error('чего то нет ');
         }
     }
@@ -233,9 +216,8 @@ class WebRTCClient {
         });
         this.peerConnections.clear();
 
-        if (this.localStream) {
-            this.localStream.getTracks().forEach((track) => track.stop());
-            this.localStream = null;
+        if (audioSettingsStore.stream) {
+            audioSettingsStore.stream.getTracks().forEach((track) => track.stop());
         }
 
         //тормозим стримы

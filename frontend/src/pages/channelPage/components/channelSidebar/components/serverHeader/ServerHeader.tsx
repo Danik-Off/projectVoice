@@ -14,6 +14,9 @@ const ServerHeader: React.FC = () => {
                 <>
                     <div className="server-info">
                         <span className="server-name">{currentServer.name}</span>
+
+                        {/* <span className="server-name">{currentServer.description}</span>//TODO добавить описание сервера */}
+
                     </div>
                     <button className="edit-button">
                         <PencilIcon width={16} height={16} color="currentColor" />
