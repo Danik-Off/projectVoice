@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import SocketClient from '../utils/SocketClient';
 import { getCookie } from '../utils/cookie';
 import WebRTCClient from '../utils/WebRTCClient';
+import audioSettingsStore from './AudioSettingsStore';
 
 class VoiceRoomStore {
     public participants: any[] = [];
@@ -25,15 +26,14 @@ class VoiceRoomStore {
         this.socketClient.socketEmit('join-room', roomId, token);
     }
     public disconnectToRoom(): void {
-        this.socketClient.socketEmit('leave-room') 
+        this.socketClient.socketEmit('leave-room');
         this.webRTCClient.disconect();
-
     }
     public muteMicrophone() {
-        this.webRTCClient.muteMicrophone();
+        //    audioSettingsStore.mu;
     }
     public unmuteMicrophone() {
-        this.webRTCClient.unmuteMicrophone();
+        // this.webRTCClient.unmuteMicrophone();
     }
 
     private setupServerResponseListeners() {
@@ -44,21 +44,16 @@ class VoiceRoomStore {
             console.log(`Вы подключены `, room);
             this.participants = room.participants;
         });
-        this.socketClient.socketOn(
-            'user-connected',
-            (user: { socketId: string }) => {
-                console.log(user);
-                console.log(`Пользователь ${user.socketId} подключен`);
-                this.webRTCClient.createOffer(user.socketId);
-                this.participants.push(user);
-            }
-        );
+        this.socketClient.socketOn('user-connected', (user: { socketId: string }) => {
+            console.log(user);
+            console.log(`Пользователь ${user.socketId} подключен`);
+            this.webRTCClient.createOffer(user.socketId);
+            this.participants.push(user);
+        });
         this.socketClient.socketOn('user-disconnected', (socketId: string) => {
             console.log(`Пользователь ${socketId} отключен`);
             this.webRTCClient.disconnectPeer(socketId);
-            this.participants = this.participants.filter(
-                (user) => user.socketId !== socketId
-            );
+            this.participants = this.participants.filter((user) => user.socketId !== socketId);
         });
         this.socketClient.socketOn('signal', (data) => {
             console.log(`Сигнал`, data);
