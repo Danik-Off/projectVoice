@@ -30,10 +30,10 @@ class VoiceRoomStore {
         this.webRTCClient.disconect();
     }
     public muteMicrophone() {
-        //    audioSettingsStore.mu;
+        audioSettingsStore.setVolume(0);
     }
     public unmuteMicrophone() {
-        // this.webRTCClient.unmuteMicrophone();
+        audioSettingsStore.setVolume(100);
     }
 
     private setupServerResponseListeners() {
