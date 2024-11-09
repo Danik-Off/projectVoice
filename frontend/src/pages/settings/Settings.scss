@@ -17,8 +17,10 @@
     .settings-group {
         padding: 15px 0;
         border-bottom: 1px solid $border-color;
+
         display: flex;
         flex-direction: column;
+
 
         // Заголовок группы
         &__title {
@@ -26,6 +28,7 @@
             font-weight: 600;
             margin-bottom: 10px;
         }
+
         select {
             padding: 0.5rem;
             background-color: $button-bg;
@@ -38,6 +41,7 @@
                 background-color: $button-hover-bg;
             }
         }
+
         // Опции в группе настроек
         &__option {
             display: flex;
@@ -47,6 +51,7 @@
             font-size: 14px;
             cursor: pointer;
             transition: background-color 0.2s;
+
         }
         .settings-table th,
         .settings-table td {
@@ -123,6 +128,7 @@
                         border-radius: 50%;
                         transform: translate(-50%, -50%);
                     }
+
                 }
             }
         }

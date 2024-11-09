@@ -45,7 +45,9 @@ class ServerStore {
 
     // Create a new server
     async createServer(serverData: Omit<Server, 'id' | 'ownerId'>): Promise<void> {
+
         this.loading = true;
+
         this.error = null;
         try {
             const newServer: Server = await serverService.create(serverData);
@@ -75,6 +77,7 @@ class ServerStore {
             this.servers = this.servers.filter((server) => server.id !== id);
         } catch (error) {
             this.error = (error as Error).message;
+
         }
     }
 }
