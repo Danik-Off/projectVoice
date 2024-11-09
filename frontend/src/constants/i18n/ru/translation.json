@@ -35,9 +35,18 @@
             "defaultMic": "Микрофон по умолчанию",
             "speaker": "Динамик:",
             "defaultSpeaker": "Динамик по умолчанию",
-            "volume": "Громкость:",
             "mute": "Выключить звук:",
-            "testAudio": "Тест звука"
+            "testAudio": "Тест звука",
+            "channel": "Канал",
+            "mono": "Моно",
+            "stereo": "Стерео",
+            "echoCancellation": "Подавление эха",
+            "noiseSuppression": "Подавление шума",
+            "autoGainControl": "Автоматическое управление громкостью",
+            "sampleRate": "Частота дискретизации",
+            "sampleSize": "Размер выборки",
+            "latency": "Задержка",
+            "volume": "Громкость"
         }
     },
     "channelsPage": {

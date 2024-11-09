@@ -56,11 +56,11 @@ const MicrophoneVisualizer: React.FC = () => {
                 const averageVolume = total / bufferLength;
 
                 // Draw a single bar representing the overall volume
-                const barWidth = (averageVolume / 255) * canvas.width; // Full width of the canvas
+                const barWidth = (averageVolume / 40) * canvas.width; // Full width of the canvas
                 const barHeight = canvas.height; // Normalize to height
 
                 // Set color for the volume bar
-                const color = `rgb(${barWidth + 100}, 50, 150)`; // Use barWidth instead of barHeight for color
+                const color = `rgb(${barWidth + 50}, 50, 150)`; // Use barWidth instead of barHeight for color
 
                 // Draw the volume bar
                 canvasCtx.fillStyle = color;
@@ -89,7 +89,7 @@ const MicrophoneVisualizer: React.FC = () => {
         };
     }, []);
 
-    return <canvas ref={canvasRef} width="600" height="20" />; // Adjusted height for horizontal bar
+    return <canvas style={{backgroundColor:"white"}} ref={canvasRef} width="600" height="10" />; // Adjusted height for horizontal bar
 };
 
 export default MicrophoneVisualizer;

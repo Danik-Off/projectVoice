@@ -31,6 +31,42 @@ class AudioSettingsStore {
         this.updateMediaStream();
     }
 
+    // Методы для изменения настроек
+    public setEchoCancellation(value: boolean) {
+        this.echoCancellation = value;
+        this.updateMediaStream();
+    }
+
+    public setNoiseSuppression(value: boolean) {
+        this.noiseSuppression = value;
+        this.updateMediaStream();
+    }
+
+    public setAutoGainControl(value: boolean) {
+        this.autoGainControl = value;
+        this.updateMediaStream();
+    }
+
+    public setSampleRate(rate: number) {
+        this.sampleRate = rate;
+        this.updateMediaStream();
+    }
+
+    public setSampleSize(size: number) {
+        this.sampleSize = size;
+        this.updateMediaStream();
+    }
+
+    public setLatency(latency: number) {
+        this.latency = latency;
+        this.updateMediaStream();
+    }
+
+    public setChannelCount(channelCount: 'stereo' | 'mono') {
+        this.channelCount = channelCount === 'stereo' ? 2 : 1;
+        this.updateMediaStream();
+    }
+
     public setSpeaker(deviceId: string): void {
         const device = this.speakerDevices.find((device) => device.deviceId === deviceId);
         if (device) {

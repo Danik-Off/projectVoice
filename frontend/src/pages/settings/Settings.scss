@@ -19,14 +19,25 @@
         border-bottom: 1px solid $border-color;
         display: flex;
         flex-direction: column;
-    
+
         // Заголовок группы
         &__title {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 10px;
         }
-
+        select {
+            padding: 0.5rem;
+            background-color: $button-bg;
+            color: $text-color;
+            border-radius: 4px;
+            option {
+                padding: 1rem;
+            }
+            &:hover {
+                background-color: $button-hover-bg;
+            }
+        }
         // Опции в группе настроек
         &__option {
             display: flex;
@@ -36,16 +47,82 @@
             font-size: 14px;
             cursor: pointer;
             transition: background-color 0.2s;
-            select {
-                padding: 0.5rem;
-                background-color: $button-bg;
-                color: $text-color;
-                border-radius: 4px;
-                option {
-                    padding: 1rem;
+        }
+        .settings-table th,
+        .settings-table td {
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .settings-table th {
+            font-weight: bold;
+            width: 20%;
+            color: $text-color;
+        }
+        .radioGroup {
+            display: flex;
+            gap: 1rem;
+
+            &__item {
+                display: flex;
+                align-items: center;
+
+                input[type='radio'] {
+                    display: none; // Скрываем радио-кнопку
+
+                    // Стили для выбранного состояния через `+ label`
+                    &:checked + label {
+                        background-color: #4caf50;
+                        color: #fff;
+                        border: 2px solid #4caf50;
+                    }
                 }
-                &:hover {
-                    background-color: $button-hover-bg;
+
+                label {
+                    cursor: pointer;
+                    padding: 0.4rem 0.8rem;
+                    border: 2px solid #ddd;
+                    border-radius: 4px;
+                    transition: all 0.2s ease;
+                    user-select: none;
+
+                    &:hover {
+                        background-color: #f0f0f0;
+                    }
+                }
+            }
+        }
+
+        .settings-table {
+            input[type='checkbox'] {
+                appearance: none;
+                width: 20px;
+                height: 20px;
+                border: 2px solid #555;
+                border-radius: 50%;
+                position: relative;
+                cursor: pointer;
+                outline: none;
+                background-color: #fff;
+                transition:
+                    background-color 0.2s,
+                    border-color 0.2s;
+
+                &:checked {
+                    background-color: #4caf50; // Цвет для отмеченного состояния
+                    border-color: #4caf50;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 10px;
+                        height: 10px;
+                        background-color: white;
+                        border-radius: 50%;
+                        transform: translate(-50%, -50%);
+                    }
                 }
             }
         }
