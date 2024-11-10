@@ -48,6 +48,11 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '20.11.1'  # Укажите нужную версию Node.js
+        
+    - name: Install dependencies for backend
+      run: |
+        cd backend
+        npm install
 
     - name: Upload backend files
       uses: actions/upload-artifact@v3
