@@ -34,10 +34,14 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            bio: {
+            status: {
                 type: DataTypes.TEXT,
                 allowNull: true,
             },
+            tag:{
+                type:DataTypes.TEXT,
+                allowNull: true,
+            }
         },
         {
             timestamps: true,

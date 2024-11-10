@@ -3,37 +3,41 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Messages', {
+        await queryInterface.createTable('Invites', {
             id: {
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
                 primaryKey: true,
-            },
-            text: {
-                type: Sequelize.TEXT,
                 allowNull: false,
             },
-            attachments: {
-                type: Sequelize.JSON,
-                allowNull: true, // укажите, если это поле необязательно
+            token: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                unique: true,
             },
-            userId: {
+            serverId: {
                 type: Sequelize.INTEGER,
+                allowNull: false,
                 references: {
-                    model: 'Users',
+                    model: 'Servers',
                     key: 'id',
                 },
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
             },
-            channelId: {
+            expiresAt: {
+                type: Sequelize.DATE,
+                allowNull: true,
+            },
+            maxUses: {
                 type: Sequelize.INTEGER,
-                references: {
-                    model: 'Channels',
-                    key: 'id',
-                },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE',
+                allowNull: true,
+                defaultValue: null,
+            },
+            uses: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
             },
             createdAt: {
                 type: Sequelize.DATE,
@@ -48,7 +52,7 @@ module.exports = {
         });
     },
 
-    async down(queryInterface) {
-        await queryInterface.dropTable('Messages');
+    async down(queryInterface, Sequelize) {
+        await queryInterface.dropTable('Invites');
     },
 };

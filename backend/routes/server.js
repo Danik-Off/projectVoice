@@ -2,13 +2,21 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const { Server, User, Channel, ServerMember } = require('../models'); // Include ServerMember model
 const authenticateToken = require('../middleware/auth');
+const { where } = require('sequelize');
 
 const router = express.Router();
 
 // Получить все серверы
 router.get('/', authenticateToken, async (req, res) => {
     try {
-        const servers = await Server.findAll();
+        const servers = await Server.findAll({
+            include: {
+                model: ServerMember,
+                as: 'members',
+                where: { userId: req.user.userId }, // условие для поиска серверов с участием пользователя
+                attributes: [], // исключаем поля ServerMember, если они не нужны
+            },
+        });
         res.status(200).json(servers);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -39,7 +47,12 @@ router.post('/', authenticateToken, async (req, res) => {
 router.get('/:id', authenticateToken, async (req, res) => {
     try {
         const server = await Server.findByPk(req.params.id, {
-            include: [{ model: Channel, as: 'channels' }], // Включаем каналы
+            include: {
+                model: ServerMember,
+                as: 'members',
+                where: { userId: req.user.userId }, // условие для поиска серверов с участием пользователя
+                attributes: [], // исключаем поля ServerMember, если они не нужны
+            },
         });
         if (!server) {
             return res.status(404).json({ message: 'Server not found' });
@@ -86,11 +99,10 @@ router.delete('/:id', authenticateToken, checkServerOwnership, async (req, res) 
         // Удалить сервер
         await req.server.destroy();
 
-        res.status(204).send();
+        res.status(204).json({  message: "Сервер удален" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
-
 
 module.exports = router;

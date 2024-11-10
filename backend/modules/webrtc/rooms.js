@@ -11,8 +11,6 @@ const addUserToRoom = (roomId, user) => {
     const existingUser = rooms[roomId].find((u) => u.socketId === user.socketId);
     if (!existingUser) {
         rooms[roomId].push(user);
-    } else {
-        console.log(`Пользователь с socketId ${user.socketId} уже в комнате ${roomId}`);
     }
 };
 
@@ -23,7 +21,6 @@ const removeUserFromRoom = (roomId, socketId) => {
         // Если комната становится пустой, удалить её
         if (rooms[roomId].length === 0) {
             delete rooms[roomId];
-            console.log(`Комната ${roomId} удалена, так как она пуста.`);
         }
     }
 };

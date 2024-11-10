@@ -10,26 +10,16 @@ module.exports = {
                 primaryKey: true,
             },
             name: {
-                type: Sequelize.STRING(100), 
+                type: Sequelize.STRING(100),
                 allowNull: false,
             },
             description: {
-                type: Sequelize.STRING(255), 
-                allowNull: true, 
-            },
-            icon: {
-                type: Sequelize.STRING, 
+                type: Sequelize.STRING(255),
                 allowNull: true,
             },
-            ownerId: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'Users',
-                    key: 'id',
-                },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE',
-                allowNull: false,
+            icon: {
+                type: Sequelize.STRING,
+                allowNull: true,
             },
             createdAt: {
                 type: Sequelize.DATE,
@@ -39,7 +29,8 @@ module.exports = {
             updatedAt: {
                 type: Sequelize.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                onUpdate: Sequelize.literal('CURRENT_TIMESTAMP'),
             },
         });
     },
