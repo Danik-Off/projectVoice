@@ -13,10 +13,17 @@ const authRoutes = require('./routes/auth');
 const serverRoutes = require('./routes/server');
 const channeRoutes = require('./routes/channel');
 const serverMembersRoutes = require('./routes/serverMembers');
+const serverInviteRoutes = require('./routes/invite');
+
+//
+const { exec } = require('child_process');
+
+//документация
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./utils/swagger/swagger-output.json');
 
 // Загрузка переменных окружения
 dotenv.config();
-
 
 const WEBSOCKET_PATH = `/socket`;
 
@@ -53,6 +60,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/servers', serverRoutes);
 app.use('/api/servers', channeRoutes);
 app.use('/api/servers', serverMembersRoutes);
+//
+app.use('/api/servers', serverInviteRoutes); //создание invite ссылки
+//документация
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Настройка раздачи статических файлов фронтенда
 app.use(express.static('../frontend/build')); // Укажите путь к директории сборки
@@ -70,3 +81,4 @@ const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);
 });
+

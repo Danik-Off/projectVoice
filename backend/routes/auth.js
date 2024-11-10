@@ -7,35 +7,36 @@ const router = express.Router();
 
 // Регистрация нового пользователя
 router.post('/register', async (req, res) => {
+    // #swagger.tags = ['Auth']
     const { username, email, password } = req.body;
-    console.log(req.body);
     try {
+        if (!username || !email || !password) {
+            return res.status(400).json({ error: 'Не переданы обязательные параметры' });
+        }
         // Проверка существования пользователя
         const existingUser = await User.findOne({ where: { email } });
+        console.log('🚀 ~ router.post ~ existingUser:', existingUser);
         if (existingUser) {
             return res.status(400).json({ error: 'Пользователь с таким email уже существует.' });
         }
 
         // Создание нового пользователя
-        console.log('🚀 ~ router.post ~ Создание нового пользователя');
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ username, email, password: hashedPassword });
 
         // Создание JWT токена
-        console.log('🚀 ~ router.post ~ // Создание JWT токена:');
+
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.status(201).json({ token });
     } catch (error) {
-        console.log('Ошибка регистрации:', error);
-        res.status(500).json({ error: 'Ошибка сервера.' });
+        console.log(error);
+        res.status(500).json({ error: 'Ошибка сервера.', error });
     }
 });
 
-router.get('/register', async (req, res) => {
-    return 'test';
-});
 // Логин пользователя
 router.post('/login', async (req, res) => {
+    // #swagger.tags = ['Auth']
     const { email, password } = req.body;
 
     try {
@@ -54,7 +55,6 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token });
     } catch (error) {
-        console.log('!!!Ошибка логина:', error);
         res.status(500).json({ error: 'Ошибка сервера.' });
     }
 });

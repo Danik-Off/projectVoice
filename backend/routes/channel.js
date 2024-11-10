@@ -6,6 +6,7 @@ const { isModerator } = require('../middleware/checkRole'); // Импортир�
 
 // Получить все каналы по serverId
 router.get('/:serverId/channels', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Channels']
     const { serverId } = req.params; // Получаем serverId из параметров
     try {
         const channels = await Channel.findAll({ where: { serverId } });
@@ -17,6 +18,7 @@ router.get('/:serverId/channels', authenticateToken, async (req, res) => {
 
 // Создать новый канал в указанном сервере
 router.post('/:serverId/channels', authenticateToken, isModerator, async (req, res) => {
+    // #swagger.tags = ['Channels']
     const { name, type } = req.body; // serverId теперь в URL
     const { serverId } = req.params; // Получаем serverId из параметров
     try {
@@ -29,6 +31,7 @@ router.post('/:serverId/channels', authenticateToken, isModerator, async (req, r
 
 // Получить канал по ID в рамках конкретного сервера
 router.get('/:serverId/channels/:channelId', async (req, res) => {
+    // #swagger.tags = ['Channels']
     const { channelId } = req.params; // Получаем channelId из параметров
     try {
         const channel = await Channel.findByPk(channelId);
@@ -43,6 +46,7 @@ router.get('/:serverId/channels/:channelId', async (req, res) => {
 
 // Обновить канал по ID в рамках конкретного сервера
 router.put('/:serverId/channels/:channelId', authenticateToken, isModerator, async (req, res) => {
+    // #swagger.tags = ['Channels']
     const { name, type } = req.body; // serverId теперь в URL
     const { channelId } = req.params; // Получаем channelId из параметров
     try {
@@ -59,6 +63,7 @@ router.put('/:serverId/channels/:channelId', authenticateToken, isModerator, asy
 
 // Удалить канал по ID в рамках конкретного сервера
 router.delete('/:serverId/channels/:channelId', authenticateToken, isModerator, async (req, res) => {
+    // #swagger.tags = ['Channels']
     const { channelId } = req.params; // Получаем channelId из параметров
     try {
         const deleted = await Channel.destroy({

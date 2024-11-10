@@ -12,7 +12,7 @@ const db = {};
 
 let sequelize;
 
-console.log(env);
+console.log("выбрана конфигурация:",env);
 
 // Обработка ошибок при подключении к базе данных
 try {
