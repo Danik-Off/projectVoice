@@ -11,6 +11,7 @@ const { isModerator } = require('../middleware/checkRole');
 const router = express.Router();
 
 router.post('/:serverId/invite', authenticateToken, isModerator, async (req, res) => {
+    // #swagger.tags = ['Invites']
     const { expiresAt, maxUses } = req.body;
     console.log('🚀 ~ router.post ~ serverId:', req.params.serverId);
     try {
@@ -34,6 +35,7 @@ router.post('/:serverId/invite', authenticateToken, isModerator, async (req, res
     }
 });
 router.get('/invite/:token', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Invites']
     try {
         const invite = await Invite.findOne({
             where: {

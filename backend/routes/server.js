@@ -8,6 +8,7 @@ const router = express.Router();
 
 // Получить все серверы
 router.get('/', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Servers']
     try {
         const servers = await Server.findAll({
             include: {
@@ -25,6 +26,7 @@ router.get('/', authenticateToken, async (req, res) => {
 
 // Создать новый сервер и добавить создателя как владельца
 router.post('/', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Servers']
     const { name, description, icon } = req.body;
     try {
         // Создаем новый сервер
@@ -45,6 +47,7 @@ router.post('/', authenticateToken, async (req, res) => {
 
 // Получить сервер по ID и его каналы
 router.get('/:id', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Servers']
     try {
         const server = await Server.findByPk(req.params.id, {
             include: {
@@ -65,6 +68,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 
 // Проверка прав владельца сервера или администратора
 const checkServerOwnership = async (req, res, next) => {
+    // #swagger.tags = ['Servers']
     const server = await Server.findByPk(req.params.id);
 
     if (!server) {
@@ -81,6 +85,7 @@ const checkServerOwnership = async (req, res, next) => {
 
 // Обновить сервер по ID
 router.put('/:id', authenticateToken, checkServerOwnership, async (req, res) => {
+    // #swagger.tags = ['Servers']
     const { name, description, icon } = req.body;
     try {
         await req.server.update({ name, description, icon });
@@ -92,6 +97,7 @@ router.put('/:id', authenticateToken, checkServerOwnership, async (req, res) => 
 
 // Удалить сервер по ID, включая все связи участников
 router.delete('/:id', authenticateToken, checkServerOwnership, async (req, res) => {
+    // #swagger.tags = ['Servers']
     try {
         // Удалить все связи участников, связанных с сервером
         await ServerMember.destroy({ where: { serverId: req.params.id } });
@@ -99,7 +105,7 @@ router.delete('/:id', authenticateToken, checkServerOwnership, async (req, res) 
         // Удалить сервер
         await req.server.destroy();
 
-        res.status(204).json({  message: "Сервер удален" });
+        res.status(204).json({ message: 'Сервер удален' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

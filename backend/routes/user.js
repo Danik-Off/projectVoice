@@ -4,27 +4,9 @@ const authenticateToken = require('../middleware/auth'); // JWT middleware дл�
 
 const router = express.Router();
 
-// Получить список серверов пользователя
-router.get('/user-servers', authenticateToken, async (req, res) => {
-    try {
-        const userId = req.user.userId;
-
-        const servers = await Server.findAll({
-            where: { ownerId: userId },
-        });
-
-        if (servers.length === 0) {
-            return res.status(404).json({ message: 'У пользователя нет серверов.' });
-        }
-
-        res.status(200).json(servers);
-    } catch (error) {
-        res.status(500).json({ error: error });
-    }
-});
-
 // Получить информацию о пользователе по ID
 router.get('/', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Users']
     try {
         const user = await User.findByPk(req.user.userId);
 
@@ -48,6 +30,7 @@ router.get('/', authenticateToken, async (req, res) => {
 
 // Получить информацию о пользователе по ID
 router.get('/:id', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Users']
     try {
         const user = await User.findByPk(req.params.id);
 
@@ -71,6 +54,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 
 // Обновить информацию о авторизованом пользователе
 router.put('/', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Users']
     const { name, profilePicture, bio } = req.body;
     try {
         const user = await User.findByPk(req.user.userId);
@@ -93,6 +77,7 @@ router.put('/', authenticateToken, async (req, res) => {
 
 // Удалить аккаунт
 router.delete('/', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Users']
     try {
         const user = await User.findByPk(req.user.userId);
         if (!user) {

@@ -7,6 +7,7 @@ const router = express.Router();
 
 // Получить всех участников сервера
 router.get('/:serverId/members', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['ServerMembers']
     try {
         const membersData = await ServerMember.findAll({
             where: { serverId: req.params.serverId },
@@ -42,7 +43,7 @@ router.get('/:serverId/members', authenticateToken, async (req, res) => {
 // Добавить нового участника в сервер
 router.post('/:serverId/members', authenticateToken, isModerator, async (req, res) => {
     const { userId, role } = req.body;
-
+    // #swagger.tags = ['ServerMembers']
     try {
         const server = await Server.findByPk(req.params.serverId);
         if (!server) {
@@ -82,6 +83,7 @@ router.post('/:serverId/members', authenticateToken, isModerator, async (req, re
 
 // Обновить информацию об участнике сервера
 router.put('/:serverId/members/:memberId', authenticateToken, isAdmin, async (req, res) => {
+    // #swagger.tags = ['ServerMembers']
     const { role } = req.body;
 
     try {
@@ -107,6 +109,7 @@ router.put('/:serverId/members/:memberId', authenticateToken, isAdmin, async (re
 
 // Удалить участника из сервера
 router.delete('/:serverId/members/:memberId', authenticateToken, isAdmin, async (req, res) => {
+    // #swagger.tags = ['ServerMembers']
     try {
         const member = await ServerMember.findByPk(req.params.memberId);
         if (!member) {
@@ -122,6 +125,7 @@ router.delete('/:serverId/members/:memberId', authenticateToken, isAdmin, async 
 
 // Установить нового владельца сервера
 router.post('/:serverId/owner', authenticateToken, isOwner, async (req, res) => {
+    // #swagger.tags = ['ServerMembers']
     try {
         const server = await Server.findByPk(req.params.serverId);
         if (!server) {

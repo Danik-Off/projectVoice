@@ -7,6 +7,7 @@ const router = express.Router();
 
 // Регистрация нового пользователя
 router.post('/register', async (req, res) => {
+    // #swagger.tags = ['Auth']
     const { username, email, password } = req.body;
     try {
         if (!username || !email || !password) {
@@ -29,12 +30,13 @@ router.post('/register', async (req, res) => {
         res.status(201).json({ token });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error: 'Ошибка сервера.',error });
+        res.status(500).json({ error: 'Ошибка сервера.', error });
     }
 });
 
 // Логин пользователя
 router.post('/login', async (req, res) => {
+    // #swagger.tags = ['Auth']
     const { email, password } = req.body;
 
     try {
