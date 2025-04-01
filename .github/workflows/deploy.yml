@@ -3,113 +3,110 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Укажите вашу основную ветку
+      - main  # основная ветка
 
 jobs:
   build-frontend:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.11.1'  # Укажите нужную версию Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
 
-    - name: Install dependencies for frontend
-      run: |
-        cd frontend
-        npm install
+      - name: Install dependencies for frontend
+        run: |
+          cd frontend
+          npm install
 
-    - name: Build frontend
-      run: |
-        cd frontend
-        npm run build  # Собираем фронтенд
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build  # Собираем фронтенд
 
-    - name: List frontend directory after build
-      run: ls -la frontend  # Проверяем содержимое директории frontend
+      - name: List frontend directory after build
+        run: ls -la frontend
 
-    - name: Upload frontend build
-      uses: actions/upload-artifact@v4
-      with:
-        name: frontend-build
-        path: frontend/build
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/build
 
   build-backend:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.11.1'  # Укажите нужную версию Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
         
-    - name: Install dependencies for backend
-      run: |
-        cd backend
-        npm install
+      - name: Install dependencies for backend
+        run: |
+          cd backend
+          npm install
 
-    - name: Upload backend files
-      uses: actions/upload-artifact@v4
-      with:
-        name: backend-files
-        path: backend
+      - name: Upload backend files
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-files
+          path: backend
 
   deploy-frontend:
     runs-on: ubuntu-latest
-    needs: build-frontend  # Зависимость от job build-frontend
-
+    needs: build-frontend
     steps:
-    - name: Download frontend build
-      uses: actions/download-artifact@v4
-      with:
-        name: frontend-build
+      - name: Download frontend build
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: ./frontend-build
 
-    - name: List build directory
-      run: ls -la ./  # Проверяем содержимое директории frontend/build
+      - name: List downloaded frontend build directory
+        run: ls -la ./frontend-build
 
-    - name: Deploy frontend to server
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Добавьте ваш закрытый ключ в Secrets
-        SERVER_USER: ${{ secrets.SERVER_USER }}  # Добавьте имя пользователя сервера в Secrets
-        SERVER_IP: ${{ secrets.SERVER_IP }}  # Добавьте IP-адрес вашего сервера в Secrets
-      run: |
-        echo "$SSH_PRIVATE_KEY" > private_key
-        chmod 600 private_key
-        # Добавляем сервер в known_hosts
-        mkdir -p ~/.ssh
-        ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
-        # Копируем фронтенд
-        set -e
-        rsync -avz -e "ssh -i private_key" ./ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/frontend/build/ || { echo "rsync failed"; exit 1; }
+      - name: Deploy frontend to server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Base64-кодированная версия приватного ключа
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          # Декодируем приватный ключ из base64 и сохраняем в файл private_key
+          echo "$SSH_PRIVATE_KEY" | base64 --decode > private_key
+          chmod 600 private_key
+          # Добавляем сервер в known_hosts для избежания запроса подтверждения
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+          # Копируем фронтенд через rsync
+          rsync -avz -e "ssh -i private_key" ./frontend-build/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/frontend/build/ || { echo "rsync failed"; exit 1; }
 
   deploy-backend:
     runs-on: ubuntu-latest
-    needs: build-backend  # Зависимость от job build-backend
-
+    needs: build-backend
     steps:
-    - name: Download backend files
-      uses: actions/download-artifact@v4
-      with:
-        name: backend-files
+      - name: Download backend files
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-files
+          path: ./backend
 
-    - name: Deploy backend to server
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Добавьте ваш закрытый ключ в Secrets
-        SERVER_USER: ${{ secrets.SERVER_USER }}  # Добавьте имя пользователя сервера в Secrets
-        SERVER_IP: ${{ secrets.SERVER_IP }}  # Добавьте IP-адрес вашего сервера в Secrets
-      run: |
-        echo "$SSH_PRIVATE_KEY" > private_key
-        chmod 600 private_key
-        # Добавляем сервер в known_hosts
-        mkdir -p ~/.ssh
-        ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
-        # Копируем бэкенд
-        rsync -avz -e "ssh -i private_key" ./ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/
-        # Запуск установки зависимостей
-        npm i
+      - name: Deploy backend to server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Base64-кодированная версия приватного ключа
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" | base64 --decode > private_key
+          chmod 600 private_key
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+          rsync -avz -e "ssh -i private_key" ./backend/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/ || { echo "rsync failed"; exit 1; }
+          # Если необходимо, можно запустить установку зависимостей на сервере
+          # Например, если у вас настроен SSH-доступ и на сервере Node.js:
+          # ssh -i private_key $SERVER_USER@$SERVER_IP "cd /www/wwwroot/projectVoice/backend/ && npm install"
