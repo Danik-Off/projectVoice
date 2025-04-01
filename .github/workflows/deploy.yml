@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: '20.11.1'  # Укажите нужную версию Node.js
 
@@ -32,7 +32,7 @@ jobs:
       run: ls -la frontend  # Проверяем содержимое директории frontend
 
     - name: Upload frontend build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: frontend-build
         path: frontend/build
@@ -42,10 +42,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: '20.11.1'  # Укажите нужную версию Node.js
         
@@ -55,7 +55,7 @@ jobs:
         npm install
 
     - name: Upload backend files
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: backend-files
         path: backend
@@ -66,7 +66,7 @@ jobs:
 
     steps:
     - name: Download frontend build
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: frontend-build
 
@@ -94,7 +94,7 @@ jobs:
 
     steps:
     - name: Download backend files
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: backend-files
 
