@@ -1,16 +1,16 @@
 {
     "development": {
-        "username": "root",
-        "password": null,
-        "database": "database_development",
-        "host": "127.0.0.1",
+        "username": "test_projectvoice",
+        "password": "cRdjfnjZRJ67xhyM",
+        "database": "test_projectvoice",
+        "host": "185.207.1.176",
         "dialect": "mysql"
     },
     "test": {
-        "username": "db_projectVoice",
-        "password": "WcEPyjFmtcK72ytr",
-        "database": "db_projectvoice",
-        "host": "45.143.93.171",
+        "username": "test_projectvoice",
+        "password": "cRdjfnjZRJ67xhyM",
+        "database": "test_projectvoice",
+        "host": "185.207.1.176",
         "dialect": "mysql"
     },
     "production": {
