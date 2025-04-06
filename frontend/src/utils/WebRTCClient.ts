@@ -65,6 +65,7 @@ class WebRTCClient {
     }
 
     public async createOffer(id: string) {
+        console.log('создание офера');
         const peerConnection = this.createPeerConnection(id);
         try {
             const offer = await peerConnection.createOffer();
@@ -92,6 +93,7 @@ class WebRTCClient {
     }
 
     public async createAnswer(id: string) {
+        console.log('создание  ответа');
         const peerConnection = this.peerConnections.get(id);
         if (!peerConnection) {
             console.error('peerConnection не существует при создании ответа');
@@ -123,10 +125,10 @@ class WebRTCClient {
 
     public async handleSignal(data: any) {
         const { from, type, sdp, candidate } = data;
-
+        console.log('обработка сигнала:', type);
         let peerConnection = this.peerConnections.get(from) || false;
         if (!peerConnection) {
-            peerConnection = await this.createPeerConnection(from); // Create PeerConnection if it doesn't exist
+            peerConnection = await this.createPeerConnection(from);
         }
 
         switch (type) {
@@ -179,6 +181,7 @@ class WebRTCClient {
 
     private addLocalStream(id: string): void {
         const peerConnection = this.peerConnections.get(id);
+        console.log('add-local-stream', peerConnection);
         if (audioSettingsStore.stream) {
             audioSettingsStore.stream.getTracks().forEach((track) => {
                 //Если существет локальный стрим и пир для подключения то рассылаем стрим
@@ -229,3 +232,4 @@ class WebRTCClient {
 }
 
 export default WebRTCClient;
+

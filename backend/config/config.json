@@ -1,14 +1,14 @@
 {
     "development": {
         "username": "test_projectvoice",
-        "password": "cRdjfnjZRJ67xhyM",
+        "password": "TZ8TSEWPet5kJnzN",
         "database": "test_projectvoice",
         "host": "185.207.1.176",
         "dialect": "mysql"
     },
     "test": {
         "username": "test_projectvoice",
-        "password": "cRdjfnjZRJ67xhyM",
+        "password": "TZ8TSEWPet5kJnzN",
         "database": "test_projectvoice",
         "host": "185.207.1.176",
         "dialect": "mysql"

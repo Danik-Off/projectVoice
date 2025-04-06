@@ -97,7 +97,6 @@ class AudioSettingsStore {
                 this.speakerDevices = devices.filter((device) => device.kind === 'audiooutput');
                 this.selectedMicrophone = this.microphoneDevices[0];
                 this.selectedSpeaker = this.speakerDevices[0];
-                this.updateMediaStream();
             });
         } catch (error) {
             console.error('Error fetching audio devices:', error);
@@ -166,7 +165,78 @@ class AudioSettingsStore {
 
         return { highpassFilter, lowpassFilter };
     }
+
+    public testSpeakers(): void {
+        if (!this.selectedSpeaker) {
+            console.error('Нет выбранных динамиков для тестирования');
+            return;
+        }
+
+        // Создаем аудиоконтекст
+        const audioContext = new window.AudioContext();
+
+        // Создаем осциллятор для тестового звука
+        const oscillator = audioContext.createOscillator();
+        oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // 440 Hz (A4 нота)
+        oscillator.type = 'sine'; // Синусоидальная волна
+
+        // Создаем усилитель (gain node)
+        const gainNode = audioContext.createGain();
+        gainNode.gain.setValueAtTime(0.5, audioContext.currentTime); // Громкость 50%
+
+        // Подключаем осциллятор к усилителю, а усилитель — к выходу
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        // Запускаем осциллятор
+        oscillator.start();
+
+        // Останавливаем осциллятор через 1 секунду
+        oscillator.stop(audioContext.currentTime + 1);
+
+        console.log('Тестирование динамиков...');
+    }
+
+    public testMicrophone(): void {
+        if (!this.selectedMicrophone) {
+            console.error('Нет выбранного микрофона для тестирования');
+            return;
+        }
+
+        // Создание аудио контекста и источника для записи
+        const audioContext = new AudioContext();
+        const analyser = audioContext.createAnalyser();
+        const bufferSize = 2048;
+        const microphoneStream = this._stream; // Поток микрофона, который мы получаем
+
+        const microphoneSource = audioContext.createMediaStreamSource(microphoneStream);
+        microphoneSource.connect(analyser);
+
+        // Установка параметров для анализа
+        analyser.fftSize = bufferSize;
+
+        const buffer = new Float32Array(analyser.frequencyBinCount);
+
+        // Функция для анализа звука
+        const checkMicrophone = () => {
+            analyser.getFloatFrequencyData(buffer);
+
+            // Проверка, если есть значительная активность на микрофоне
+            if (buffer.some((value) => value > -50)) {
+                // Примерная пороговая величина
+                console.log('Микрофон работает, есть звук');
+            } else {
+                console.log('Микрофон не регистрирует звук');
+            }
+
+            requestAnimationFrame(checkMicrophone);
+        };
+
+        // Запуск проверки
+        checkMicrophone();
+    }
 }
 
 const audioSettingsStore = new AudioSettingsStore();
 export default audioSettingsStore;
+

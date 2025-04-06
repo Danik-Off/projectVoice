@@ -3,7 +3,6 @@ import { getCookie } from './cookie';
 import { BASE_URL } from '../configs/apiConfig';
 
 class SocketClient {
-    // private url = `https://projectvoice.suzenebl.ru`; //todo вынести в конфиг
 
     private token: string;
     private socket: Socket | null;

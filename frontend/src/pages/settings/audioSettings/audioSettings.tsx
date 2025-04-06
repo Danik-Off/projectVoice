@@ -4,6 +4,10 @@ import audioSettingsStore from '../../../store/AudioSettingsStore';
 
 const AudioSettingsGroup = observer(() => {
     const { t } = useTranslation();
+    const test = () => {
+        audioSettingsStore.testSpeakers();
+        // audioSettingsStore.testMicrophone();
+    };
     // public echoCancellation = true; // Включает или отключает подавление эха, что помогает избежать эхо-сигналов при передаче звука.
     // public noiseSuppression = true; // Включает или отключает подавление шума, что улучшает качество звука, уменьшая фоновый шум.
     // public autoGainControl = true; // Включает или отключает автоматическое управление уровнем звука, что помогает автоматически регулировать громкость входящего сигнала.
@@ -27,9 +31,11 @@ const AudioSettingsGroup = observer(() => {
                         </option>
                     ))}
                 </select>
+                <button onClick={test}>test</button>
             </div>
         </div>
     );
 });
 
 export default AudioSettingsGroup;
+

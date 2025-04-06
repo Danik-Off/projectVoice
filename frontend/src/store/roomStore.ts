@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import SocketClient from '../utils/SocketClient';
 import { getCookie } from '../utils/cookie';
 import WebRTCClient from '../utils/WebRTCClient';
@@ -21,6 +21,7 @@ class VoiceRoomStore {
     }
 
     public connectToRoom(roomId: number): void {
+        
         // eslint-disable-next-line max-len
         const token = getCookie('token'); //TODO отказаться от токена здесь и отправлять его при завпросе на подключение к серверу
         this.socketClient.socketEmit('join-room', roomId, token);
@@ -45,10 +46,11 @@ class VoiceRoomStore {
             this.participants = room.participants;
         });
         this.socketClient.socketOn('user-connected', (user: { socketId: string }) => {
-            console.log(user);
             console.log(`Пользователь ${user.socketId} подключен`);
             this.webRTCClient.createOffer(user.socketId);
-            this.participants.push(user);
+            runInAction(() => {
+                this.participants.push(user);
+            });
         });
         this.socketClient.socketOn('user-disconnected', (socketId: string) => {
             console.log(`Пользователь ${socketId} отключен`);
@@ -77,3 +79,4 @@ class VoiceRoomStore {
 }
 const voiceRoomStore = new VoiceRoomStore();
 export default voiceRoomStore;
+
