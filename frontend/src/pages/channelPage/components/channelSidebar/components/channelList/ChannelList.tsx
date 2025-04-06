@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 import channelsStore from '../../../../../../store/channelsStore';
 import Spinner from '../../../../../../components/spinner/Spinner';
 
-
 const ChannelList: React.FC = observer(() => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -54,12 +53,11 @@ const ChannelList: React.FC = observer(() => {
         } else {
             voiceRoomStore.disconnectToRoom();
         }
+        console.log(voiceChannels);
     };
 
-    const textChannels =
-        serverStore.currentServer?.channels?.filter((channel: Channel) => channel.type === 'text') || [];
-    const voiceChannels =
-        serverStore.currentServer?.channels?.filter((channel: Channel) => channel.type === 'voice') || [];
+    const textChannels = channelsStore?.channels?.filter((channel: Channel) => channel.type === 'text') || [];
+    const voiceChannels = channelsStore?.channels?.filter((channel: Channel) => channel.type === 'voice') || [];
 
     const channelList = (
         <div className="channel-list">
@@ -104,3 +102,4 @@ const ChannelList: React.FC = observer(() => {
 });
 
 export default ChannelList;
+

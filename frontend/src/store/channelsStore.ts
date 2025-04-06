@@ -19,6 +19,7 @@ class ChannelsStore {
         } catch (error) {
             this.error = (error as Error).message;
         }
+        console.log("ok")
     }
 
     // Create a new channel in the current server
