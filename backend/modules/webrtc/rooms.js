@@ -35,10 +35,9 @@ const getRoomParticipants = (roomId) => {
 const getUserByToken = async (token) => {
     for (const roomId in rooms) {
         if (rooms.hasOwnProperty(roomId)) {
-            const user = await User.findByPk(req.params.id);
             const participant = rooms[roomId].find((user) => user.token === token);
             if (user) {
-                return { roomId, ...user, ...participant }; // Возвращаем объект пользователя с roomId
+                return { roomId, ...participant }; // Возвращаем объект пользователя с roomId
             }
         }
     }

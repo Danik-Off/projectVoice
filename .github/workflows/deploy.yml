@@ -109,4 +109,4 @@ jobs:
           rsync -avz -e "ssh -i private_key" ./backend/ $SERVER_USER@$SERVER_IP:/www/wwwroot/projectVoice/backend/ || { echo "rsync failed"; exit 1; }
           # Если необходимо, можно запустить установку зависимостей на сервере
           # Например, если у вас настроен SSH-доступ и на сервере Node.js:
-          # ssh -i private_key $SERVER_USER@$SERVER_IP "cd /www/wwwroot/projectVoice/backend/ && npm install"
+          # ssh -i private_key $SERVER_USER@$SERVER_IP "cd /www/wwwroot/projectVoice/backend/"
