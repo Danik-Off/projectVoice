@@ -24,6 +24,7 @@
     },
     "settingsPage": {
         "title": "Настройки",
+        "buttonBack":"Назад",
         "language": {
             "title": "Язык",
             "english": "Английский",

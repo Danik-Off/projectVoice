@@ -2,7 +2,6 @@ import { reaction } from 'mobx';
 import { iceServers } from '../configs/iceServers';
 import { Signal } from '../types/WebRTCClient.types';
 import audioSettingsStore from '../store/AudioSettingsStore';
-
 class WebRTCClient {
     public sendSignal: null | ((signal: Signal) => void) = null;
 
@@ -193,6 +192,8 @@ class WebRTCClient {
             console.error('чего то нет ');
         }
     }
+
+    private setState(): void {}
 
     // отключение
 

@@ -21,7 +21,6 @@ class VoiceRoomStore {
     }
 
     public connectToRoom(roomId: number): void {
-        
         // eslint-disable-next-line max-len
         const token = getCookie('token'); //TODO отказаться от токена здесь и отправлять его при завпросе на подключение к серверу
         this.socketClient.socketEmit('join-room', roomId, token);

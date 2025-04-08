@@ -24,6 +24,7 @@
 
     "settingsPage": {
         "title": "Settings",
+        "buttonBack":"back",
         "language": {
             "title": "Language",
             "english": "English",

@@ -10,12 +10,13 @@ const VoiceRoom: React.FC = observer(() => {
     //     { id: '3', name: 'Charlie', isSpeaking: false },
     // ];
     const users = voiceRoomStore.participants;
-    console.log(users);
+    console.log("gjl",users);
     return (
         <div className="voice-room">
             <h2>Voice Room</h2>
             <div className="user-list">
                 {users.map((user) => (
+                   
                     <div
                     key={user.socketId}
                     className={`user-box ${

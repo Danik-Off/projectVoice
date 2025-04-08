@@ -1,5 +1,6 @@
 // rooms.js
 const rooms = {}; // { roomId: [{ token: string, micToggle: boolean, socketId: string }] }
+const { User } = require('../../models');
 
 // Добавить пользователя в комнату
 const addUserToRoom = (roomId, user) => {
@@ -31,12 +32,13 @@ const getRoomParticipants = (roomId) => {
 };
 
 // Получить пользователя по токену
-const getUserByToken = (token) => {
+const getUserByToken = async (token) => {
     for (const roomId in rooms) {
         if (rooms.hasOwnProperty(roomId)) {
-            const user = rooms[roomId].find((user) => user.token === token);
+            const user = await User.findByPk(req.params.id);
+            const participant = rooms[roomId].find((user) => user.token === token);
             if (user) {
-                return { roomId, ...user }; // Возвращаем объект пользователя с roomId
+                return { roomId, ...user, ...participant }; // Возвращаем объект пользователя с roomId
             }
         }
     }
