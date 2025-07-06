@@ -15,11 +15,13 @@ const ChannelSidebar: React.FC = () => {
         <aside className="channel-sidebar">
             {currentServer ? (
                 <div>
-                    <ServerHeader></ServerHeader>
+                    <ServerHeader />
                     <ChannelList />
                 </div>
             ) : (
-                <>a</>
+                <div className="no-server-message">
+                    Выберите сервер для начала работы
+                </div>
             )}
             <VoiceControls />
         </aside>

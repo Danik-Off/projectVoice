@@ -1,9 +1,24 @@
 // rooms.js
-const rooms = {}; // { roomId: [{ token: string, micToggle: boolean, socketId: string }] }
+const rooms = {}; // { roomId: [{ token: string, micToggle: boolean, socketId: string, userData: object }] }
 const { User } = require('../../models');
+const jwt = require('jsonwebtoken');
+
+// Получить данные пользователя из токена
+const getUserDataFromToken = async (token) => {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findByPk(decoded.userId, {
+            attributes: ['id', 'username', 'profilePicture', 'role']
+        });
+        return user;
+    } catch (error) {
+        console.error('Ошибка получения данных пользователя из токена:', error);
+        return null;
+    }
+};
 
 // Добавить пользователя в комнату
-const addUserToRoom = (roomId, user) => {
+const addUserToRoom = async (roomId, user) => {
     if (!rooms[roomId]) {
         rooms[roomId] = [];
     }
@@ -11,7 +26,13 @@ const addUserToRoom = (roomId, user) => {
     // Проверка на дублирование пользователя в комнате
     const existingUser = rooms[roomId].find((u) => u.socketId === user.socketId);
     if (!existingUser) {
-        rooms[roomId].push(user);
+        // Получаем данные пользователя из базы данных
+        const userData = await getUserDataFromToken(user.token);
+        const userWithData = {
+            ...user,
+            userData: userData || { username: 'Unknown User' }
+        };
+        rooms[roomId].push(userWithData);
     }
 };
 
@@ -36,12 +57,12 @@ const getUserByToken = async (token) => {
     for (const roomId in rooms) {
         if (rooms.hasOwnProperty(roomId)) {
             const participant = rooms[roomId].find((user) => user.token === token);
-            if (user) {
-                return { roomId, ...participant }; // Возвращаем объект пользователя с roomId
+            if (participant) {
+                return { roomId, ...participant };
             }
         }
     }
-    return null; // Если пользователь не найден
+    return null;
 };
 
 // Получить пользователя по socketId
@@ -50,11 +71,11 @@ const getUserBySocketId = (socketId) => {
         if (rooms.hasOwnProperty(roomId)) {
             const user = rooms[roomId].find((user) => user.socketId === socketId);
             if (user) {
-                return { roomId, ...user }; // Возвращаем объект пользователя с roomId
+                return { roomId, ...user };
             }
         }
     }
-    return null; // Если пользователь не найден
+    return null;
 };
 
 module.exports = {

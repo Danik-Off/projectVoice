@@ -30,6 +30,16 @@ module.exports = (sequelize, DataTypes) => {
                     len: [6, 100],
                 },
             },
+            role: {
+                type: DataTypes.ENUM('user', 'moderator', 'admin'),
+                allowNull: false,
+                defaultValue: 'user',
+            },
+            isActive: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: true,
+            },
             profilePicture: {
                 type: DataTypes.STRING,
                 allowNull: true,

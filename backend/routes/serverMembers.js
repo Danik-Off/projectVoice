@@ -1,7 +1,7 @@
 const express = require('express');
 const { ServerMember, User, Server } = require('../models');
-const authenticateToken = require('../middleware/auth');
-const { isAdmin, isOwner, isModerator } = require('../middleware/checkRole'); // Импортируйте необходимые проверки ролей
+const { authenticateToken } = require('../middleware/auth');
+const { isAdmin, isServerOwner, isModerator } = require('../middleware/checkRole'); // Импортируйте необходимые проверки ролей
 
 const router = express.Router();
 
@@ -124,7 +124,7 @@ router.delete('/:serverId/members/:memberId', authenticateToken, isAdmin, async 
 });
 
 // Установить нового владельца сервера
-router.post('/:serverId/owner', authenticateToken, isOwner, async (req, res) => {
+router.post('/:serverId/owner', authenticateToken, isServerOwner, async (req, res) => {
     // #swagger.tags = ['ServerMembers']
     try {
         const server = await Server.findByPk(req.params.serverId);
@@ -132,7 +132,20 @@ router.post('/:serverId/owner', authenticateToken, isOwner, async (req, res) => 
             return res.status(404).json({ message: 'Server not found' });
         }
 
-        if (server.ownerId !== req.user.userId) {
+        // Проверяем, является ли пользователь владельцем сервера по полю ownerId
+        const isOwnerByField = server.ownerId === req.user.userId;
+        
+        // Проверяем, является ли пользователь владельцем сервера по роли в ServerMembers
+        const member = await ServerMember.findOne({
+            where: {
+                serverId: req.params.serverId,
+                userId: req.user.userId,
+                role: 'owner'
+            }
+        });
+        const isOwnerByRole = !!member;
+
+        if (!isOwnerByField && !isOwnerByRole) {
             return res.status(403).json({ error: 'Only the owner can add an owner' });
         }
 

@@ -1,4 +1,5 @@
 @import '../../../../../../styles/main.scss';
+
 .server-header {
     display: flex;
     align-items: center;
@@ -7,11 +8,55 @@
     border-bottom: 1px solid $border-color;
  
     .server-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
         .server-name {
             font-size: 1.2rem;
             font-weight: bold;
         }
+
+        .server-role {
+            font-size: 0.75rem;
+            color: $text-muted;
+            text-transform: capitalize;
+            padding: 0.125rem 0.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 0.25rem;
+            width: fit-content;
+        }
     }
+
+    .server-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .share-button {
+        background-color: transparent;
+        box-shadow: none;
+        border: 0;
+        color: $text-color;
+        cursor: pointer;
+        transition:
+            color 0.2s,
+            transform 0.2s;
+        font-size: 1rem;
+        padding: 0.25rem;
+
+        &:hover {
+            color: $button-hover-bg;
+            transform: scale(1.1);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
     .edit-button {
         background-color: transparent;
         box-shadow: none;
@@ -31,5 +76,85 @@
     .no-server {
         font-size: 1rem;
         color: var(--text-muted);
+    }
+}
+
+// Модальное окно приглашения
+.invite-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.invite-modal {
+    background-color: $bg-secondary;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+
+    h3 {
+        margin: 0 0 1rem 0;
+        color: $text-color;
+        font-size: 1.25rem;
+    }
+
+    p {
+        margin: 0 0 1rem 0;
+        color: $text-muted;
+    }
+
+    .invite-link-container {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+
+        .invite-link-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid $border-color;
+            border-radius: 0.25rem;
+            background-color: $bg-primary;
+            color: $text-color;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        .copy-button {
+            padding: 0.5rem 1rem;
+            background-color: $button-bg;
+            color: $button-text;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: $button-hover-bg;
+            }
+        }
+    }
+
+    .close-button {
+        width: 100%;
+        padding: 0.5rem;
+        background-color: transparent;
+        color: $text-color;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     }
 }

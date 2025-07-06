@@ -1,7 +1,7 @@
 const express = require('express');
 const { Channel } = require('../models'); // Импортируем модель Channel
 const router = express.Router();
-const authenticateToken = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 const { isModerator } = require('../middleware/checkRole'); // Импортируйте необходимые проверки ролей
 
 // Получить все каналы по serverId

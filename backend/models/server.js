@@ -8,6 +8,16 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
+            ownerId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: {
+                    model: 'Users',
+                    key: 'id',
+                },
+                onUpdate: 'CASCADE',
+                onDelete: 'CASCADE',
+            },
             name: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -33,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
 
     // Определение ассоциаций
     Server.associate = (models) => {
+        Server.belongsTo(models.User, {
+            foreignKey: 'ownerId',
+            as: 'owner',
+        });
         Server.hasMany(models.ServerMember, { foreignKey: 'serverId', as: 'members' }); // Сервер может иметь множество участников
         Server.hasMany(models.Channel, { foreignKey: 'serverId', as: 'channels' });
         Server.belongsToMany(models.User, {

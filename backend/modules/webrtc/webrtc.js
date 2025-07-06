@@ -16,8 +16,8 @@ module.exports = (io) => {
         socket.on('signal', handleSignalRequest);
 
         //TODO отказаться здесь от токена ?
-        function handleJoinRoomRequest(roomId, token) {
-            addUserToRoom(roomId, { token, micToggle: true, socketId: socket.id });
+        async function handleJoinRoomRequest(roomId, token) {
+            await addUserToRoom(roomId, { token, micToggle: true, socketId: socket.id });
 
             socket.join(roomId);
 
@@ -25,13 +25,17 @@ module.exports = (io) => {
             const participants = getRoomParticipants(roomId).map((user) => ({
                 micToggle: user.micToggle,
                 socketId: user.socketId,
-                user: getUserByToken(token),
+                userData: user.userData
             }));
 
             socket.emit('created', { roomId, participants });
 
             // Сообщаем всем остальным в комнате, что новый пользователь присоединился
-            socket.to(roomId).emit('user-connected', { socketId: socket.id });
+            const currentUser = getUserBySocketId(socket.id);
+            socket.to(roomId).emit('user-connected', { 
+                socketId: socket.id,
+                userData: currentUser?.userData || { username: 'Unknown User' }
+            });
 
             socket.on('disconnect', handleDisconnect);
             socket.on('leave-room', handleDisconnect);

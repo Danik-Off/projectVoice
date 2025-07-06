@@ -1,0 +1,334 @@
+@import '../../styles/main.scss';
+
+.server-settings {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: $bg-secondary;
+    color: $text-color;
+
+    .settings-header {
+        display: flex;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid $border-color;
+        background-color: $bg-primary;
+
+        .back-button {
+            background-color: transparent;
+            border: none;
+            color: $text-color;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            margin-right: 1rem;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    }
+
+    .settings-content {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+
+        .settings-sidebar {
+            width: 250px;
+            background-color: $bg-primary;
+            border-right: 1px solid $border-color;
+
+            .settings-nav {
+                padding: 1rem 0;
+
+                .nav-item {
+                    display: block;
+                    width: 100%;
+                    padding: 0.75rem 1.5rem;
+                    background-color: transparent;
+                    border: none;
+                    color: $text-color;
+                    text-align: left;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+                    font-size: 0.9rem;
+
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.1);
+                    }
+
+                    &.active {
+                        background-color: $accent-color;
+                        color: white;
+                    }
+                }
+            }
+        }
+
+        .settings-main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+
+            h2 {
+                margin: 0 0 1.5rem 0;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+
+            .overview-tab {
+                .server-info {
+                    display: grid;
+                    gap: 1rem;
+
+                    .info-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 1rem;
+                        background-color: $bg-primary;
+                        border-radius: 0.5rem;
+                        border: 1px solid $border-color;
+
+                        label {
+                            font-weight: bold;
+                            color: $text-muted;
+                        }
+
+                        span {
+                            color: $text-color;
+                        }
+                    }
+
+                    .edit-actions {
+                        margin-top: 1rem;
+                        padding: 1rem;
+                        background-color: $bg-primary;
+                        border-radius: 0.5rem;
+                        border: 1px solid $border-color;
+
+                        .edit-button {
+                            background-color: $button-bg;
+                            color: $button-text;
+                            border: none;
+                            padding: 0.75rem 1.5rem;
+                            border-radius: 0.25rem;
+                            cursor: pointer;
+                            font-weight: bold;
+                            transition: background-color 0.2s;
+
+                            &:hover {
+                                background-color: $button-hover-bg;
+                            }
+                        }
+                    }
+                }
+
+                .edit-form {
+                    background-color: $bg-primary;
+                    border-radius: 0.5rem;
+                    border: 1px solid $border-color;
+                    padding: 1.5rem;
+
+                    .form-group {
+                        margin-bottom: 1.5rem;
+
+                        label {
+                            display: block;
+                            margin-bottom: 0.5rem;
+                            font-weight: bold;
+                            color: $text-color;
+                        }
+
+                        input, textarea {
+                            width: 100%;
+                            padding: 0.75rem;
+                            background-color: $bg-secondary;
+                            border: 1px solid $border-color;
+                            border-radius: 0.25rem;
+                            color: $text-color;
+                            font-size: 0.9rem;
+
+                            &:focus {
+                                outline: none;
+                                border-color: $accent-color;
+                            }
+
+                            &::placeholder {
+                                color: $text-muted;
+                            }
+                        }
+
+                        textarea {
+                            resize: vertical;
+                            min-height: 80px;
+                        }
+                    }
+
+                    .form-actions {
+                        display: flex;
+                        gap: 1rem;
+                        justify-content: flex-end;
+
+                        .save-button {
+                            background-color: $success-color;
+                            color: white;
+                            border: none;
+                            padding: 0.75rem 1.5rem;
+                            border-radius: 0.25rem;
+                            cursor: pointer;
+                            font-weight: bold;
+                            transition: background-color 0.2s;
+
+                            &:hover {
+                                background-color: darken($success-color, 10%);
+                            }
+                        }
+
+                        .cancel-button {
+                            background-color: transparent;
+                            color: $text-color;
+                            border: 1px solid $border-color;
+                            padding: 0.75rem 1.5rem;
+                            border-radius: 0.25rem;
+                            cursor: pointer;
+                            font-weight: bold;
+                            transition: background-color 0.2s;
+
+                            &:hover {
+                                background-color: rgba(255, 255, 255, 0.1);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .members-tab {
+                .server-members {
+                    background-color: $bg-primary;
+                    border-radius: 0.5rem;
+                    border: 1px solid $border-color;
+                    overflow: hidden;
+                }
+            }
+
+            .roles-tab {
+                .roles-info {
+                    display: grid;
+                    gap: 1rem;
+
+                    .role-item {
+                        padding: 1.5rem;
+                        background-color: $bg-primary;
+                        border-radius: 0.5rem;
+                        border: 1px solid $border-color;
+
+                        h3 {
+                            margin: 0 0 0.5rem 0;
+                            font-size: 1.1rem;
+                            font-weight: bold;
+                        }
+
+                        p {
+                            margin: 0;
+                            color: $text-muted;
+                            line-height: 1.5;
+                        }
+                    }
+                }
+            }
+
+            .channels-tab {
+                .channels-list {
+                    display: grid;
+                    gap: 0.5rem;
+
+                    .channel-item {
+                        display: flex;
+                        align-items: center;
+                        padding: 0.75rem 1rem;
+                        background-color: $bg-primary;
+                        border-radius: 0.25rem;
+                        border: 1px solid $border-color;
+
+                        .channel-icon {
+                            margin-right: 0.5rem;
+                            font-size: 1.1rem;
+                        }
+
+                        .channel-name {
+                            flex: 1;
+                            font-weight: 500;
+                        }
+
+                        .channel-type {
+                            color: $text-muted;
+                            font-size: 0.8rem;
+                            text-transform: uppercase;
+                        }
+                    }
+                }
+            }
+
+            .danger-tab {
+                .danger-actions {
+                    .danger-item {
+                        padding: 1.5rem;
+                        background-color: rgba($error-color, 0.1);
+                        border: 1px solid rgba($error-color, 0.3);
+                        border-radius: 0.5rem;
+
+                        h3 {
+                            margin: 0 0 0.5rem 0;
+                            color: $error-color;
+                            font-size: 1.1rem;
+                            font-weight: bold;
+                        }
+
+                        p {
+                            margin: 0 0 1rem 0;
+                            color: $text-muted;
+                            line-height: 1.5;
+                        }
+
+                        .danger-button {
+                            background-color: $error-color;
+                            color: white;
+                            border: none;
+                            padding: 0.75rem 1.5rem;
+                            border-radius: 0.25rem;
+                            cursor: pointer;
+                            font-weight: bold;
+                            transition: background-color 0.2s;
+
+                            &:hover {
+                                background-color: darken($error-color, 10%);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .loading, .error {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-size: 1.1rem;
+        color: $text-muted;
+    }
+
+    .error {
+        color: $error-color;
+    }
+} 

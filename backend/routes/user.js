@@ -1,6 +1,6 @@
 const express = require('express');
 const { User, Server } = require('../models');
-const authenticateToken = require('../middleware/auth'); // JWT middleware для проверки токена
+const { authenticateToken } = require('../middleware/auth'); // JWT middleware для проверки токена
 
 const router = express.Router();
 

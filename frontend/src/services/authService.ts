@@ -6,7 +6,7 @@ export const authService = {
             method: 'POST',
             body: JSON.stringify({ email, password }),
         });
-        return data.token;
+        return data;
     },
     register: async (email: string, username: string, password: string) => {
         const data = await apiClient('/auth/register', {
@@ -14,5 +14,10 @@ export const authService = {
             body: JSON.stringify({ email, username, password }),
         });
         return data;
+    },
+    getMe: async () => {
+        return await apiClient('/auth/me', {
+            method: 'GET'
+        });
     },
 };

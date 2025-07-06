@@ -1,5 +1,19 @@
 import { Channel } from './channel';
 
+export type ServerMember = {
+    id: number;
+    userId: number;
+    serverId: number;
+    role: 'member' | 'moderator' | 'admin' | 'owner';
+    user?: {
+        id: number;
+        username: string;
+        profilePicture?: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+};
+
 // Define types for the server data
 export type Server = {
     id: number;
@@ -8,4 +22,5 @@ export type Server = {
     description?: string;
     icon?: string;
     channels?: Channel[];
+    members?: ServerMember[];
 };

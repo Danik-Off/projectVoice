@@ -16,6 +16,14 @@ const MicrophoneVisualizer: React.FC = () => {
                 if (!stream) {
                     return;
                 }
+
+                // Проверяем, есть ли аудио треки в stream
+                const audioTracks = stream.getAudioTracks();
+                if (audioTracks.length === 0) {
+                    console.log('No audio tracks found in stream');
+                    return;
+                }
+
                 const audioContext = new AudioContext();
                 audioContextRef.current = audioContext;
 

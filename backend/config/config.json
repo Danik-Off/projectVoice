@@ -3,21 +3,13 @@
         "username": "test_projectvoice",
         "password": "TZ8TSEWPet5kJnzN",
         "database": "test_projectvoice",
-        "host": "185.207.1.176",
+        "host": "localhost",
         "dialect": "mysql"
     },
     "test": {
-        "username": "test_projectvoice",
-        "password": "TZ8TSEWPet5kJnzN",
-        "database": "test_projectvoice",
-        "host": "185.207.1.176",
-        "dialect": "mysql"
+       
     },
     "production": {
-        "username": "database_development",
-        "password": "wd4e2dSzjYhYW7KC",
-        "database": "database_development",
-        "host": "45.143.93.171",
-        "dialect": "mysql"
+      
     }
 }

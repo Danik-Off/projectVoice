@@ -14,6 +14,7 @@ const serverRoutes = require('./routes/server');
 const channeRoutes = require('./routes/channel');
 const serverMembersRoutes = require('./routes/serverMembers');
 const serverInviteRoutes = require('./routes/invite');
+const adminRoutes = require('./routes/admin');
 
 //
 const { exec } = require('child_process');
@@ -61,7 +62,8 @@ app.use('/api/servers', serverRoutes);
 app.use('/api/servers', channeRoutes);
 app.use('/api/servers', serverMembersRoutes);
 //
-app.use('/api/servers', serverInviteRoutes); //создание invite ссылки
+app.use('/api/invite', serverInviteRoutes); //создание invite ссылки
+app.use('/api/admin', adminRoutes); //админ панель
 //документация
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

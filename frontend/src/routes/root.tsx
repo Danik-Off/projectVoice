@@ -8,6 +8,9 @@ import ChannelPage from '../pages/channelPage/ChannelPage';
 import WelcomePage from '../pages/welcomePage/WelcomePage';
 import VoiceRoom from '../pages/channelPage/components/voiceRoom/VoiceRoom';
 import MessageList from '../pages/channelPage/components/messageList/MessageList';
+import AdminPanel from '../pages/admin/AdminPanel';
+import AdminRoute from '../store/AdminRoute';
+import ServerSettings from '../pages/serverSettings/ServerSettings';
 
 export const router = createBrowserRouter([
     {
@@ -37,8 +40,20 @@ export const router = createBrowserRouter([
                 ],
             },
             {
+                path: 'server/:serverId/settings',
+                element: <ServerSettings />,
+            },
+            {
                 path: 'settings',
                 element: <Settings />,
+            },
+            {
+                path: 'admin',
+                element: (
+                    <AdminRoute>
+                        <AdminPanel />
+                    </AdminRoute>
+                ),
             },
         ],
     },

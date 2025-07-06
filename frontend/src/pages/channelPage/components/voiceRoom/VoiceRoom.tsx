@@ -10,24 +10,36 @@ const VoiceRoom: React.FC = observer(() => {
     //     { id: '3', name: 'Charlie', isSpeaking: false },
     // ];
     const users = voiceRoomStore.participants;
-    console.log("gjl",users);
+    console.log("Участники голосовой комнаты:", users);
+    
     return (
         <div className="voice-room">
             <h2>Voice Room</h2>
             <div className="user-list">
                 {users.map((user) => (
-                   
                     <div
-                    key={user.socketId}
-                    className={`user-box ${
-                        user.isSpeaking ? 'speaking' : ''
-                    }`}
+                        key={user.socketId}
+                        className={`user-box ${
+                            user.isSpeaking ? 'speaking' : ''
+                        }`}
                     >
                         <div className="user-avatar">
-                            {/* Тут можно поставить заглушку аватара или иконку */}
-                            {/* <span>{user.name}</span> */}
+                            {user.userData?.profilePicture ? (
+                                <img 
+                                    src={user.userData.profilePicture} 
+                                    alt={user.userData.username}
+                                    style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+                                />
+                            ) : (
+                                <span>{user.userData?.username?.charAt(0).toUpperCase() || 'U'}</span>
+                            )}
                         </div>
-                        <div className="user-name">{user.socketId}</div>
+                        <div className="user-name">
+                            {user.userData?.username || 'Unknown User'}
+                        </div>
+                        <div className="user-status">
+                            {user.micToggle ? '🎤' : '🔇'}
+                        </div>
                     </div>
                 ))}
             </div>

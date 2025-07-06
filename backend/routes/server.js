@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { Server, User, Channel, ServerMember } = require('../models'); // Include ServerMember model
-const authenticateToken = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 const { where } = require('sequelize');
 
 const router = express.Router();
@@ -11,12 +11,24 @@ router.get('/', authenticateToken, async (req, res) => {
     // #swagger.tags = ['Servers']
     try {
         const servers = await Server.findAll({
-            include: {
-                model: ServerMember,
-                as: 'members',
-                where: { userId: req.user.userId }, // условие для поиска серверов с участием пользователя
-                attributes: [], // исключаем поля ServerMember, если они не нужны
-            },
+            include: [
+                {
+                    model: ServerMember,
+                    as: 'members',
+                    where: { userId: req.user.userId },
+                    include: [
+                        {
+                            model: User,
+                            as: 'user',
+                            attributes: ['id', 'username', 'profilePicture']
+                        }
+                    ]
+                },
+                {
+                    model: Channel,
+                    as: 'channels'
+                }
+            ],
         });
         res.status(200).json(servers);
     } catch (error) {
@@ -50,12 +62,23 @@ router.get('/:id', authenticateToken, async (req, res) => {
     // #swagger.tags = ['Servers']
     try {
         const server = await Server.findByPk(req.params.id, {
-            include: {
-                model: ServerMember,
-                as: 'members',
-                where: { userId: req.user.userId }, // условие для поиска серверов с участием пользователя
-                attributes: [], // исключаем поля ServerMember, если они не нужны
-            },
+            include: [
+                {
+                    model: ServerMember,
+                    as: 'members',
+                    include: [
+                        {
+                            model: User,
+                            as: 'user',
+                            attributes: ['id', 'username', 'profilePicture']
+                        }
+                    ]
+                },
+                {
+                    model: Channel,
+                    as: 'channels'
+                }
+            ],
         });
         if (!server) {
             return res.status(404).json({ message: 'Server not found' });
@@ -75,7 +98,21 @@ const checkServerOwnership = async (req, res, next) => {
         return res.status(404).json({ message: 'Server not found' });
     }
 
-    if (server.ownerId !== req.user.userId && !req.user.isAdmin) {
+    // Проверяем, является ли пользователь владельцем сервера по полю ownerId
+    const isOwnerByField = server.ownerId === req.user.userId;
+    
+    // Проверяем, является ли пользователь владельцем сервера по роли в ServerMembers
+    const member = await ServerMember.findOne({
+        where: {
+            serverId: req.params.id,
+            userId: req.user.userId,
+            role: 'owner'
+        }
+    });
+    const isOwnerByRole = !!member;
+
+    // Пользователь может редактировать сервер, если он владелец по любому из критериев или администратор
+    if (!isOwnerByField && !isOwnerByRole && !req.user.isAdmin) {
         return res.status(403).json({ error: 'Access denied' });
     }
 

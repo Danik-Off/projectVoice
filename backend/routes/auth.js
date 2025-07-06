@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
+const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -25,8 +26,10 @@ router.post('/register', async (req, res) => {
         const user = await User.create({ username, email, password: hashedPassword });
 
         // Создание JWT токена
-
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ 
+            userId: user.id,
+            isAdmin: user.role === 'admin'
+        }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.status(201).json({ token });
     } catch (error) {
         console.log(error);
@@ -52,8 +55,48 @@ router.post('/login', async (req, res) => {
         }
 
         // Создание JWT токена
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        const token = jwt.sign({ 
+            userId: user.id,
+            isAdmin: user.role === 'admin'
+        }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.json({ 
+            token,
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                isActive: user.isActive
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Ошибка сервера.' });
+    }
+});
+
+// Получение информации о текущем пользователе
+router.get('/me', authenticateToken, async (req, res) => {
+    // #swagger.tags = ['Auth']
+    try {
+        const user = await User.findByPk(req.user.userId, {
+            attributes: { exclude: ['password'] }
+        });
+        
+        if (!user) {
+            return res.status(404).json({ error: 'Пользователь не найден.' });
+        }
+
+        res.json({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            isActive: user.isActive,
+            profilePicture: user.profilePicture,
+            status: user.status,
+            tag: user.tag,
+            createdAt: user.createdAt
+        });
     } catch (error) {
         res.status(500).json({ error: 'Ошибка сервера.' });
     }
