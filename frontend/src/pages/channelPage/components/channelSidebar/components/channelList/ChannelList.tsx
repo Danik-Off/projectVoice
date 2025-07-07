@@ -32,28 +32,17 @@ const ChannelList: React.FC = observer(() => {
     }, []);
 
     const handleNavigate = (channel: Channel) => {
-        const currentPath = window.location.pathname; // Получаем текущий путь
-
-        // Определяем новый путь
-        const newPath = `/${channel.type}Room/${channel.id}`;
-
-        // Если текущий путь содержит "Room", заменяем его
-        if (currentPath.match(/\/(text|voice)Room\/\d+/)) {
-            // Заменяем часть пути, содержащую "Room" и его идентификатор
-            const updatedPath = currentPath.replace(/\/(text|voice)Room\/\d+/, newPath);
-            navigate(updatedPath);
-        } else {
-            // Если "Room" нет, просто добавляем новый путь
-            navigate(`${currentPath}${newPath}`);
-        }
-
-        // Если тип канала - голосовой, подключаемся к комнате
+        const serverId = serverStore.currentServer?.id;
+        if (!serverId) return;
+        let newPath = '';
         if (channel.type === 'voice') {
+            newPath = `/server/${serverId}/voiceRoom/${channel.id}`;
             voiceRoomStore.connectToRoom(channel.id, channel.name);
         } else {
+            newPath = `/server/${serverId}/textRoom/${channel.id}`;
             voiceRoomStore.disconnectToRoom();
         }
-        console.log(voiceChannels);
+        navigate(newPath);
     };
 
     const textChannels = channelsStore?.channels?.filter((channel: Channel) => channel.type === 'text') || [];

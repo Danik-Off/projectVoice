@@ -38,6 +38,7 @@ export interface UsersResponse {
     total: number;
     page: number;
     limit: number;
+    totalPages: number;
 }
 
 export interface ServersResponse {

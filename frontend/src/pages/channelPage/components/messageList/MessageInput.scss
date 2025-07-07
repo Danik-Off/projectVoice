@@ -1,0 +1,232 @@
+@import '../../../../styles/main.scss';
+
+.message-input-container {
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    background: var(--background-primary);
+}
+
+.message-input-wrapper {
+    background: var(--background-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+
+    &:focus-within {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.2);
+    }
+}
+
+.input-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 12px;
+}
+
+.message-textarea {
+    flex: 1;
+    min-height: 20px;
+    max-height: 120px;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+        color: var(--text-muted);
+    }
+
+    &:focus {
+        background: rgba(255, 255, 255, 0.02);
+    }
+}
+
+.input-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.message-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    color: var(--text-muted);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+        transform: scale(1.05);
+    }
+
+    &.emoji-btn:hover {
+        background: rgba(255, 193, 7, 0.2);
+    }
+
+    &.attachment-btn:hover {
+        background: rgba(114, 137, 218, 0.2);
+    }
+}
+
+.send-btn {
+    background: var(--background-tertiary);
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover:not(:disabled) {
+        background: var(--accent-color);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    &.active {
+        background: linear-gradient(135deg, #7289da, #5865f2);
+        color: white;
+        box-shadow: 0 2px 8px rgba(114, 137, 218, 0.3);
+
+        &:hover {
+            background: linear-gradient(135deg, #5865f2, #4752c4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(114, 137, 218, 0.4);
+        }
+    }
+
+    svg {
+        transition: transform 0.2s ease;
+    }
+
+    &:hover svg {
+        transform: scale(1.1);
+    }
+}
+
+.input-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 12px 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4px;
+}
+
+.character-count {
+    font-weight: 500;
+    
+    &.warning {
+        color: #f39c12;
+    }
+    
+    &.error {
+        color: #e74c3c;
+    }
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-style: italic;
+    animation: pulse 1.5s ease-in-out infinite;
+
+    &::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        animation: typing 1.4s ease-in-out infinite;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-4px);
+    }
+}
+
+// Темная тема
+[data-theme="dark"] {
+    .message-input-wrapper {
+        background: var(--background-secondary);
+        border-color: var(--border-color);
+    }
+
+    .message-textarea {
+        color: var(--text-primary);
+        
+        &::placeholder {
+            color: var(--text-muted);
+        }
+    }
+}
+
+// Светлая тема
+[data-theme="light"] {
+    .message-input-wrapper {
+        background: #f8f9fa;
+        border-color: #e9ecef;
+    }
+
+    .message-textarea {
+        color: var(--text-primary);
+        
+        &::placeholder {
+            color: #6c757d;
+        }
+    }
+
+    .action-btn {
+        color: #6c757d;
+        
+        &:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-primary);
+        }
+    }
+} 

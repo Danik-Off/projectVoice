@@ -1,10 +1,12 @@
 .channel-sidebar {
-    width: 300px;
-    background-color: #2f3136;
-    color: white;
+    width: 280px;
+    background: var(--sidebar-bg);
+    color: var(--text-color);
     display: flex;
     flex-direction: column;
     height: 100vh;
+    border-right: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .channel-sidebar > div:first-child {
@@ -19,8 +21,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #72767d;
+    color: var(--secondary-text-color);
     font-size: 14px;
     text-align: center;
     padding: 20px;
+    background: var(--background-color);
+    margin: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
 }

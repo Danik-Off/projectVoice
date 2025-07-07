@@ -1,64 +1,154 @@
 @import '../../../../styles/main';
 .server-sidebar {
-    width: 60px; /* Ширина боковой панели */
-    background-color: $sidebar-bg; /* Фон боковой панели */
+    width: 72px;
+    background: linear-gradient(180deg, var(--sidebar-bg) 0%, rgba(47, 49, 54, 0.95) 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 10px;
-    position: relative; /* Для позиционирования модального окна */
-    border-right: 1px solid $border-color;
+    padding: 16px 0;
+    position: relative;
+    border-right: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, var(--accent-color) 50%, transparent 100%);
+        opacity: 0.3;
+    }
 
     .server-icon:hover {
-        background-color: $button-hover-bg; /* Цвет при наведении */
+        background: linear-gradient(135deg, var(--button-hover-bg) 0%, var(--accent-color) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(114, 137, 218, 0.3);
     }
 
     .server-icon.active {
-        background-color: $button-bg; /* Цвет активного значка */
+        background: linear-gradient(135deg, var(--accent-color) 0%, var(--button-bg) 100%);
+        box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.3), 0 8px 25px rgba(114, 137, 218, 0.4);
     }
-    .settings-button {
-        position: absolute;
-        bottom: 1rem; /* Закрепить кнопку на дне */
-        background-color: $box-bg;
-        border: none;
-        border-radius: 50%;
-        padding: 10px;
-        color: $text-color;
-        font-size: 1.5rem;
+
+    .server-sidebar__server-list {
+        overflow: hidden;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin: 20px 0;
+        overflow-y: auto;
+        width: 100%;
+        padding:12px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border-color) transparent;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--border-color) 0%, var(--accent-color) 100%);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background: linear-gradient(180deg, var(--accent-color) 0%, var(--button-bg) 100%);
+            }
+        }
+    }
+
+    .add-button, .settings-button, .admin-button {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 255, 255, 0.05) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--text-color);
+        font-size: 24px;
+        font-weight: 600;
         cursor: pointer;
-        transition:
-            background-color 0.3s ease,
-            transform 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
 
         &:hover {
-            background-color: $button-hover-bg;
-            transform: scale(1.1);
+            background: linear-gradient(135deg, var(--hover-bg) 0%, var(--accent-color) 100%);
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(114, 137, 218, 0.4);
+            border-color: var(--accent-color);
+
+            &::before {
+                left: 100%;
+            }
+        }
+
+        &:active {
+            transform: scale(0.95);
         }
     }
 
     .add-button {
-        width: 48px; /* Размер кнопки */
-        height: 48px;
-        border-radius: 50%; /* Круглая форма */
-        background-color: $box-bg; /* Цвет фона кнопки */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white; /* Цвет текста или иконки */
-        font-size: 24px; /* Размер текста/иконки */
-        cursor: pointer;
+        font-size: 24px;
+    }
 
-        transition:
-            background-color 0.3s ease,
-            transform 0.2s ease;
+    .settings-button {
+        font-size: 20px;
+    }
+
+    .admin-button {
+        font-size: 18px;
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        border-color: #e74c3c;
 
         &:hover {
-            background-color: #4752c4; /* Цвет фона при наведении */
-            transform: scale(1.1); /* Увеличение кнопки при наведении */
-        }
-
-        &:active {
-            background-color: #3b45a2; /* Цвет фона при клике */
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+            border-color: #c0392b;
         }
     }
 }
+
+// Скроллбар для списка серверов
+.server-sidebar__server-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.server-sidebar__server-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.server-sidebar__server-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 2px;
+}
+
+.server-sidebar__server-list::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-text-color);
+}
+

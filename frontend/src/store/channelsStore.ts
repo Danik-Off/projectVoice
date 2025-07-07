@@ -5,11 +5,17 @@ import notificationStore from './NotificationStore';
 
 class ChannelsStore {
     public channels: Channel[] = [];
+    public currentChannel: Channel | null = null;
     public loading: boolean = false;
     public error: string | null = null;
 
     public constructor() {
         makeAutoObservable(this);
+    }
+
+    // Set current channel
+    setCurrentChannel(channel: Channel | null): void {
+        this.currentChannel = channel;
     }
     // Fetch channels for the current server
     async fetchChannels(serverId: number): Promise<void> {

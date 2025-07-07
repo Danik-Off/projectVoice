@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import audioSettingsStore from '../../../../../store/AudioSettingsStore';
 import { reaction } from 'mobx';
+import './MicrophoneVisualizer.scss';
 
 const MicrophoneVisualizer: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -63,16 +64,46 @@ const MicrophoneVisualizer: React.FC = () => {
                 }
                 const averageVolume = total / bufferLength;
 
-                // Draw a single bar representing the overall volume
-                const barWidth = (averageVolume / 40) * canvas.width; // Full width of the canvas
-                const barHeight = canvas.height; // Normalize to height
+                // Draw a modern volume bar with gradient
+                const barWidth = (averageVolume / 40) * canvas.width;
+                const barHeight = canvas.height;
 
-                // Set color for the volume bar
-                const color = `rgb(${barWidth + 50}, 50, 150)`; // Use barWidth instead of barHeight for color
+                // Create gradient for the volume bar
+                const gradient = canvasCtx.createLinearGradient(0, 0, barWidth, 0);
+                gradient.addColorStop(0, '#7289da');
+                gradient.addColorStop(0.5, '#5865f2');
+                gradient.addColorStop(1, '#43b581');
 
-                // Draw the volume bar
-                canvasCtx.fillStyle = color;
+                // Draw the main volume bar
+                canvasCtx.fillStyle = gradient;
                 canvasCtx.fillRect(0, 0, barWidth, barHeight);
+
+                // Add glow effect
+                canvasCtx.shadowColor = '#7289da';
+                canvasCtx.shadowBlur = 10;
+                canvasCtx.fillRect(0, 0, barWidth, barHeight);
+                canvasCtx.shadowBlur = 0;
+
+                // Draw frequency bars for more visual appeal
+                const barCount = 20;
+                const barSpacing = canvas.width / barCount;
+                const barMaxHeight = canvas.height * 0.8;
+
+                for (let i = 0; i < barCount; i++) {
+                    const barIndex = Math.floor((i / barCount) * bufferLength);
+                    const barValue = dataArray[barIndex] || 0;
+                    const barHeight = (barValue / 255) * barMaxHeight;
+                    const x = i * barSpacing + barSpacing / 2;
+                    const y = canvas.height - barHeight;
+
+                    // Create gradient for each frequency bar
+                    const barGradient = canvasCtx.createLinearGradient(x, y, x, canvas.height);
+                    barGradient.addColorStop(0, '#7289da');
+                    barGradient.addColorStop(1, '#5865f2');
+
+                    canvasCtx.fillStyle = barGradient;
+                    canvasCtx.fillRect(x - 2, y, 4, barHeight);
+                }
 
                 animationFrameRef.current = requestAnimationFrame(draw);
             };
@@ -98,10 +129,24 @@ const MicrophoneVisualizer: React.FC = () => {
     }, []);
 
     return (
-        <div>
-            <canvas style={{ backgroundColor: 'white' }} ref={canvasRef} width="800" height="10" />
+        <div className="microphone-visualizer">
+            <div className="visualizer-header">
+                <h3>Микрофон</h3>
+                <div className="status-indicator">
+                    <div className="status-dot"></div>
+                    <span>Активен</span>
+                </div>
+            </div>
+            <div className="visualizer-container">
+                <canvas 
+                    ref={canvasRef} 
+                    width="800" 
+                    height="60"
+                    className="visualizer-canvas"
+                />
+            </div>
         </div>
-    ); // Adjusted height for horizontal bar
+    );
 };
 
 export default MicrophoneVisualizer;

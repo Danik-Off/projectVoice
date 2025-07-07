@@ -1,6 +1,9 @@
 .channel-page {
     flex: 1;
     display: flex;
+    background: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 .spinner-conteiner {
     width: 100%;
@@ -9,4 +12,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: var(--background-color);
+    color: var(--text-color);
 }

@@ -41,6 +41,13 @@
             "volume": "Volume:",
             "mute": "Mute:",
             "testAudio": "Test Audio"
+        },
+        "appearance": {
+            "title": "Appearance",
+            "darkMode": "Dark Mode",
+            "lightMode": "Light Mode",
+            "switchToDark": "Switch to dark mode",
+            "switchToLight": "Switch to light mode"
         }
     },
     "serverSettings": {
@@ -172,5 +179,23 @@
         "voice": "Voice",
         "create": "Create Channel",
         "cancel": "Cancel"
+    },
+    "welcome": {
+        "subtitle": "Modern platform for voice communication",
+        "features": {
+            "voice": {
+                "title": "Voice Channels",
+                "description": "High-quality voice communication with WebRTC support"
+            },
+            "community": {
+                "title": "Community",
+                "description": "Create servers and join communities"
+            },
+            "privacy": {
+                "title": "Privacy",
+                "description": "Your data is protected and remains confidential"
+            }
+        },
+        "message": "Join our community, share ideas and enjoy the freedom of voice communication. Let's create great connections together!"
     }
 }

@@ -3,22 +3,264 @@
 @import 'sizes';
 @import 'typography';
 @import 'basic';
-// Основные стили
+// Основные стили с поддержкой тем
+:root {
+    // CSS переменные будут установлены динамически через ThemeStore
+}
+
 body {
-    font-family: $font-family;
-    background-color: $background-color;
-    color: $text-color;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+// Общие стили для карточек
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 8px 32px var(--shadow-color);
+    transition: all 0.3s ease;
+}
+
+// Стили для кнопок
+.btn {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background: var(--button-hover-bg);
+        box-shadow: 0 4px 12px var(--shadow-color);
+    }
+    
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--accent-color);
+    }
+    
+    &.btn-secondary {
+        background: transparent;
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        
+        &:hover {
+            background: var(--hover-bg);
+        }
+    }
+}
+
+// Стили для полей ввода
+.input {
+    background: var(--input-bg);
+    color: var(--input-text);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    
+    &:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px var(--accent-color);
+    }
+    
+    &::placeholder {
+        color: var(--placeholder-text);
+    }
+}
+
+// Стили для сайдбаров
 .sidebar {
-    width: $sidebar-width;
-    background-color: $sidebar-bg;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
 }
 
+// Стили для сообщений
 .message {
-    background-color: $message-bg;
-    color: $message-text;
-    padding: $message-padding;
-    border-radius: 5px;
+    background: var(--message-bg);
+    color: var(--message-text);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// Стили для модальных окон
+.modal {
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 20px 60px var(--shadow-color);
+}
+
+// Стили для уведомлений
+.notification {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+// Анимации
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+// Утилиты
+.text-primary {
+    color: var(--text-color);
+}
+
+.text-secondary {
+    color: var(--secondary-text-color);
+}
+
+.text-accent {
+    color: var(--accent-color);
+}
+
+.text-success {
+    color: var(--success-color);
+}
+
+.text-error {
+    color: var(--error-color);
+}
+
+.text-warning {
+    color: var(--warning-color);
+}
+
+.bg-primary {
+    background: var(--background-color);
+}
+
+.bg-secondary {
+    background: var(--sidebar-bg);
+}
+
+.bg-card {
+    background: var(--card-bg);
+}
+
+.border {
+    border: 1px solid var(--border-color);
+}
+
+.shadow {
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+    .card {
+        border-radius: 12px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+    
+    .input {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}
+
+// Глобальные стили для выпадающих списков
+select {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+    color: var(--text-color) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    cursor: pointer !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237289da' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 1.5em 1.5em !important;
+    padding-right: 3rem !important;
+
+    &:focus {
+        outline: none !important;
+        border-color: var(--accent-color) !important;
+        box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    &:hover {
+        background: linear-gradient(135deg, rgba(114, 137, 218, 0.1) 0%, rgba(88, 101, 242, 0.1) 100%) !important;
+        border-color: var(--accent-color) !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237289da' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+    }
+
+    option {
+        background: var(--bg-primary) !important;
+        color: var(--text-color) !important;
+        padding: 0.75rem !important;
+        border: none !important;
+        font-size: 1rem !important;
+        
+        &:hover {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--button-bg) 100%) !important;
+            color: white !important;
+        }
+    }
+}
+
+// Дополнительные стили для Firefox
+@-moz-document url-prefix() {
+    select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237289da' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+    }
+}
+
+// Дополнительные стили для Webkit браузеров
+select::-ms-expand {
+    display: none !important;
 }
 

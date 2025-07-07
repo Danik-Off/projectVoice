@@ -7,13 +7,48 @@
 
 .main-page {
     display: flex;
-    height: 100vh; /* Full height */
+    height: 100vh;
+    background: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
 }
 
 .content-page {
-   flex: 1;
-   overflow: auto;
-   display: flex;
-   
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    position: relative;
+}
+
+
+
+
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+    // Адаптивность теперь управляется динамически через JavaScript
+}
+
+@media (max-width: 480px) {
+    // Адаптивность теперь управляется динамически через JavaScript
 }
 

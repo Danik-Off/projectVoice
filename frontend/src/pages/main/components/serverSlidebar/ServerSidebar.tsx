@@ -1,19 +1,27 @@
 // src/components/ServerSidebar/ServerSidebar.tsx
-import React, { useEffect, useState } from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useEffect } from 'react';
+import { observer } from 'mobx-react';
 import serverStore from '../../../../store/serverStore';
+import { authStore } from '../../../../store/authStore';
 import './ServerSidebar.scss';
 import ServerItem from './serverItem/ServerItem';
-import ServerCreateModal from './serverCreateModal/ServerCreateModal';
 import { useNavigate } from 'react-router-dom';
 
-const ServerSidebar: React.FC = observer(() => {
+interface ServerSidebarProps {
+    onOpenModal: () => void;
+}
+
+const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) => {
     const navigate = useNavigate();
-    const [isModalOpen, setModalOpen] = useState(false);
 
     const handleSetting = () => {
         navigate(`/settings`);
     };
+
+    const handleAdminPanel = () => {
+        navigate('/admin');
+    };
+    
     useEffect(() => {
         serverStore.fetchServers();
     }, []);
@@ -24,7 +32,7 @@ const ServerSidebar: React.FC = observer(() => {
 
     return (
         <aside className="server-sidebar">
-            <div className="add-button" onClick={() => setModalOpen(true)}>
+            <div className="add-button" onClick={onOpenModal}>
                 +
             </div>
             <div className="server-sidebar__server-list">
@@ -35,7 +43,11 @@ const ServerSidebar: React.FC = observer(() => {
             <div className="settings-button" onClick={handleSetting}>
                 ⚙️
             </div>
-            <ServerCreateModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+            {authStore.user?.role === 'admin' && (
+                <div className="admin-button" onClick={handleAdminPanel}>
+                    👑
+                </div>
+            )}
         </aside>
     );
 });

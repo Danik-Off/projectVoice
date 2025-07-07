@@ -23,16 +23,24 @@ const ServerCreateModal: React.FC<ServerCreateModalProps> = ({ isOpen, onClose }
 
         try {
             await serverStore.createServer({ name: serverName, description: serverDescription});
+            setServerName('');
+            setServerDescription('');
             onClose();
         } catch (error) {
             notificationStore.addNotification('notifications.serverCreateError', 'error');
         }
     };
 
+    const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
+    };
+
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
+        <div className="modal-overlay" onClick={handleOverlayClick}>
             <div className="modal">
                 <h2>{t('createServerModal.title')}</h2>
                 <form onSubmit={handleCreateServer}>

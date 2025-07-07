@@ -5,8 +5,12 @@ import './styles/main.scss';
 import reportWebVitals from './reportWebVitals';
 import { router } from './routes/root';
 import ToastNotifications from './components/toastNotifications/ToastNotifications';
+import { themeStore } from './store/ThemeStore';
 
 import './constants/i18n';
+
+// Инициализируем тему
+themeStore.loadTheme();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

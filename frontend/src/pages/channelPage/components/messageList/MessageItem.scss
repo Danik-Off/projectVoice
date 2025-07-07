@@ -1,0 +1,241 @@
+@import '../../../../styles/main.scss';
+
+.message-item {
+    padding: 8px 16px;
+    margin: 2px 0;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    &.own {
+        .message-content {
+            .message-text {
+                background: linear-gradient(135deg, #7289da, #5865f2);
+                color: white;
+                border-radius: 12px 12px 4px 12px;
+                padding: 8px 12px;
+                margin-left: auto;
+                max-width: 70%;
+                word-wrap: break-word;
+            }
+        }
+
+        .message-timestamp {
+            text-align: right;
+            margin-right: 8px;
+        }
+    }
+
+    &.first-in-group {
+        margin-top: 16px;
+    }
+
+    &.deleted {
+        opacity: 0.6;
+        
+        .message-content {
+            font-style: italic;
+            color: var(--text-muted);
+        }
+    }
+
+    .message-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px;
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                overflow: hidden;
+                flex-shrink: 0;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .avatar-placeholder {
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, #7289da, #5865f2);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-weight: 600;
+                    font-size: 14px;
+                }
+            }
+
+            .user-details {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                .username {
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    font-size: 14px;
+                }
+
+                .timestamp {
+                    font-size: 11px;
+                    color: var(--text-muted);
+                }
+            }
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+
+            .action-btn {
+                background: none;
+                border: none;
+                padding: 4px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                    transform: scale(1.1);
+                }
+
+                &.edit:hover {
+                    background: rgba(114, 137, 218, 0.2);
+                }
+
+                &.delete:hover {
+                    background: rgba(237, 66, 69, 0.2);
+                }
+            }
+        }
+    }
+
+    &:hover .message-actions {
+        opacity: 1;
+    }
+
+    .message-content {
+        margin-left: 40px;
+
+        .message-text {
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            border-radius: 12px 12px 12px 4px;
+            padding: 8px 12px;
+            max-width: 70%;
+            word-wrap: break-word;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        .edit-form {
+            .textarea {
+                width: 100%;
+                min-height: 60px;
+                padding: 8px 12px;
+                border: 2px solid var(--accent-color);
+                border-radius: 8px;
+                background: var(--background-primary);
+                color: var(--text-primary);
+                font-family: inherit;
+                font-size: 14px;
+                resize: vertical;
+                outline: none;
+
+                &:focus {
+                    border-color: #7289da;
+                    box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.2);
+                }
+            }
+
+            .edit-actions {
+                display: flex;
+                gap: 8px;
+                margin-top: 8px;
+
+                button {
+                    padding: 6px 12px;
+                    border: none;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+
+                    &.save-btn {
+                        background: linear-gradient(135deg, #43b581, #3ca374);
+                        color: white;
+
+                        &:hover {
+                            background: linear-gradient(135deg, #3ca374, #2d7d46);
+                            transform: translateY(-1px);
+                        }
+                    }
+
+                    &.cancel-btn {
+                        background: var(--background-secondary);
+                        color: var(--text-primary);
+
+                        &:hover {
+                            background: var(--background-tertiary);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .message-timestamp {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        margin-left: 40px;
+
+        .edited-indicator {
+            font-style: italic;
+        }
+    }
+}
+
+// Темная тема
+[data-theme="dark"] {
+    .message-item {
+        .message-content {
+            .message-text {
+                background: var(--background-secondary);
+                border: 1px solid var(--border-color);
+            }
+        }
+    }
+}
+
+// Светлая тема
+[data-theme="light"] {
+    .message-item {
+        .message-content {
+            .message-text {
+                background: #f8f9fa;
+                border: 1px solid #e9ecef;
+            }
+        }
+    }
+} 
