@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import serverStore from '../../store/serverStore';
 import { authStore } from '../../store/authStore';
 import { serverMembersService } from '../../services/serverMembersService';
@@ -9,6 +10,7 @@ import notificationStore from '../../store/NotificationStore';
 import './ServerSettings.scss';
 
 const ServerSettings: React.FC = observer(() => {
+    const { t } = useTranslation();
     const { serverId } = useParams<{ serverId: string }>();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('overview');
@@ -47,11 +49,11 @@ const ServerSettings: React.FC = observer(() => {
             
         } catch (error) {
             console.error('Ошибка загрузки данных сервера:', error);
-            notificationStore.addNotification('Ошибка загрузки данных сервера', 'error');
+            notificationStore.addNotification(t('notifications.serverLoadError'), 'error');
         } finally {
             setLoading(false);
         }
-    }, [serverId]);
+    }, [serverId, t]);
 
     useEffect(() => {
         if (serverId) {
@@ -83,12 +85,12 @@ const ServerSettings: React.FC = observer(() => {
             await loadServerData(); // Перезагружаем данные
         } catch (error) {
             console.error('Ошибка изменения роли:', error);
-            notificationStore.addNotification('Ошибка изменения роли участника', 'error');
+            notificationStore.addNotification(t('notifications.roleChangeError'), 'error');
         }
     };
 
     const handleRemoveMember = async (memberId: number) => {
-        if (!window.confirm('Вы уверены, что хотите удалить этого участника из сервера?')) {
+        if (!window.confirm(t('serverMembers.removeConfirm'))) {
             return;
         }
 
@@ -97,7 +99,7 @@ const ServerSettings: React.FC = observer(() => {
             await loadServerData(); // Перезагружаем данные
         } catch (error) {
             console.error('Ошибка удаления участника:', error);
-            notificationStore.addNotification('Ошибка удаления участника', 'error');
+            notificationStore.addNotification(t('notifications.memberRemoveError'), 'error');
         }
     };
 
@@ -114,7 +116,7 @@ const ServerSettings: React.FC = observer(() => {
             setIsEditing(false);
         } catch (error) {
             console.error('Ошибка обновления сервера:', error);
-            notificationStore.addNotification('Ошибка обновления настроек сервера', 'error');
+            notificationStore.addNotification(t('notifications.serverUpdateError'), 'error');
         }
     };
 
@@ -136,7 +138,7 @@ const ServerSettings: React.FC = observer(() => {
     const handleDeleteServer = async () => {
         if (!serverId) return;
 
-        if (!window.confirm('Вы уверены, что хотите удалить этот сервер? Это действие нельзя отменить.')) {
+        if (!window.confirm(t('serverSettings.dangerTab.deleteServer.confirmMessage'))) {
             return;
         }
 
@@ -144,11 +146,11 @@ const ServerSettings: React.FC = observer(() => {
             await serverStore.deleteServer(parseInt(serverId));
             // Обновляем список серверов после удаления
             await serverStore.fetchServers();
-            notificationStore.addNotification('Сервер удален', 'info');
+            notificationStore.addNotification(t('notifications.serverDeleted'), 'info');
             navigate('/'); // Перенаправляем на главную страницу
         } catch (error) {
             console.error('Ошибка удаления сервера:', error);
-            notificationStore.addNotification('Ошибка удаления сервера', 'error');
+            notificationStore.addNotification(t('notifications.serverDeleteError'), 'error');
         }
     };
 
@@ -156,10 +158,10 @@ const ServerSettings: React.FC = observer(() => {
         return (
             <div className="server-settings">
                 <div className="error">
-                    <h2>Требуется авторизация</h2>
-                    <p>Для доступа к настройкам сервера необходимо войти в аккаунт.</p>
+                    <h2>{t('serverSettings.authRequired.title')}</h2>
+                    <p>{t('serverSettings.authRequired.message')}</p>
                     <button onClick={() => navigate('/auth')} className="back-button">
-                        Войти в аккаунт
+                        {t('serverSettings.authRequired.loginButton')}
                     </button>
                 </div>
             </div>
@@ -169,7 +171,7 @@ const ServerSettings: React.FC = observer(() => {
     if (loading) {
         return (
             <div className="server-settings">
-                <div className="loading">Загрузка настроек сервера...</div>
+                <div className="loading">{t('serverSettings.loading')}</div>
             </div>
         );
     }
@@ -177,7 +179,7 @@ const ServerSettings: React.FC = observer(() => {
     if (!currentUser) {
         return (
             <div className="server-settings">
-                <div className="loading">Загрузка данных пользователя...</div>
+                <div className="loading">{t('serverSettings.loadingUser')}</div>
             </div>
         );
     }
@@ -185,7 +187,7 @@ const ServerSettings: React.FC = observer(() => {
     if (!server) {
         return (
             <div className="server-settings">
-                <div className="error">Сервер не найден</div>
+                <div className="error">{t('serverSettings.serverNotFound')}</div>
             </div>
         );
     }
@@ -222,9 +224,9 @@ const ServerSettings: React.FC = observer(() => {
         <div className="server-settings">
             <div className="settings-header">
                 <button className="back-button" onClick={handleBackToServer}>
-                    ← Назад к серверу
+                    {t('serverSettings.backToServer')}
                 </button>
-                <h1>Настройки сервера: {server.name}</h1>
+                <h1>{t('serverSettings.title')}: {server.name}</h1>
             </div>
 
             <div className="settings-content">
@@ -234,32 +236,32 @@ const ServerSettings: React.FC = observer(() => {
                             className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
                             onClick={() => setActiveTab('overview')}
                         >
-                            Обзор
+                            {t('serverSettings.overview')}
                         </button>
                         <button 
                             className={`nav-item ${activeTab === 'members' ? 'active' : ''}`}
                             onClick={() => setActiveTab('members')}
                         >
-                            Участники
+                            {t('serverSettings.members')}
                         </button>
                         <button 
                             className={`nav-item ${activeTab === 'roles' ? 'active' : ''}`}
                             onClick={() => setActiveTab('roles')}
                         >
-                            Роли
+                            {t('serverSettings.roles')}
                         </button>
                         <button 
                             className={`nav-item ${activeTab === 'channels' ? 'active' : ''}`}
                             onClick={() => setActiveTab('channels')}
                         >
-                            Каналы
+                            {t('serverSettings.channels')}
                         </button>
                         {currentUserRole === 'owner' && (
                             <button 
                                 className={`nav-item ${activeTab === 'danger' ? 'active' : ''}`}
                                 onClick={() => setActiveTab('danger')}
                             >
-                                Опасная зона
+                                {t('serverSettings.dangerZone')}
                             </button>
                         )}
                     </nav>
@@ -268,11 +270,11 @@ const ServerSettings: React.FC = observer(() => {
                 <div className="settings-main">
                     {activeTab === 'overview' && (
                         <div className="overview-tab">
-                            <h2>Обзор сервера</h2>
+                            <h2>{t('serverSettings.overviewTab.title')}</h2>
                             {isEditing ? (
                                 <div className="edit-form">
                                     <div className="form-group">
-                                        <label htmlFor="server-name">Название сервера:</label>
+                                        <label htmlFor="server-name">{t('serverSettings.overviewTab.serverName')}</label>
                                         <input
                                             id="server-name"
                                             type="text"
@@ -282,7 +284,7 @@ const ServerSettings: React.FC = observer(() => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="server-description">Описание:</label>
+                                        <label htmlFor="server-description">{t('serverSettings.overviewTab.description')}</label>
                                         <textarea
                                             id="server-description"
                                             value={editForm.description}
@@ -293,34 +295,34 @@ const ServerSettings: React.FC = observer(() => {
                                     </div>
                                     <div className="form-actions">
                                         <button className="save-button" onClick={handleSaveServer}>
-                                            Сохранить
+                                            {t('serverSettings.overviewTab.save')}
                                         </button>
                                         <button className="cancel-button" onClick={handleCancelEdit}>
-                                            Отмена
+                                            {t('serverSettings.overviewTab.cancel')}
                                         </button>
                                     </div>
                                 </div>
                             ) : (
                                 <div className="server-info">
                                     <div className="info-item">
-                                        <label>Название сервера:</label>
+                                        <label>{t('serverSettings.overviewTab.serverName')}</label>
                                         <span>{server.name}</span>
                                     </div>
                                     <div className="info-item">
-                                        <label>Описание:</label>
-                                        <span>{server.description || 'Описание отсутствует'}</span>
+                                        <label>{t('serverSettings.overviewTab.description')}</label>
+                                        <span>{server.description || t('serverSettings.overviewTab.noDescription')}</span>
                                     </div>
                                     <div className="info-item">
-                                        <label>Количество участников:</label>
+                                        <label>{t('serverSettings.overviewTab.membersCount')}</label>
                                         <span>{members.length}</span>
                                     </div>
                                     <div className="info-item">
-                                        <label>Количество каналов:</label>
+                                        <label>{t('serverSettings.overviewTab.channelsCount')}</label>
                                         <span>{server.channels?.length || 0}</span>
                                     </div>
                                     <div className="edit-actions">
                                         <button className="edit-button" onClick={handleEditServer}>
-                                            Редактировать сервер
+                                            {t('serverSettings.overviewTab.editServer')}
                                         </button>
                                     </div>
                                 </div>
@@ -330,10 +332,10 @@ const ServerSettings: React.FC = observer(() => {
 
                     {activeTab === 'members' && (
                         <div className="members-tab">
-                            <h2>Управление участниками</h2>
+                            <h2>{t('serverSettings.membersTab.title')}</h2>
                             <div className="debug-info">
-                                <p>Количество участников: {members.length}</p>
-                                <p>Данные участников: {JSON.stringify(members, null, 2)}</p>
+                                <p>{t('serverSettings.membersTab.membersCount')} {members.length}</p>
+                                <p>{t('serverSettings.membersTab.membersData')} {JSON.stringify(members, null, 2)}</p>
                             </div>
                             <ServerMembers 
                                 members={members}
@@ -345,23 +347,23 @@ const ServerSettings: React.FC = observer(() => {
 
                     {activeTab === 'roles' && (
                         <div className="roles-tab">
-                            <h2>Роли сервера</h2>
+                            <h2>{t('serverSettings.rolesTab.title')}</h2>
                             <div className="roles-info">
                                 <div className="role-item">
-                                    <h3>👑 Владелец</h3>
-                                    <p>Полный контроль над сервером, включая удаление сервера</p>
+                                    <h3>{t('serverSettings.rolesTab.owner.title')}</h3>
+                                    <p>{t('serverSettings.rolesTab.owner.description')}</p>
                                 </div>
                                 <div className="role-item">
-                                    <h3>⚡ Администратор</h3>
-                                    <p>Управление участниками, каналами и настройками сервера</p>
+                                    <h3>{t('serverSettings.rolesTab.admin.title')}</h3>
+                                    <p>{t('serverSettings.rolesTab.admin.description')}</p>
                                 </div>
                                 <div className="role-item">
-                                    <h3>🛡️ Модератор</h3>
-                                    <p>Управление участниками и модерация каналов</p>
+                                    <h3>{t('serverSettings.rolesTab.moderator.title')}</h3>
+                                    <p>{t('serverSettings.rolesTab.moderator.description')}</p>
                                 </div>
                                 <div className="role-item">
-                                    <h3>👤 Участник</h3>
-                                    <p>Обычный участник сервера</p>
+                                    <h3>{t('serverSettings.rolesTab.member.title')}</h3>
+                                    <p>{t('serverSettings.rolesTab.member.description')}</p>
                                 </div>
                             </div>
                         </div>
@@ -369,7 +371,7 @@ const ServerSettings: React.FC = observer(() => {
 
                     {activeTab === 'channels' && (
                         <div className="channels-tab">
-                            <h2>Каналы сервера</h2>
+                            <h2>{t('serverSettings.channelsTab.title')}</h2>
                             <div className="channels-list">
                                 {server.channels?.map((channel: any) => (
                                     <div key={channel.id} className="channel-item">
@@ -379,23 +381,23 @@ const ServerSettings: React.FC = observer(() => {
                                         <span className="channel-name">{channel.name}</span>
                                         <span className="channel-type">{channel.type}</span>
                                     </div>
-                                )) || <p>Каналы не найдены</p>}
+                                )) || <p>{t('serverSettings.channelsTab.noChannels')}</p>}
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'danger' && currentUserRole === 'owner' && (
                         <div className="danger-tab">
-                            <h2>Опасная зона</h2>
+                            <h2>{t('serverSettings.dangerTab.title')}</h2>
                             <div className="danger-actions">
                                 <div className="danger-item">
-                                    <h3>Удалить сервер</h3>
-                                    <p>Это действие нельзя отменить. Все данные сервера будут удалены навсегда.</p>
+                                    <h3>{t('serverSettings.dangerTab.deleteServer.title')}</h3>
+                                    <p>{t('serverSettings.dangerTab.deleteServer.description')}</p>
                                     <button 
                                         className="danger-button"
                                         onClick={handleDeleteServer}
                                     >
-                                        Удалить сервер
+                                        {t('serverSettings.dangerTab.deleteServer.button')}
                                     </button>
                                 </div>
                             </div>

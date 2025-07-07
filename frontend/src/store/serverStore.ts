@@ -32,7 +32,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
-            notificationStore.addNotification('Ошибка загрузки списка серверов', 'error');
+            notificationStore.addNotification('notifications.serversLoadError', 'error');
         } finally {
             runInAction(() => {
                 this.loading = false;
@@ -56,7 +56,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
-            notificationStore.addNotification('Ошибка загрузки данных сервера', 'error');
+            notificationStore.addNotification('notifications.serverDataLoadError', 'error');
         } finally {
             runInAction(() => {
                 this.loading = false;
@@ -86,7 +86,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
-            notificationStore.addNotification('Ошибка создания сервера', 'error');
+            notificationStore.addNotification('notifications.serverCreateError', 'error');
         }
     }
 
@@ -110,7 +110,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
-            notificationStore.addNotification('Ошибка обновления сервера', 'error');
+            notificationStore.addNotification('notifications.serverUpdateError', 'error');
         }
     }
 
@@ -134,7 +134,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
-            notificationStore.addNotification('Ошибка удаления сервера', 'error');
+            notificationStore.addNotification('notifications.serverDeleteError', 'error');
             throw error; // Пробрасываем ошибку дальше
         }
     }

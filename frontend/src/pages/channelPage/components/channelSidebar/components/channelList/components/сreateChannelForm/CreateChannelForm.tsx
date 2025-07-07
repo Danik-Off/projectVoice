@@ -1,5 +1,6 @@
 // CreateChannelForm.tsx
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import serverStore from '../../../../../../../../store/serverStore';
 import { Channel } from '../../../../../../../../types/channel';
 import './CreateChannelForm.css'; // Import the CSS file for styling
@@ -11,6 +12,7 @@ interface CreateChannelFormProps {
 }
 
 const CreateChannelForm: React.FC<CreateChannelFormProps> = ({ onClose }) => {
+    const { t } = useTranslation();
     const [channelName, setChannelName] = useState<string>('');
     const [channelType, setChannelType] = useState<'text' | 'voice'>('text'); // Default to 'text'
     const [description, setDescription] = useState<string>('');
@@ -37,11 +39,11 @@ const CreateChannelForm: React.FC<CreateChannelFormProps> = ({ onClose }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <h2>Create Channel</h2>
+                <h2>{t('createChannelForm.title')}</h2>
                 <form onSubmit={handleCreateChannel}>
                     <div>
                         <label>
-                            Channel Name:
+                            {t('createChannelForm.channelName')}
                             <input
                                 type="text"
                                 value={channelName}
@@ -53,20 +55,20 @@ const CreateChannelForm: React.FC<CreateChannelFormProps> = ({ onClose }) => {
                     </div>
                     <div>
                         <label>
-                            Channel Type:
+                            {t('createChannelForm.channelType')}
                             <select
                                 value={channelType}
                                 onChange={(e) => setChannelType(e.target.value as 'text' | 'voice')}
                                 className="select-field"
                             >
-                                <option value="text">Text</option>
-                                <option value="voice">Voice</option>
+                                <option value="text">{t('createChannelForm.text')}</option>
+                                <option value="voice">{t('createChannelForm.voice')}</option>
                             </select>
                         </label>
                     </div>
                     <div>
                         <label>
-                            Description (optional):
+                            {t('createChannelForm.description')}
                             <input
                                 type="text"
                                 value={description}
@@ -77,10 +79,10 @@ const CreateChannelForm: React.FC<CreateChannelFormProps> = ({ onClose }) => {
                     </div>
                     <div className="modal-actions">
                         <button type="submit" className="submit-button">
-                            Create Channel
+                            {t('createChannelForm.create')}
                         </button>
                         <button type="button" onClick={onClose} className="cancel-button">
-                            Cancel
+                            {t('createChannelForm.cancel')}
                         </button>
                     </div>
                 </form>

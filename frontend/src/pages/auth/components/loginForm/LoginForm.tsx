@@ -23,17 +23,27 @@ const LoginForm: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleLogin}>
-            <input type="email" name="email" placeholder={t('authPage.email')} className="auth-input" required />
-            <input
-                type="password"
-                name="password"
-                placeholder={t('authPage.password')}
-                className="auth-input"
-                required
-            />
+        <form onSubmit={handleLogin} className="auth-form">
+            <div className="input-group">
+                <input 
+                    type="email" 
+                    name="email" 
+                    placeholder={t('authPage.email')} 
+                    className="auth-input" 
+                    required 
+                />
+            </div>
+            <div className="input-group">
+                <input
+                    type="password"
+                    name="password"
+                    placeholder={t('authPage.password')}
+                    className="auth-input"
+                    required
+                />
+            </div>
             <button type="submit" className="auth-button">
-            {t("authPage.btnLogin")}
+                {t("authPage.btnLogin")}
             </button>
         </form>
     );

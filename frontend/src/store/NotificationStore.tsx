@@ -1,5 +1,6 @@
 // NotificationStore.ts
 import { makeAutoObservable } from 'mobx';
+import i18n from '../constants/i18n';
 
 interface Notification {
     id: string;
@@ -17,7 +18,9 @@ class NotificationStore {
 
     addNotification(message: string, type: 'info' | 'success' | 'error' | 'warning', duration: number = 5000) {
         const id = Math.random().toString(36).substr(2, 9); // simple ID generator
-        const notification: Notification = { id, message, type, duration };
+        // Проверяем, является ли сообщение ключом перевода
+        const translatedMessage = message.startsWith('notifications.') ? i18n.t(message) : message;
+        const notification: Notification = { id, message: translatedMessage, type, duration };
         this.notifications.push(notification);
 
         // Automatically remove the notification after the specified duration

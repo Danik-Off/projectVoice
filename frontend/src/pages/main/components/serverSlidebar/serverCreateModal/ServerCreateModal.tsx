@@ -25,7 +25,7 @@ const ServerCreateModal: React.FC<ServerCreateModalProps> = ({ isOpen, onClose }
             await serverStore.createServer({ name: serverName, description: serverDescription});
             onClose();
         } catch (error) {
-            notificationStore.addNotification('Ошибка создания сервера', 'error');
+            notificationStore.addNotification('notifications.serverCreateError', 'error');
         }
     };
 

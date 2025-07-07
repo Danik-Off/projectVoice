@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { Channel } from '../types/channel';
 import { channelService } from '../services/channelService';
+import notificationStore from './NotificationStore';
 
 class ChannelsStore {
     public channels: Channel[] = [];
@@ -40,10 +41,12 @@ class ChannelsStore {
             runInAction(() => {
                 this.channels.push(newChannel);
             });
+            notificationStore.addNotification('notifications.channelCreateSuccess', 'info');
         } catch (error) {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
+            notificationStore.addNotification('notifications.channelCreateError', 'error');
         }
     }
 

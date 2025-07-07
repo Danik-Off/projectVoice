@@ -38,20 +38,53 @@ const AuthPage: React.FC = observer(() => {
                     <Spinner />
                 </div>
             )}
-            <div className="auth-box">
-                <h1 className="auth-title">{isLogin ? t('authPage.welcomeBack') : t('authPage.createAccount')}</h1>
-                {isLogin ? <LoginForm /> : <RegisterForm />}
-                <p className="auth-switch">
-                    {isLogin ? t('authPage.needAccount') : t('authPage.alreadyHaveAccount')}{' '}
-                    <span onClick={() => setIsLogin(!isLogin)}>
-                        {isLogin ? t('authPage.signUp') : t('authPage.login')}
-                    </span>
-                </p>
+            
+            {/* Анимированный фон */}
+            <div className="auth-background">
+                <div className="floating-shapes">
+                    <div className="shape shape-1"></div>
+                    <div className="shape shape-2"></div>
+                    <div className="shape shape-3"></div>
+                    <div className="shape shape-4"></div>
+                    <div className="shape shape-5"></div>
+                </div>
+            </div>
 
-                {/* Кнопка для переключения языка */}
-                <button onClick={toggleLanguage} className="language-toggle">
-                    {i18n.language === 'en' ? 'Русский' : 'English'}
-                </button>
+            <div className="auth-content">
+                <div className="auth-card">
+                    <div className="auth-header">
+                        <div className="logo">
+                            <div className="logo-icon">🎙️</div>
+                            <h1 className="logo-text">ProjectVoice</h1>
+                        </div>
+                        <h2 className="auth-title">{isLogin ? t('authPage.welcomeBack') : t('authPage.createAccount')}</h2>
+                        <p className="auth-subtitle">
+                            {isLogin ? t('authPage.loginSubtitle') : t('authPage.registerSubtitle')}
+                        </p>
+                    </div>
+
+                    <div className="auth-form-container">
+                        {isLogin ? <LoginForm /> : <RegisterForm />}
+                    </div>
+
+                    <div className="auth-footer">
+                        <p className="auth-switch">
+                            {isLogin ? t('authPage.needAccount') : t('authPage.alreadyHaveAccount')}{' '}
+                            <button 
+                                type="button" 
+                                className="switch-button"
+                                onClick={() => setIsLogin(!isLogin)}
+                            >
+                                {isLogin ? t('authPage.signUp') : t('authPage.login')}
+                            </button>
+                        </p>
+
+                        <button onClick={toggleLanguage} className="language-toggle">
+                            <span className="language-icon">🌐</span>
+                            {i18n.language === 'en' ? 'Русский' : 'English'}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import { authStore } from '../../store/authStore';
 import { API_URL } from '../../configs/apiConfig';
 import notificationStore from '../../store/NotificationStore';
@@ -23,6 +24,7 @@ interface ServerData {
 }
 
 const InvitePage: React.FC = observer(() => {
+    const { t } = useTranslation();
     const { token } = useParams<{ token: string }>();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
@@ -46,7 +48,7 @@ const InvitePage: React.FC = observer(() => {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.log('Error data:', errorData);
-                throw new Error(errorData.error || 'Приглашение не найдено');
+                throw new Error(errorData.error || t('invitePage.error'));
             }
 
             const data = await response.json();
@@ -55,13 +57,13 @@ const InvitePage: React.FC = observer(() => {
             setServerData(data.server);
         } catch (err) {
             console.error('Error fetching invite data:', err);
-            const errorMessage = err instanceof Error ? err.message : 'Произошла ошибка';
+            const errorMessage = err instanceof Error ? err.message : t('invitePage.error');
             setError(errorMessage);
             notificationStore.addNotification(errorMessage, 'error');
         } finally {
             setLoading(false);
         }
-    }, [token]);
+    }, [token, t]);
 
     useEffect(() => {
         if (token) {
@@ -88,13 +90,13 @@ const InvitePage: React.FC = observer(() => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Ошибка принятия приглашения');
+                throw new Error(errorData.error || t('notifications.inviteAcceptError'));
             }
 
             // Перенаправляем на сервер
             navigate(`/server/${serverData?.id}`);
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Ошибка принятия приглашения';
+            const errorMessage = err instanceof Error ? err.message : t('notifications.inviteAcceptError');
             setError(errorMessage);
             notificationStore.addNotification(errorMessage, 'error');
         } finally {
@@ -110,7 +112,7 @@ const InvitePage: React.FC = observer(() => {
         return (
             <div className="invite-page">
                 <div className="invite-container">
-                    <div className="loading">Загрузка приглашения...</div>
+                    <div className="loading">{t('invitePage.loading')}</div>
                 </div>
             </div>
         );
@@ -121,10 +123,10 @@ const InvitePage: React.FC = observer(() => {
             <div className="invite-page">
                 <div className="invite-container">
                     <div className="error">
-                        <h2>Ошибка</h2>
+                        <h2>{t('invitePage.error')}</h2>
                         <p>{error}</p>
                         <button onClick={() => navigate('/')} className="btn-primary">
-                            Вернуться на главную
+                            {t('invitePage.backToHome')}
                         </button>
                     </div>
                 </div>
@@ -137,10 +139,10 @@ const InvitePage: React.FC = observer(() => {
             <div className="invite-page">
                 <div className="invite-container">
                     <div className="error">
-                        <h2>Приглашение не найдено</h2>
+                        <h2>{t('invitePage.error')}</h2>
                         <p>Возможно, приглашение истекло или было удалено.</p>
                         <button onClick={() => navigate('/')} className="btn-primary">
-                            Вернуться на главную
+                            {t('invitePage.backToHome')}
                         </button>
                     </div>
                 </div>
@@ -152,7 +154,7 @@ const InvitePage: React.FC = observer(() => {
         <div className="invite-page">
             <div className="invite-container">
                 <div className="invite-header">
-                    <h1>Приглашение на сервер</h1>
+                    <h1>{t('invitePage.title')}</h1>
                 </div>
 
                 <div className="server-info">
@@ -193,13 +195,13 @@ const InvitePage: React.FC = observer(() => {
                             disabled={accepting}
                             className="btn-accept"
                         >
-                            {accepting ? 'Присоединяемся...' : 'Присоединиться к серверу'}
+                            {accepting ? 'Присоединяемся...' : t('invitePage.joinServer')}
                         </button>
                     ) : (
                         <div className="auth-required">
-                            <p>Для присоединения к серверу необходимо войти в аккаунт</p>
+                            <p>{t('invitePage.loginRequired')}</p>
                             <button onClick={handleLogin} className="btn-login">
-                                Войти в аккаунт
+                                {t('invitePage.loginButton')}
                             </button>
                         </div>
                     )}

@@ -2,8 +2,10 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { authStore } from '../../../../store/authStore';
+import { useTranslation } from 'react-i18next';
 
 const RegisterForm: React.FC = () => {
+    const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const redirect = searchParams.get('redirect');
 
@@ -23,12 +25,36 @@ const RegisterForm: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleRegister}>
-            <input type="text" name="username" placeholder="Username" className="auth-input" required />
-            <input type="email" name="email" placeholder="Email" className="auth-input" required />
-            <input type="password" name="password" placeholder="Password" className="auth-input" required />
+        <form onSubmit={handleRegister} className="auth-form">
+            <div className="input-group">
+                <input 
+                    type="text" 
+                    name="username" 
+                    placeholder={t('authPage.username')} 
+                    className="auth-input" 
+                    required 
+                />
+            </div>
+            <div className="input-group">
+                <input 
+                    type="email" 
+                    name="email" 
+                    placeholder={t('authPage.email')} 
+                    className="auth-input" 
+                    required 
+                />
+            </div>
+            <div className="input-group">
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder={t('authPage.password')} 
+                    className="auth-input" 
+                    required 
+                />
+            </div>
             <button type="submit" className="auth-button">
-                Sign Up
+                {t('authPage.signUp')}
             </button>
         </form>
     );

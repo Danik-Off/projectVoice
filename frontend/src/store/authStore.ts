@@ -77,7 +77,7 @@ class AuthStore {
             this.isAuthenticated = true;
         } catch (error) {
             console.error('Failed to load user data:', error);
-            notificationStore.addNotification('Ошибка загрузки данных пользователя', 'error');
+            notificationStore.addNotification('notifications.serverDataLoadError', 'error');
             // Если не удалось загрузить данные пользователя, очищаем токен
             this.logout();
         }

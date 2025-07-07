@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import './VoiceControls.scss';
 import voiceRoomStore from '../../../../../../store/roomStore';
 import { authStore } from '../../../../../../store/authStore';
 import notificationStore from '../../../../../../store/NotificationStore';
 
 const VoiceControls: React.FC = observer(() => {
+    const { t } = useTranslation();
     const [isMicOn, setIsMicOn] = useState<boolean>(true);
     const [isDeafened, setIsDeafened] = useState<boolean>(false);
     const [showVolumeSlider, setShowVolumeSlider] = useState<boolean>(false);
@@ -18,7 +20,7 @@ const VoiceControls: React.FC = observer(() => {
         setIsMicOn(!isMicOn);
         isMicOn ? voiceRoomStore.muteMicrophone() : voiceRoomStore.unmuteMicrophone();
         notificationStore.addNotification(
-            isMicOn ? 'Микрофон заглушен' : 'Микрофон включен', 
+            isMicOn ? t('voiceControls.micOff') : t('voiceControls.micOn'), 
             'info'
         );
     };
@@ -26,7 +28,7 @@ const VoiceControls: React.FC = observer(() => {
     const handleDeafenToggle = (): void => {
         setIsDeafened(!isDeafened);
         notificationStore.addNotification(
-            isDeafened ? 'Звук включен' : 'Звук заглушен', 
+            isDeafened ? t('voiceControls.deafenOff') : t('voiceControls.deafenOn'), 
             'info'
         );
         // TODO: Реализовать заглушение звука
@@ -34,7 +36,7 @@ const VoiceControls: React.FC = observer(() => {
 
     const handleDisconnect = (): void => {
         voiceRoomStore.disconnectToRoom();
-        notificationStore.addNotification('Отключились от голосового канала', 'info');
+        notificationStore.addNotification(t('voiceControls.disconnect'), 'info');
     };
 
     // Если не подключен к голосовому каналу, показываем минимальный интерфейс
@@ -69,7 +71,7 @@ const VoiceControls: React.FC = observer(() => {
             <div className="voice-controls__channel-info">
                 <div className="voice-controls__channel-header">
                     <span className="voice-controls__channel-name">🔊 {currentVoiceChannel.name}</span>
-                    <span className="voice-controls__participant-count">{participants.length} участников</span>
+                    <span className="voice-controls__participant-count">{participants.length} {t('voiceControls.participants')}</span>
                 </div>
                 
                 {/* Список участников */}
@@ -89,9 +91,10 @@ const VoiceControls: React.FC = observer(() => {
                                     <div className="voice-controls__speaking-indicator"></div>
                                 )}
                             </div>
-                            <span className="voice-controls__participant-name">
-                                {participant.userData?.username || 'Unknown User'}
-                            </span>
+                                                    <span className="voice-controls__participant-name">
+                            {participant.userData?.username || 'Unknown User'}
+                            {participant.isSpeaking && ` (${t('voiceControls.speaking')})`}
+                        </span>
                             <div className="voice-controls__participant-status">
                                 {participant.micToggle ? '🎤' : '🔇'}
                             </div>
@@ -116,7 +119,7 @@ const VoiceControls: React.FC = observer(() => {
                     <div className="voice-controls__user-details">
                         <span className="voice-controls__username">{currentUser?.username || 'User'}</span>
                         <span className="voice-controls__status">
-                            {isMicOn ? 'Говорит' : 'Заглушен'}
+                            {isMicOn ? t('voiceControls.speaking') : t('voiceControls.micOff')}
                         </span>
                     </div>
                 </div>
@@ -125,7 +128,7 @@ const VoiceControls: React.FC = observer(() => {
                     <button 
                         className={`voice-controls__button ${!isMicOn ? 'voice-controls__button--muted' : ''}`}
                         onClick={handleMicToggle}
-                        title={isMicOn ? 'Заглушить микрофон' : 'Включить микрофон'}
+                        title={isMicOn ? t('voiceControls.micOff') : t('voiceControls.micOn')}
                     >
                         {isMicOn ? '🎤' : '🔇'}
                     </button>
@@ -133,7 +136,7 @@ const VoiceControls: React.FC = observer(() => {
                     <button 
                         className={`voice-controls__button ${isDeafened ? 'voice-controls__button--deafened' : ''}`}
                         onClick={handleDeafenToggle}
-                        title={isDeafened ? 'Включить звук' : 'Заглушить звук'}
+                        title={isDeafened ? t('voiceControls.deafenOff') : t('voiceControls.deafenOn')}
                     >
                         {isDeafened ? '🔇' : '🔊'}
                     </button>
@@ -141,7 +144,7 @@ const VoiceControls: React.FC = observer(() => {
                     <button 
                         className="voice-controls__button voice-controls__button--settings"
                         onClick={() => setShowVolumeSlider(!showVolumeSlider)}
-                        title="Настройки звука"
+                        title={t('voiceControls.volume')}
                     >
                         ⚙️
                     </button>
@@ -149,7 +152,7 @@ const VoiceControls: React.FC = observer(() => {
                     <button 
                         className="voice-controls__button voice-controls__button--disconnect"
                         onClick={handleDisconnect}
-                        title="Отключиться"
+                        title={t('voiceControls.disconnect')}
                     >
                         📞
                     </button>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
+import { useTranslation } from 'react-i18next';
 import { authStore } from '../../../../../../store/authStore';
 import { ServerMember } from '../../../../../../types/server';
 import './ServerMembers.scss';
@@ -15,6 +16,7 @@ const ServerMembers: React.FC<ServerMembersProps> = observer(({
     onRoleChange, 
     onRemoveMember 
 }) => {
+    const { t } = useTranslation();
     console.log('ServerMembers - received members:', members);
     const [expandedRoles, setExpandedRoles] = useState<{ [key: string]: boolean }>({});
 
@@ -57,7 +59,7 @@ const ServerMembers: React.FC<ServerMembersProps> = observer(({
 
     return (
         <div className="server-members">
-            <h3 className="members-title">Участники — {members.length}</h3>
+            <h3 className="members-title">{t('serverMembers.title')} — {members.length}</h3>
             
             {roleOrder.map(role => {
                 const roleMembers = members.filter(member => member.role === role);
@@ -72,7 +74,7 @@ const ServerMembers: React.FC<ServerMembersProps> = observer(({
                             onClick={() => toggleRoleExpansion(role)}
                         >
                             <span className="role-icon">{getRoleIcon(role)}</span>
-                            <span className="role-name">{role}</span>
+                            <span className="role-name">{t(`serverMembers.roles.${role}`)}</span>
                             <span className="role-count">({roleMembers.length})</span>
                             <span className="expand-icon">{isExpanded ? '▼' : '▶'}</span>
                         </div>
@@ -105,11 +107,11 @@ const ServerMembers: React.FC<ServerMembersProps> = observer(({
                                                         onChange={(e) => onRoleChange?.(member.id, e.target.value)}
                                                         className="role-select"
                                                     >
-                                                        <option value="member">Member</option>
-                                                        <option value="moderator">Moderator</option>
-                                                        <option value="admin">Admin</option>
+                                                        <option value="member">{t('serverMembers.roles.member')}</option>
+                                                        <option value="moderator">{t('serverMembers.roles.moderator')}</option>
+                                                        <option value="admin">{t('serverMembers.roles.admin')}</option>
                                                         {currentUserRole === 'owner' && (
-                                                            <option value="owner">Owner</option>
+                                                            <option value="owner">{t('serverMembers.roles.owner')}</option>
                                                         )}
                                                     </select>
                                                 )}
@@ -118,7 +120,7 @@ const ServerMembers: React.FC<ServerMembersProps> = observer(({
                                                     <button
                                                         onClick={() => onRemoveMember?.(member.id)}
                                                         className="remove-member-btn"
-                                                        title="Удалить участника"
+                                                        title={t('serverMembers.removeMember')}
                                                     >
                                                         🗑️
                                                     </button>
