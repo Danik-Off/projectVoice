@@ -12,6 +12,12 @@ import './constants/i18n';
 // Инициализируем тему
 themeStore.loadTheme();
 
+// Дополнительная проверка инициализации темы
+const rootElement = document.documentElement;
+if (!rootElement.getAttribute('data-theme')) {
+    rootElement.setAttribute('data-theme', themeStore.currentTheme);
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     // <React.StrictMode>

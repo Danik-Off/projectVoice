@@ -4,25 +4,34 @@ const { User } = require('../models');
 const checkRole = (requiredRoles) => {
     return async (req, res, next) => {
         try {
+            console.log('🔍 Проверка роли для пользователя:', req.user.userId);
+            console.log('🔍 Требуемые роли:', requiredRoles);
+            
             const user = await User.findByPk(req.user.userId);
             
             if (!user) {
+                console.log('❌ Пользователь не найден');
                 return res.status(404).json({ error: 'Пользователь не найден' });
             }
 
+            console.log('👤 Найден пользователь:', { id: user.id, username: user.username, role: user.role, isActive: user.isActive });
+
             if (!user.isActive) {
+                console.log('❌ Аккаунт заблокирован');
                 return res.status(403).json({ error: 'Аккаунт заблокирован' });
             }
 
             if (!requiredRoles.includes(user.role)) {
+                console.log('❌ Недостаточно прав. Роль пользователя:', user.role, 'Требуемые роли:', requiredRoles);
                 return res.status(403).json({ error: 'Недостаточно прав' });
             }
 
+            console.log('✅ Роль проверена успешно');
             req.userRole = user.role;
             req.userData = user;
             next();
         } catch (error) {
-            console.error('Ошибка проверки роли:', error);
+            console.error('❌ Ошибка проверки роли:', error);
             res.status(500).json({ error: 'Ошибка сервера' });
         }
     };

@@ -26,14 +26,32 @@
     },
     "settingsPage": {
         "title": "Settings",
-        "buttonBack":"back",
+        "back": "Back",
+        "tabs": {
+            "general": "General",
+            "appearance": "Appearance",
+            "audio": "Audio",
+            "notifications": "Notifications",
+            "privacy": "Privacy",
+            "about": "About"
+        },
         "language": {
             "title": "Language",
+            "label": "Interface Language",
+            "description": "Choose your preferred language for the application interface",
             "english": "English",
             "russian": "Russian"
         },
+        "storage": {
+            "title": "Storage",
+            "cache": "Application Cache",
+            "cacheDescription": "Clear cache to free up space on your device",
+            "clearCache": "Clear Cache"
+        },
         "audio": {
             "title": "Audio Settings",
+            "microphone": "Microphone",
+            "speakers": "Speakers",
             "microphone": "Microphone:",
             "defaultMic": "Default Microphone",
             "speaker": "Speaker:",
@@ -44,10 +62,35 @@
         },
         "appearance": {
             "title": "Appearance",
+            "theme": "Theme",
+            "themeDescription": "Choose light or dark theme for the interface",
             "darkMode": "Dark Mode",
             "lightMode": "Light Mode",
             "switchToDark": "Switch to dark mode",
-            "switchToLight": "Switch to light mode"
+            "switchToLight": "Switch to light mode",
+            "accent": "Accent Color",
+            "accentColor": "Accent Color",
+            "accentDescription": "Choose the main color for the interface"
+        },
+        "notifications": {
+            "title": "Notifications",
+            "enable": "Enable Notifications",
+            "enableDescription": "Receive notifications about new messages and events"
+        },
+        "privacy": {
+            "title": "Privacy",
+            "onlineStatus": "Online Status",
+            "onlineStatusDescription": "Choose how other users see your status",
+            "online": "Online",
+            "idle": "Idle",
+            "dnd": "Do Not Disturb",
+            "invisible": "Invisible"
+        },
+        "about": {
+            "title": "About",
+            "documentation": "Documentation",
+            "reportBug": "Report Bug",
+            "suggestFeature": "Suggest Feature"
         }
     },
     "serverSettings": {

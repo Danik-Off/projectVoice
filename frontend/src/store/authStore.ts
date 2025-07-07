@@ -17,6 +17,9 @@ class AuthStore {
         status?: string;
         tag?: string;
         createdAt: string;
+        blockedAt?: string;
+        blockedBy?: string;
+        blockReason?: string;
     } | null = null;
 
     private token: string | null = null;

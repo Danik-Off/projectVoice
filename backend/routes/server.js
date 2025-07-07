@@ -6,11 +6,14 @@ const { where } = require('sequelize');
 
 const router = express.Router();
 
-// Получить все серверы
+// Получить все серверы (только незаблокированные)
 router.get('/', authenticateToken, async (req, res) => {
     // #swagger.tags = ['Servers']
     try {
         const servers = await Server.findAll({
+            where: {
+                isBlocked: false // Показываем только незаблокированные серверы
+            },
             include: [
                 {
                     model: ServerMember,
@@ -77,12 +80,37 @@ router.get('/:id', authenticateToken, async (req, res) => {
                 {
                     model: Channel,
                     as: 'channels'
+                },
+                {
+                    model: User,
+                    as: 'blockedByUser',
+                    attributes: ['id', 'username']
                 }
             ],
         });
+        
         if (!server) {
             return res.status(404).json({ message: 'Server not found' });
         }
+
+        // Если сервер заблокирован, возвращаем информацию о блокировке
+        if (server.isBlocked) {
+            return res.status(403).json({
+                message: 'Server is blocked',
+                server: {
+                    id: server.id,
+                    name: server.name,
+                    isBlocked: server.isBlocked,
+                    blockReason: server.blockReason,
+                    blockedAt: server.blockedAt,
+                    blockedBy: server.blockedByUser ? {
+                        id: server.blockedByUser.id,
+                        username: server.blockedByUser.username
+                    } : null
+                }
+            });
+        }
+
         res.status(200).json(server);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -96,6 +124,20 @@ const checkServerOwnership = async (req, res, next) => {
 
     if (!server) {
         return res.status(404).json({ message: 'Server not found' });
+    }
+
+    // Проверяем, заблокирован ли сервер
+    if (server.isBlocked) {
+        return res.status(403).json({ 
+            message: 'Server is blocked',
+            server: {
+                id: server.id,
+                name: server.name,
+                isBlocked: server.isBlocked,
+                blockReason: server.blockReason,
+                blockedAt: server.blockedAt
+            }
+        });
     }
 
     // Проверяем, является ли пользователь владельцем сервера по полю ownerId

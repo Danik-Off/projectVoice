@@ -18,6 +18,8 @@ interface Stats {
     };
     servers: {
         total: number;
+        active: number;
+        blocked: number;
         withChannels: number;
     };
     channels: {
@@ -47,9 +49,72 @@ interface Server {
     description?: string;
     ownerId: number;
     createdAt: string;
+    isBlocked: boolean;
+    blockReason?: string;
+    blockedAt?: string;
+    blockedBy?: number;
+    blockedByUser?: {
+        id: number;
+        username: string;
+    };
     channels?: any[];
     memberCount?: number;
+    owner?: {
+        id: number;
+        username: string;
+        email: string;
+    };
 }
+
+interface BlockServerModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onBlock: (reason: string) => void;
+    serverName: string;
+}
+
+const BlockServerModal: React.FC<BlockServerModalProps> = ({ isOpen, onClose, onBlock, serverName }) => {
+    const [reason, setReason] = useState('');
+    const { t } = useTranslation();
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onBlock(reason);
+        setReason('');
+        onClose();
+    };
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="modal-overlay">
+            <div className="modal">
+                <h2>Заблокировать сервер "{serverName}"</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="reason">Причина блокировки:</label>
+                        <textarea
+                            id="reason"
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            placeholder="Укажите причину блокировки сервера..."
+                            rows={4}
+                            required
+                        />
+                    </div>
+                    <div className="modal-buttons">
+                        <button type="button" className="button secondary" onClick={onClose}>
+                            Отмена
+                        </button>
+                        <button type="submit" className="button primary">
+                            Заблокировать
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
 
 const AdminPanel: React.FC = observer(() => {
     const { t } = useTranslation();
@@ -64,6 +129,11 @@ const AdminPanel: React.FC = observer(() => {
     const [roleFilter, setRoleFilter] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [logs, setLogs] = useState<any>(null);
+    const [blockModal, setBlockModal] = useState<{ isOpen: boolean; serverId: number; serverName: string }>({
+        isOpen: false,
+        serverId: 0,
+        serverName: ''
+    });
 
     const loadStats = useCallback(async () => {
         try {
@@ -81,6 +151,7 @@ const AdminPanel: React.FC = observer(() => {
         try {
             const response = await adminService.getUsers({
                 page: currentPage,
+                limit: 20,
                 search: searchTerm,
                 role: roleFilter,
                 status: statusFilter
@@ -94,12 +165,18 @@ const AdminPanel: React.FC = observer(() => {
 
     const loadServers = useCallback(async () => {
         try {
-            const response = await adminService.getServers();
+            const response = await adminService.getServers({
+                page: currentPage,
+                limit: 20,
+                search: searchTerm,
+                status: statusFilter
+            });
             setServers(response.servers);
+            setTotalPages(response.totalPages || 1);
         } catch (error) {
             console.error('Ошибка загрузки серверов:', error);
         }
-    }, []);
+    }, [currentPage, searchTerm, statusFilter]);
 
     const loadLogs = useCallback(async () => {
         try {
@@ -131,7 +208,8 @@ const AdminPanel: React.FC = observer(() => {
 
     const updateUser = async (userId: number, updates: any) => {
         try {
-            await adminService.updateUser(userId, updates);
+            const result = await adminService.updateUser(userId, updates);
+            console.log(result.message);
             loadUsers(); // Перезагружаем список
         } catch (error) {
             console.error('Ошибка обновления пользователя:', error);
@@ -141,7 +219,8 @@ const AdminPanel: React.FC = observer(() => {
     const deleteUser = async (userId: number) => {
         if (window.confirm('Вы уверены, что хотите удалить этого пользователя?')) {
             try {
-                await adminService.deleteUser(userId);
+                const result = await adminService.deleteUser(userId);
+                console.log(result.message);
                 loadUsers(); // Перезагружаем список
             } catch (error) {
                 console.error('Ошибка удаления пользователя:', error);
@@ -149,15 +228,46 @@ const AdminPanel: React.FC = observer(() => {
         }
     };
 
+    const blockServer = async (serverId: number, reason: string) => {
+        try {
+            const result = await adminService.blockServer(serverId, { reason });
+            console.log(result.message);
+            loadServers(); // Перезагружаем список
+        } catch (error) {
+            console.error('Ошибка блокировки сервера:', error);
+        }
+    };
+
+    const unblockServer = async (serverId: number) => {
+        if (window.confirm('Вы уверены, что хотите разблокировать этот сервер?')) {
+            try {
+                const result = await adminService.unblockServer(serverId);
+                console.log(result.message);
+                loadServers(); // Перезагружаем список
+            } catch (error) {
+                console.error('Ошибка разблокировки сервера:', error);
+            }
+        }
+    };
+
     const deleteServer = async (serverId: number) => {
         if (window.confirm('Вы уверены, что хотите удалить этот сервер?')) {
             try {
-                await adminService.deleteServer(serverId);
+                const result = await adminService.deleteServer(serverId);
+                console.log(result.message);
                 loadServers(); // Перезагружаем список
             } catch (error) {
                 console.error('Ошибка удаления сервера:', error);
             }
         }
+    };
+
+    const openBlockModal = (serverId: number, serverName: string) => {
+        setBlockModal({ isOpen: true, serverId, serverName });
+    };
+
+    const closeBlockModal = () => {
+        setBlockModal({ isOpen: false, serverId: 0, serverName: '' });
     };
 
     const getRoleBadge = (role: string) => {
@@ -188,6 +298,21 @@ const AdminPanel: React.FC = observer(() => {
                 }}
             >
                 {isActive ? 'Активен' : 'Заблокирован'}
+            </span>
+        );
+    };
+
+    const getServerStatusBadge = (isBlocked: boolean) => {
+        return (
+            <span 
+                className={`status-badge ${isBlocked ? 'blocked' : 'active'}`}
+                style={{
+                    background: isBlocked 
+                        ? 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
+                        : 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)'
+                }}
+            >
+                {isBlocked ? 'Заблокирован' : 'Активен'}
             </span>
         );
     };
@@ -338,7 +463,17 @@ const AdminPanel: React.FC = observer(() => {
                         <h2>🏠 Управление серверами</h2>
                         <ServersManagement 
                             servers={servers}
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            searchTerm={searchTerm}
+                            statusFilter={statusFilter}
+                            onSearchChange={setSearchTerm}
+                            onStatusFilterChange={setStatusFilter}
+                            onPageChange={setCurrentPage}
+                            onBlockServer={openBlockModal}
+                            onUnblockServer={unblockServer}
                             onDeleteServer={deleteServer}
+                            getServerStatusBadge={getServerStatusBadge}
                         />
                     </div>
                 )}
@@ -350,6 +485,13 @@ const AdminPanel: React.FC = observer(() => {
                     </div>
                 )}
             </div>
+
+            <BlockServerModal
+                isOpen={blockModal.isOpen}
+                onClose={closeBlockModal}
+                onBlock={(reason) => blockServer(blockModal.serverId, reason)}
+                serverName={blockModal.serverName}
+            />
         </div>
     );
 });
@@ -480,8 +622,31 @@ const UsersManagement: React.FC<{
 // Компонент управления серверами
 const ServersManagement: React.FC<{
     servers: Server[];
+    currentPage: number;
+    totalPages: number;
+    searchTerm: string;
+    statusFilter: string;
+    onSearchChange: (value: string) => void;
+    onStatusFilterChange: (value: string) => void;
+    onPageChange: (page: number) => void;
+    onBlockServer: (serverId: number, serverName: string) => void;
+    onUnblockServer: (serverId: number) => void;
     onDeleteServer: (serverId: number) => void;
-}> = ({ servers, onDeleteServer }) => {
+    getServerStatusBadge: (isBlocked: boolean) => JSX.Element;
+}> = ({ 
+    servers, 
+    currentPage, 
+    totalPages, 
+    searchTerm, 
+    statusFilter,
+    onSearchChange,
+    onStatusFilterChange,
+    onPageChange,
+    onBlockServer,
+    onUnblockServer,
+    onDeleteServer,
+    getServerStatusBadge
+}) => {
     return (
         <div className="table-container">
             <table>
@@ -494,6 +659,7 @@ const ServersManagement: React.FC<{
                         <th>Каналов</th>
                         <th>Участников</th>
                         <th>Дата создания</th>
+                        <th>Статус</th>
                         <th>Действия</th>
                     </tr>
                 </thead>
@@ -507,7 +673,14 @@ const ServersManagement: React.FC<{
                             <td>{server.channels?.length || 0}</td>
                             <td>{server.memberCount || 0}</td>
                             <td>{new Date(server.createdAt).toLocaleDateString()}</td>
+                            <td>{getServerStatusBadge(server.isBlocked)}</td>
                             <td>
+                                <button
+                                    onClick={() => onBlockServer(server.id, server.name)}
+                                    className="block-btn"
+                                >
+                                    {server.isBlocked ? 'Разблокировать' : 'Заблокировать'}
+                                </button>
                                 <button
                                     onClick={() => onDeleteServer(server.id)}
                                     className="delete-btn"

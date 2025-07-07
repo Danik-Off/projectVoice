@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { authStore } from '../../store/authStore';
 import Spinner from '../../components/spinner/Spinner';
+import BlockedAccountModal from '../../components/BlockedAccountModal';
 import './Auth.scss';
 import LoginForm from './components/loginForm/LoginForm';
 import RegisterForm from './components/registerForm/RegisterForm';
@@ -10,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 const AuthPage: React.FC = observer(() => {
     const [isLogin, setIsLogin] = useState(true);
+    const [showBlockedModal, setShowBlockedModal] = useState(false);
     const { t, i18n } = useTranslation();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -25,6 +27,13 @@ const AuthPage: React.FC = observer(() => {
             }
         }
     }, [redirect, navigate]);
+
+    // Проверяем, заблокирован ли аккаунт
+    useEffect(() => {
+        if (authStore.user && !authStore.user.isActive) {
+            setShowBlockedModal(true);
+        }
+    }, []);
 
     const toggleLanguage = () => {
         const newLanguage = i18n.language === 'en' ? 'ru' : 'en'; // Переключение между английским и русским
@@ -86,6 +95,18 @@ const AuthPage: React.FC = observer(() => {
                     </div>
                 </div>
             </div>
+
+            {/* Модальное окно заблокированного аккаунта */}
+            <BlockedAccountModal
+                isOpen={showBlockedModal}
+                onClose={() => {
+                    setShowBlockedModal(false);
+                    authStore.logout();
+                }}
+                reason={authStore.user?.blockReason}
+                blockedAt={authStore.user?.blockedAt}
+                blockedBy={authStore.user?.blockedBy}
+            />
         </div>
     );
 });

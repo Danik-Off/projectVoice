@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест модальных окон</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .test-button {
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .test-button:hover {
+            background: #2980b9;
+        }
+        
+        .info {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест модальных окон</h1>
+    
+    <div class="info">
+        <h3>Инструкция:</h3>
+        <p>1. Запустите фронтенд приложение</p>
+        <p>2. Войдите в систему</p>
+        <p>3. Используйте админ панель для блокировки пользователей и серверов</p>
+        <p>4. Проверьте появление модальных окон</p>
+    </div>
+    
+    <div class="test-buttons">
+        <button class="test-button" onclick="testBlockedAccount()">Тест заблокированного аккаунта</button>
+        <button class="test-button" onclick="testBlockedServer()">Тест заблокированного сервера</button>
+    </div>
+    
+    <div class="info">
+        <h3>Как протестировать:</h3>
+        <ol>
+            <li><strong>Заблокированный аккаунт:</strong>
+                <ul>
+                    <li>Войдите в админ панель</li>
+                    <li>Найдите пользователя в списке</li>
+                    <li>Нажмите "Заблокировать"</li>
+                    <li>Выйдите и попробуйте войти снова с этим аккаунтом</li>
+                </ul>
+            </li>
+            <li><strong>Заблокированный сервер:</strong>
+                <ul>
+                    <li>Войдите в админ панель</li>
+                    <li>Найдите сервер в списке</li>
+                    <li>Нажмите "Заблокировать"</li>
+                    <li>Попробуйте зайти на этот сервер</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    
+    <script>
+        function testBlockedAccount() {
+            alert('Для тестирования заблокированного аккаунта:\n\n1. Войдите в админ панель\n2. Заблокируйте пользователя\n3. Выйдите и попробуйте войти снова');
+        }
+        
+        function testBlockedServer() {
+            alert('Для тестирования заблокированного сервера:\n\n1. Войдите в админ панель\n2. Заблокируйте сервер\n3. Попробуйте зайти на этот сервер');
+        }
+    </script>
+</body>
+</html> 

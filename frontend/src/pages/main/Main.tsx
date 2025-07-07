@@ -12,12 +12,26 @@ import './Main.scss'; // Main CSS for layout
 const Layout = observer(() => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [voiceControlsHeight, setVoiceControlsHeight] = useState(0);
+    const [wasConnectedToVoice, setWasConnectedToVoice] = useState(false);
     
     const initMedia = () => {
         audioSettingsStore.initMedia();
     };
 
     const isConnectedToVoice = voiceRoomStore.currentVoiceChannel !== null;
+
+    // Отслеживаем, был ли пользователь подключен к голосовому каналу
+    useEffect(() => {
+        if (isConnectedToVoice) {
+            setWasConnectedToVoice(true);
+        } else if (wasConnectedToVoice && !isConnectedToVoice) {
+            // Если пользователь отключился от голосового канала, скрываем VoiceControls
+            setWasConnectedToVoice(false);
+        }
+    }, [isConnectedToVoice, wasConnectedToVoice]);
+
+    // VoiceControls остается видимым, если пользователь был подключен к голосовому каналу
+    const shouldShowVoiceControls = isConnectedToVoice || wasConnectedToVoice;
 
     // Обновляем высоту VoiceControls при изменении состояния
     useEffect(() => {
@@ -60,11 +74,11 @@ const Layout = observer(() => {
             resizeObserver.disconnect();
             mutationObserver.disconnect();
         };
-    }, [isConnectedToVoice]);
+    }, [shouldShowVoiceControls]);
 
     return (
         <div className="main-page" onClick={initMedia}>
-            {isConnectedToVoice && <VoiceControls />}
+            {shouldShowVoiceControls && <VoiceControls />}
             <ServerSidebar onOpenModal={() => setModalOpen(true)} />
             <div 
                 className="content-page"

@@ -35,6 +35,29 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true, // Можно изменить на false, если поле обязательно
             },
+            isBlocked: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false,
+            },
+            blockReason: {
+                type: DataTypes.TEXT,
+                allowNull: true,
+            },
+            blockedAt: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
+            blockedBy: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+                references: {
+                    model: 'Users',
+                    key: 'id',
+                },
+                onUpdate: 'CASCADE',
+                onDelete: 'SET NULL',
+            },
         },
         {
             timestamps: true,
@@ -46,6 +69,10 @@ module.exports = (sequelize, DataTypes) => {
         Server.belongsTo(models.User, {
             foreignKey: 'ownerId',
             as: 'owner',
+        });
+        Server.belongsTo(models.User, {
+            foreignKey: 'blockedBy',
+            as: 'blockedByUser',
         });
         Server.hasMany(models.ServerMember, { foreignKey: 'serverId', as: 'members' }); // Сервер может иметь множество участников
         Server.hasMany(models.Channel, { foreignKey: 'serverId', as: 'channels' });

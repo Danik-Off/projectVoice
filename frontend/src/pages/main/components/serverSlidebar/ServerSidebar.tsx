@@ -1,8 +1,9 @@
 // src/components/ServerSidebar/ServerSidebar.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import serverStore from '../../../../store/serverStore';
 import { authStore } from '../../../../store/authStore';
+import BlockedServerModal from '../../../../components/BlockedServerModal';
 import './ServerSidebar.scss';
 import ServerItem from './serverItem/ServerItem';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +14,12 @@ interface ServerSidebarProps {
 
 const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) => {
     const navigate = useNavigate();
+    const [blockedServer, setBlockedServer] = useState<{
+        name: string;
+        reason?: string;
+        blockedAt?: string;
+        blockedBy?: string;
+    } | null>(null);
 
     const handleSetting = () => {
         navigate(`/settings`);
@@ -20,6 +27,20 @@ const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) =
 
     const handleAdminPanel = () => {
         navigate('/admin');
+    };
+
+    const handleServerClick = (server: any) => {
+        if (server.isBlocked) {
+            setBlockedServer({
+                name: server.name,
+                reason: server.blockReason,
+                blockedAt: server.blockedAt,
+                blockedBy: server.blockedByUser?.username
+            });
+        } else {
+            //  открыть сервер
+            navigate(`/server/${server.id}`);
+        }
     };
     
     useEffect(() => {
@@ -37,7 +58,11 @@ const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) =
             </div>
             <div className="server-sidebar__server-list">
                 {serverStore.servers.map((server) => (
-                    <ServerItem key={server.id} server={server} />
+                    <ServerItem 
+                        key={server.id} 
+                        server={server} 
+                        onClick={() => handleServerClick(server)}
+                    />
                 ))}
             </div>
             <div className="settings-button" onClick={handleSetting}>
@@ -48,6 +73,16 @@ const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) =
                     👑
                 </div>
             )}
+
+            {/* Модальное окно заблокированного сервера */}
+            <BlockedServerModal
+                isOpen={!!blockedServer}
+                onClose={() => setBlockedServer(null)}
+                serverName={blockedServer?.name || ''}
+                reason={blockedServer?.reason}
+                blockedAt={blockedServer?.blockedAt}
+                blockedBy={blockedServer?.blockedBy}
+            />
         </aside>
     );
 });

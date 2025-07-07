@@ -13,7 +13,6 @@ interface MessageItemProps {
 const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGroup = false }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(message.content);
-    const [showActions, setShowActions] = useState(false);
     const editInputRef = useRef<HTMLTextAreaElement>(null);
     const messageRef = useRef<HTMLDivElement>(null);
 
@@ -79,24 +78,18 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
         });
     };
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        if (date.toDateString() === today.toDateString()) {
-            return 'Сегодня';
-        } else if (date.toDateString() === yesterday.toDateString()) {
-            return 'Вчера';
-        } else {
-            return date.toLocaleDateString('ru-RU');
-        }
+    const getInitials = (username: string) => {
+        return username
+            .split(' ')
+            .map(name => name.charAt(0))
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
     };
 
     if (message.isDeleted) {
         return (
-            <div className="message-item deleted">
+            <div className="message-item system-message">
                 <div className="message-content">
                     <em>Сообщение было удалено</em>
                 </div>
@@ -106,57 +99,35 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
 
     return (
         <div 
-            className={`message-item ${isOwnMessage ? 'own' : ''} ${isFirstInGroup ? 'first-in-group' : ''}`}
+            className={`message-item ${isOwnMessage ? 'own-message' : ''}`}
             ref={messageRef}
-            onMouseEnter={() => setShowActions(true)}
-            onMouseLeave={() => setShowActions(false)}
         >
             {isFirstInGroup && (
-                <div className="message-header">
-                    <div className="user-info">
-                        <div className="avatar">
-                            {message.user?.avatar ? (
-                                <img src={message.user.avatar} alt={message.user.username} />
-                            ) : (
-                                <div className="avatar-placeholder">
-                                    {message.user?.username?.charAt(0).toUpperCase()}
-                                </div>
-                            )}
-                        </div>
-                        <div className="user-details">
-                            <span className="username">{message.user?.username || 'Неизвестный пользователь'}</span>
-                            <span className="timestamp">
-                                {formatTime(message.createdAt)}
-                                {message.isEdited && <span className="edited-indicator"> (изменено)</span>}
-                            </span>
-                        </div>
-                    </div>
-                    {(canEdit || canDelete) && showActions && (
-                        <div className="message-actions">
-                            {canEdit && (
-                                <button 
-                                    className="action-btn edit"
-                                    onClick={handleEdit}
-                                    title="Редактировать"
-                                >
-                                    ✏️
-                                </button>
-                            )}
-                            {canDelete && (
-                                <button 
-                                    className="action-btn delete"
-                                    onClick={handleDelete}
-                                    title="Удалить"
-                                >
-                                    🗑️
-                                </button>
-                            )}
-                        </div>
+                <div className="message-avatar">
+                    {message.user?.avatar ? (
+                        <img src={message.user.avatar} alt={message.user.username} />
+                    ) : (
+                        getInitials(message.user?.username || 'U')
                     )}
                 </div>
             )}
 
             <div className="message-content">
+                {isFirstInGroup && (
+                    <div className="message-header">
+                        <span className="message-author">
+                            {message.user?.username || 'Неизвестный пользователь'}
+                        </span>
+                        <span className="message-time">
+                            {formatTime(message.createdAt)}
+                            {message.isEdited && <span> (изменено)</span>}
+                        </span>
+                        <div className="message-status">
+                            <span className="status-icon delivered">✓</span>
+                        </div>
+                    </div>
+                )}
+
                 {isEditing ? (
                     <div className="edit-form">
                         <textarea
@@ -166,6 +137,7 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
                             onKeyDown={handleKeyDown}
                             placeholder="Введите сообщение..."
                             rows={Math.min(editContent.split('\n').length + 1, 10)}
+                            className="message-textarea"
                         />
                         <div className="edit-actions">
                             <button className="save-btn" onClick={handleSave}>
@@ -186,14 +158,37 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
                         ))}
                     </div>
                 )}
-            </div>
 
-            {!isFirstInGroup && (
-                <div className="message-timestamp">
-                    {formatTime(message.createdAt)}
-                    {message.isEdited && <span className="edited-indicator"> (изменено)</span>}
-                </div>
-            )}
+                {!isFirstInGroup && (
+                    <div className="message-time">
+                        {formatTime(message.createdAt)}
+                        {message.isEdited && <span> (изменено)</span>}
+                    </div>
+                )}
+
+                {(canEdit || canDelete) && (
+                    <div className="message-actions">
+                        {canEdit && (
+                            <button 
+                                className="action-btn edit-btn"
+                                onClick={handleEdit}
+                                title="Редактировать"
+                            >
+                                ✏️
+                            </button>
+                        )}
+                        {canDelete && (
+                            <button 
+                                className="action-btn delete-btn"
+                                onClick={handleDelete}
+                                title="Удалить"
+                            >
+                                🗑️
+                            </button>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 });

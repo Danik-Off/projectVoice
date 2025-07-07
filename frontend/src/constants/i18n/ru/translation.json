@@ -27,14 +27,32 @@
     },
     "settingsPage": {
         "title": "Настройки",
-        "buttonBack":"Назад",
+        "back": "Назад",
+        "tabs": {
+            "general": "Общие",
+            "appearance": "Внешний вид",
+            "audio": "Аудио",
+            "notifications": "Уведомления",
+            "privacy": "Приватность",
+            "about": "О приложении"
+        },
         "language": {
             "title": "Язык",
+            "label": "Язык интерфейса",
+            "description": "Выберите предпочитаемый язык для интерфейса приложения",
             "english": "Английский",
             "russian": "Русский"
         },
+        "storage": {
+            "title": "Хранилище",
+            "cache": "Кэш приложения",
+            "cacheDescription": "Очистите кэш для освобождения места на устройстве",
+            "clearCache": "Очистить кэш"
+        },
         "audio": {
             "title": "Настройки аудио",
+            "microphone": "Микрофон",
+            "speakers": "Динамики",
             "microphone": "Микрофон:",
             "defaultMic": "Микрофон по умолчанию",
             "speaker": "Динамик:",
@@ -54,10 +72,35 @@
         },
         "appearance": {
             "title": "Внешний вид",
+            "theme": "Тема оформления",
+            "themeDescription": "Выберите светлую или темную тему для интерфейса",
             "darkMode": "Темная тема",
             "lightMode": "Светлая тема",
             "switchToDark": "Переключить на темную тему",
-            "switchToLight": "Переключить на светлую тему"
+            "switchToLight": "Переключить на светлую тему",
+            "accent": "Акцентный цвет",
+            "accentColor": "Цвет акцента",
+            "accentDescription": "Выберите основной цвет для интерфейса"
+        },
+        "notifications": {
+            "title": "Уведомления",
+            "enable": "Включить уведомления",
+            "enableDescription": "Получать уведомления о новых сообщениях и событиях"
+        },
+        "privacy": {
+            "title": "Приватность",
+            "onlineStatus": "Статус онлайн",
+            "onlineStatusDescription": "Выберите, как другие пользователи видят ваш статус",
+            "online": "В сети",
+            "idle": "Не активен",
+            "dnd": "Не беспокоить",
+            "invisible": "Невидимый"
+        },
+        "about": {
+            "title": "О приложении",
+            "documentation": "Документация",
+            "reportBug": "Сообщить об ошибке",
+            "suggestFeature": "Предложить функцию"
         }
     },
     "channelsPage": {

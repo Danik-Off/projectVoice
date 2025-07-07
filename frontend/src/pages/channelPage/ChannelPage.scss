@@ -1,17 +1,92 @@
+@import '../../styles/main.scss';
+
 .channel-page {
-    flex: 1;
-    display: flex;
-    background: var(--background-color);
-    color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-.spinner-conteiner {
     width: 100%;
-    height: 100%;
-    flex: 1;
+    display: flex;
+    height: 100vh;
+    background: var(--background-primary);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    // Контент канала
+    .channel-content {
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    // Состояние с VoiceControls
+    &.with-voice-controls {
+        .channel-content {
+            padding-bottom: 72px; // Высота VoiceControls
+        }
+    }
+
+    // Анимация появления VoiceControls
+    .voice-controls {
+        animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.spinner-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--background-color);
-    color: var(--text-color);
+    height: 100vh;
+    background: var(--background-primary);
+    flex-direction: column;
+    gap: 16px;
+
+    .spinner-text {
+        font-size: 16px;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+}
+
+// Адаптация для мобильных устройств
+@media (max-width: 768px) {
+    .channel-page {
+        flex-direction: column;
+
+        .channel-content {
+            height: calc(100vh - 60px); // Учитываем высоту мобильного сайдбара
+        }
+
+        &.with-voice-controls {
+            .channel-content {
+                height: calc(100vh - 60px - 72px); // Учитываем VoiceControls
+            }
+        }
+    }
+}
+
+// Темная тема
+[data-theme="dark"] {
+    .channel-page {
+        background: var(--background-primary);
+    }
+}
+
+// Светлая тема
+[data-theme="light"] {
+    .channel-page {
+        background: var(--background-primary);
+    }
 }

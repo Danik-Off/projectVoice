@@ -15,6 +15,7 @@ const channeRoutes = require('./routes/channel');
 const serverMembersRoutes = require('./routes/serverMembers');
 const serverInviteRoutes = require('./routes/invite');
 const adminRoutes = require('./routes/admin');
+const messageRoutes = require('./routes/message');
 
 //
 const { exec } = require('child_process');
@@ -44,9 +45,12 @@ app.use(express.json());
 
 app.use(
     cors({
-        origin: '*', // Разрешите только это происхождение
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Укажите разрешенные методы
+        origin: ['http://localhost:3000', 'http://localhost:3001', '*'], // Разрешаем доступ с фронтенда
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], // Добавляем OPTIONS и PATCH
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'], // Явно указываем разрешенные заголовки
         credentials: true, // Укажите, если вам нужно передавать куки
+        preflightContinue: false,
+        optionsSuccessStatus: 204
     })
 );
 
@@ -63,13 +67,14 @@ app.use('/api/servers', channeRoutes);
 app.use('/api/serverMembers', serverMembersRoutes); // Исправляем путь для serverMembers
 app.use('/api/invite', serverInviteRoutes); //создание invite ссылки
 app.use('/api/admin', adminRoutes); //админ панель
+app.use('/api/messages', messageRoutes);
 //документация
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Настройка раздачи статических файлов фронтенда
 app.use(express.static('../frontend/build')); // Укажите путь к директории сборки
 
-// Обработка всех маршрутов для фронтенда
+// Обработка всех GET маршрутов для фронтенда (только для SPA)
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html')); // Возвращаем главный файл
 });

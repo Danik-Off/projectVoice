@@ -5,9 +5,10 @@ import './ServerItem.scss';
 
 interface ServerItemProps {
     server: Server;
+    onClick?: () => void;
 }
 
-const ServerItem: React.FC<ServerItemProps> = ({ server }) => {
+const ServerItem: React.FC<ServerItemProps> = ({ server, onClick }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const serverIcon = server.icon || '';
@@ -16,12 +17,16 @@ const ServerItem: React.FC<ServerItemProps> = ({ server }) => {
     // Проверяем, является ли текущий сервер активным
     const isActive = location.pathname.includes(`/server/${server.id}`);
 
-    const handleNavigate = () => {
-        navigate(`/server/${server.id}`);
+    const handleClick = () => {
+        if (onClick) {
+            onClick();
+        } else {
+            navigate(`/server/${server.id}`);
+        }
     };
 
     return (
-        <div className={`server-item ${isActive ? 'active' : ''}`} onClick={handleNavigate}>
+        <div className={`server-item ${isActive ? 'active' : ''} ${server.isBlocked ? 'blocked' : ''}`} onClick={handleClick}>
             {serverIcon ? (
                 <img src={serverIcon} alt={`${server.name} icon`} className="server-icon" />
             ) : (

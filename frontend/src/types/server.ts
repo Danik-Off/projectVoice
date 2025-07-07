@@ -23,4 +23,12 @@ export type Server = {
     icon?: string;
     channels?: Channel[];
     members?: ServerMember[];
+    isBlocked?: boolean;
+    blockReason?: string;
+    blockedAt?: string;
+    blockedBy?: number;
+    blockedByUser?: {
+        id: number;
+        username: string;
+    };
 };

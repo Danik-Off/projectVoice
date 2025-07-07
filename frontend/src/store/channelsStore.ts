@@ -20,6 +20,7 @@ class ChannelsStore {
     // Fetch channels for the current server
     async fetchChannels(serverId: number): Promise<void> {
         runInAction(() => {
+            this.loading = true;
             this.error = null;
         });
         
@@ -27,10 +28,12 @@ class ChannelsStore {
             const data: Channel[] = await channelService.getByServer(serverId);
             runInAction(() => {
                 this.channels = data;
+                this.loading = false;
             });
         } catch (error) {
             runInAction(() => {
                 this.error = (error as Error).message;
+                this.loading = false;
             });
         }
         console.log("ok")

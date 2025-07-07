@@ -149,6 +149,48 @@
     }
 }
 
+// Заблокированный сервер
+.server-item.blocked {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    border-color: #e74c3c;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    opacity: 0.8;
+    position: relative;
+
+    &::before {
+        content: '🚫';
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        font-size: 12px;
+        z-index: 4;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #e74c3c;
+    }
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
+        opacity: 1;
+    }
+
+    .server-icon,
+    .server-icon-placeholder {
+        filter: grayscale(0.5) brightness(0.7);
+    }
+
+    &:hover .server-icon,
+    &:hover .server-icon-placeholder {
+        filter: grayscale(0.3) brightness(0.9);
+    }
+}
+
 // Анимация появления
 .server-item {
     animation: fadeInUp 0.5s ease-out;

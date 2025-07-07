@@ -40,7 +40,8 @@ const ChannelList: React.FC = observer(() => {
             voiceRoomStore.connectToRoom(channel.id, channel.name);
         } else {
             newPath = `/server/${serverId}/textRoom/${channel.id}`;
-            voiceRoomStore.disconnectToRoom();
+            // Не отключаемся от голосового канала при переходе на текстовый
+            // voiceRoomStore.disconnectToRoom();
         }
         navigate(newPath);
     };
