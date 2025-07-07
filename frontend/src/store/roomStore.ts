@@ -3,6 +3,7 @@ import SocketClient from '../utils/SocketClient';
 import { getCookie } from '../utils/cookie';
 import WebRTCClient from '../utils/WebRTCClient';
 import audioSettingsStore from './AudioSettingsStore';
+import notificationStore from './NotificationStore';
 
 interface UserData {
     id: number;
@@ -20,7 +21,7 @@ interface Participant {
 
 class VoiceRoomStore {
     public participants: Participant[] = [];
-
+    public currentVoiceChannel: { id: number; name: string } | null = null;
     public state = '';
 
     private socketClient: SocketClient = new SocketClient();
@@ -34,14 +35,23 @@ class VoiceRoomStore {
         this.webRTCClient.initializeMedia();
     }
 
-    public connectToRoom(roomId: number): void {
+    public connectToRoom(roomId: number, channelName?: string): void {
         // eslint-disable-next-line max-len
         const token = getCookie('token'); //TODO отказаться от токена здесь и отправлять его при завпросе на подключение к серверу
         this.socketClient.socketEmit('join-room', roomId, token);
+        
+        runInAction(() => {
+            this.currentVoiceChannel = { id: roomId, name: channelName || `Voice Channel ${roomId}` };
+        });
+        notificationStore.addNotification(`Подключились к голосовому каналу: ${channelName || `Voice Channel ${roomId}`}`, 'info');
     }
     public disconnectToRoom(): void {
         this.socketClient.socketEmit('leave-room');
         this.webRTCClient.disconect();
+        
+        runInAction(() => {
+            this.currentVoiceChannel = null;
+        });
     }
     public muteMicrophone() {
         audioSettingsStore.setVolume(0);
@@ -71,13 +81,18 @@ class VoiceRoomStore {
                     isSpeaking: false
                 });
             });
+            notificationStore.addNotification(`${user.userData?.username || 'Пользователь'} присоединился к голосовому каналу`, 'info');
         });
         this.socketClient.socketOn('user-disconnected', (socketId: string) => {
             console.log(`Пользователь отключен: ${socketId}`);
+            const disconnectedUser = this.participants.find(user => user.socketId === socketId);
             this.webRTCClient.disconnectPeer(socketId);
             runInAction(() => {
                 this.participants = this.participants.filter((user) => user.socketId !== socketId);
             });
+            if (disconnectedUser) {
+                notificationStore.addNotification(`${disconnectedUser.userData?.username || 'Пользователь'} покинул голосовой канал`, 'info');
+            }
         });
         this.socketClient.socketOn('signal', (data) => {
             console.log(`Сигнал`, data);
@@ -85,6 +100,7 @@ class VoiceRoomStore {
         });
         this.socketClient.socketOn('connect_error', (error) => {
             console.error('Ошибка Socket.IO подключения:', error);
+            notificationStore.addNotification('Ошибка подключения к голосовому серверу', 'error');
         });
         this.socketClient.socketOn('disconnect', () => {
             console.log('Соединение с Socket.IO закрыто');

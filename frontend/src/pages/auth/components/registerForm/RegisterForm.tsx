@@ -1,8 +1,12 @@
 // RegisterForm.tsx
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { authStore } from '../../../../store/authStore';
 
 const RegisterForm: React.FC = () => {
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get('redirect');
+
     const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = event.currentTarget.elements as typeof event.currentTarget.elements & {
@@ -15,7 +19,7 @@ const RegisterForm: React.FC = () => {
         const email = formData.email.value;
         const password = formData.password.value;
 
-        authStore.register(username, email, password);
+        authStore.register(username, email, password, redirect);
     };
 
     return (

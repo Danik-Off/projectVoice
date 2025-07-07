@@ -212,6 +212,20 @@
             }
 
             .members-tab {
+                .debug-info {
+                    background-color: rgba($accent-color, 0.1);
+                    border: 1px solid rgba($accent-color, 0.3);
+                    border-radius: 0.5rem;
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                    font-family: monospace;
+                    font-size: 0.8rem;
+                    color: $text-muted;
+                    white-space: pre-wrap;
+                    max-height: 200px;
+                    overflow-y: auto;
+                }
+
                 .server-members {
                     background-color: $bg-primary;
                     border-radius: 0.5rem;
@@ -321,11 +335,40 @@
 
     .loading, .error {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         height: 100vh;
         font-size: 1.1rem;
         color: $text-muted;
+        text-align: center;
+        padding: 2rem;
+
+        h2 {
+            margin: 0 0 1rem 0;
+            color: $error-color;
+        }
+
+        p {
+            margin: 0 0 1rem 0;
+            line-height: 1.5;
+        }
+
+        .back-button {
+            background-color: $button-bg;
+            color: $button-text;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            margin-top: 1rem;
+
+            &:hover {
+                background-color: $button-hover-bg;
+            }
+        }
     }
 
     .error {

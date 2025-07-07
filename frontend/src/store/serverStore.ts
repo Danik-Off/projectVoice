@@ -3,6 +3,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { serverService } from '../services/serverService'; // Путь к серверному сервису
 import { Server } from '../types/server';
 import { User } from '../types/user'; // Предполагается, что у вас есть типы для пользователей
+import notificationStore from './NotificationStore';
 
 class ServerStore {
     servers: Server[] = [];
@@ -31,6 +32,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
+            notificationStore.addNotification('Ошибка загрузки списка серверов', 'error');
         } finally {
             runInAction(() => {
                 this.loading = false;
@@ -54,6 +56,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
+            notificationStore.addNotification('Ошибка загрузки данных сервера', 'error');
         } finally {
             runInAction(() => {
                 this.loading = false;
@@ -83,6 +86,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
+            notificationStore.addNotification('Ошибка создания сервера', 'error');
         }
     }
 
@@ -106,6 +110,7 @@ class ServerStore {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
+            notificationStore.addNotification('Ошибка обновления сервера', 'error');
         }
     }
 
@@ -119,11 +124,18 @@ class ServerStore {
             await serverService.delete(id);
             runInAction(() => {
                 this.servers = this.servers.filter((server) => server.id !== id);
+                // Очищаем currentServer если удаляемый сервер был текущим
+                if (this.currentServer && this.currentServer.id === id) {
+                    this.currentServer = null;
+                }
             });
+            console.log('Сервер удален из store, обновленный список:', this.servers);
         } catch (error) {
             runInAction(() => {
                 this.error = (error as Error).message;
             });
+            notificationStore.addNotification('Ошибка удаления сервера', 'error');
+            throw error; // Пробрасываем ошибку дальше
         }
     }
 }

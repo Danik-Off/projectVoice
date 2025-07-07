@@ -35,7 +35,7 @@ class AuthStore {
         }
     }
 
-    public async login(email: string, password: string): Promise<void> {
+    public async login(email: string, password: string, redirect?: string | null): Promise<void> {
         try {
             this.loading = true;
             const data = await authService.login(email, password);
@@ -48,7 +48,7 @@ class AuthStore {
             this.isAuthenticated = true;
             this.loading = false;
             // Перенаправление после успешного входа
-            window.location.href = '/'; // Замените '/dashboard' на нужный URL
+            window.location.href = redirect || '/'; // Используем redirect или '/'
         } catch (error) {
             this.loading = false;
             if (error instanceof Error) {
@@ -77,12 +77,13 @@ class AuthStore {
             this.isAuthenticated = true;
         } catch (error) {
             console.error('Failed to load user data:', error);
+            notificationStore.addNotification('Ошибка загрузки данных пользователя', 'error');
             // Если не удалось загрузить данные пользователя, очищаем токен
             this.logout();
         }
     }
 
-    public async register(username: string, email: string, password: string): Promise<void> {
+    public async register(username: string, email: string, password: string, redirect?: string | null): Promise<void> {
         try {
             this.loading = true;
             const data = await authService.register(username, email, password);
@@ -97,7 +98,7 @@ class AuthStore {
             this.isAuthenticated = true;
             this.loading = false;
             // Перенаправление после успешной регистрации
-            window.location.href = '/'; // Замените '/welcome' на нужный URL
+            window.location.href = redirect || '/'; // Используем redirect или '/'
         } catch (error) {
             this.loading = false;
             console.error('Registration failed', error);

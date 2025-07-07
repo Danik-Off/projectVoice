@@ -1,10 +1,13 @@
 // LoginForm.tsx
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { authStore } from '../../../../store/authStore';
 import { useTranslation } from 'react-i18next';
 
 const LoginForm: React.FC = () => {
     const { t } = useTranslation();
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get('redirect');
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -16,7 +19,7 @@ const LoginForm: React.FC = () => {
         const email = formData.email.value;
         const password = formData.password.value;
 
-        authStore.login(email, password);
+        authStore.login(email, password, redirect);
     };
 
     return (

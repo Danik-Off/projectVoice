@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const { Server, User, Channel, ServerMember } = require('../models'); // Include ServerMember model
+const { Server, User, Channel, ServerMember, Message } = require('../models'); // Include ServerMember model
 const { authenticateToken } = require('../middleware/auth');
 const { where } = require('sequelize');
 
@@ -136,14 +136,34 @@ router.put('/:id', authenticateToken, checkServerOwnership, async (req, res) => 
 router.delete('/:id', authenticateToken, checkServerOwnership, async (req, res) => {
     // #swagger.tags = ['Servers']
     try {
-        // Удалить все связи участников, связанных с сервером
-        await ServerMember.destroy({ where: { serverId: req.params.id } });
+        console.log(`Удаление сервера с ID: ${req.params.id}`);
+        
+        // Получаем все каналы сервера
+        const channels = await Channel.findAll({ where: { serverId: req.params.id } });
+        const channelIds = channels.map(channel => channel.id);
+        console.log(`Найдено каналов для удаления: ${channelIds.length}`);
 
-        // Удалить сервер
+        // Удаляем все сообщения в каналах сервера
+        if (channelIds.length > 0) {
+            const deletedMessages = await Message.destroy({ where: { channelId: channelIds } });
+            console.log(`Удалено сообщений: ${deletedMessages}`);
+        }
+
+        // Удаляем все каналы сервера
+        const deletedChannels = await Channel.destroy({ where: { serverId: req.params.id } });
+        console.log(`Удалено каналов: ${deletedChannels}`);
+
+        // Удаляем все связи участников сервера
+        const deletedMembers = await ServerMember.destroy({ where: { serverId: req.params.id } });
+        console.log(`Удалено участников: ${deletedMembers}`);
+
+        // Удаляем сервер
         await req.server.destroy();
+        console.log('Сервер успешно удален');
 
-        res.status(204).json({ message: 'Сервер удален' });
+        res.status(204).send();
     } catch (error) {
+        console.error('Ошибка удаления сервера:', error);
         res.status(500).json({ error: error.message });
     }
 });

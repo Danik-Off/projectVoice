@@ -38,5 +38,10 @@ export const apiClient = async (
         throw new Error(errorMessage);
     }
 
+    // Для ответов с кодом 204 (No Content) не пытаемся парсить JSON
+    if (response.status === 204) {
+        return null;
+    }
+
     return response.json();
 };

@@ -35,7 +35,7 @@ const io = new Server(server, {
     path: WEBSOCKET_PATH,
     cors: {
         origin: '*', // Разрешите доступ с любого источника
-        methods: ['GET', 'POST'], // Укажите разрешенные методы
+        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Укажите разрешенные методы
         credentials: true, // Укажите, если нужно передавать куки
     },
 });
@@ -45,7 +45,7 @@ app.use(express.json());
 app.use(
     cors({
         origin: '*', // Разрешите только это происхождение
-        methods: ['GET', 'POST'], // Укажите разрешенные методы
+        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Укажите разрешенные методы
         credentials: true, // Укажите, если вам нужно передавать куки
     })
 );
@@ -60,8 +60,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/servers', serverRoutes);
 app.use('/api/servers', channeRoutes);
-app.use('/api/servers', serverMembersRoutes);
-//
+app.use('/api/serverMembers', serverMembersRoutes); // Исправляем путь для serverMembers
 app.use('/api/invite', serverInviteRoutes); //создание invite ссылки
 app.use('/api/admin', adminRoutes); //админ панель
 //документация

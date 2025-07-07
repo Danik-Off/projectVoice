@@ -5,6 +5,7 @@ import serverStore from '../../store/serverStore';
 import { authStore } from '../../store/authStore';
 import { serverMembersService } from '../../services/serverMembersService';
 import ServerMembers from '../channelPage/components/channelSidebar/components/serverMembers/ServerMembers';
+import notificationStore from '../../store/NotificationStore';
 import './ServerSettings.scss';
 
 const ServerSettings: React.FC = observer(() => {
@@ -30,16 +31,23 @@ const ServerSettings: React.FC = observer(() => {
     const loadServerData = useCallback(async () => {
         if (!serverId) return;
         
+        console.log('Loading server data for serverId:', serverId);
         setLoading(true);
         try {
             // Загружаем данные сервера
+            console.log('Fetching server by ID:', parseInt(serverId));
             await serverStore.fetchServerById(parseInt(serverId));
+            console.log('Server data loaded:', serverStore.currentServer);
 
             // Загружаем участников сервера
+            console.log('Fetching server members for serverId:', parseInt(serverId));
             const membersData = await serverMembersService.getServerMembers(parseInt(serverId));
+            console.log('Members data loaded:', membersData);
             setMembers(membersData);
+            
         } catch (error) {
             console.error('Ошибка загрузки данных сервера:', error);
+            notificationStore.addNotification('Ошибка загрузки данных сервера', 'error');
         } finally {
             setLoading(false);
         }
@@ -54,6 +62,7 @@ const ServerSettings: React.FC = observer(() => {
     // Загружаем данные пользователя при монтировании компонента
     useEffect(() => {
         if (!currentUser && authStore.isAuthenticated) {
+            console.log('Loading user data...');
             authStore.loadUserData();
         }
     }, [currentUser]);
@@ -74,6 +83,7 @@ const ServerSettings: React.FC = observer(() => {
             await loadServerData(); // Перезагружаем данные
         } catch (error) {
             console.error('Ошибка изменения роли:', error);
+            notificationStore.addNotification('Ошибка изменения роли участника', 'error');
         }
     };
 
@@ -87,6 +97,7 @@ const ServerSettings: React.FC = observer(() => {
             await loadServerData(); // Перезагружаем данные
         } catch (error) {
             console.error('Ошибка удаления участника:', error);
+            notificationStore.addNotification('Ошибка удаления участника', 'error');
         }
     };
 
@@ -103,6 +114,7 @@ const ServerSettings: React.FC = observer(() => {
             setIsEditing(false);
         } catch (error) {
             console.error('Ошибка обновления сервера:', error);
+            notificationStore.addNotification('Ошибка обновления настроек сервера', 'error');
         }
     };
 
@@ -118,13 +130,54 @@ const ServerSettings: React.FC = observer(() => {
     };
 
     const handleBackToServer = () => {
-        navigate(`/channel/${serverId}`);
+        navigate(`/server/${serverId}`);
     };
+
+    const handleDeleteServer = async () => {
+        if (!serverId) return;
+
+        if (!window.confirm('Вы уверены, что хотите удалить этот сервер? Это действие нельзя отменить.')) {
+            return;
+        }
+
+        try {
+            await serverStore.deleteServer(parseInt(serverId));
+            // Обновляем список серверов после удаления
+            await serverStore.fetchServers();
+            notificationStore.addNotification('Сервер удален', 'info');
+            navigate('/'); // Перенаправляем на главную страницу
+        } catch (error) {
+            console.error('Ошибка удаления сервера:', error);
+            notificationStore.addNotification('Ошибка удаления сервера', 'error');
+        }
+    };
+
+    if (!authStore.isAuthenticated) {
+        return (
+            <div className="server-settings">
+                <div className="error">
+                    <h2>Требуется авторизация</h2>
+                    <p>Для доступа к настройкам сервера необходимо войти в аккаунт.</p>
+                    <button onClick={() => navigate('/auth')} className="back-button">
+                        Войти в аккаунт
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     if (loading) {
         return (
             <div className="server-settings">
                 <div className="loading">Загрузка настроек сервера...</div>
+            </div>
+        );
+    }
+
+    if (!currentUser) {
+        return (
+            <div className="server-settings">
+                <div className="loading">Загрузка данных пользователя...</div>
             </div>
         );
     }
@@ -144,10 +197,23 @@ const ServerSettings: React.FC = observer(() => {
     const currentUserRole = currentUserMember?.role || (isOwner ? 'owner' : 'member');
     const canManageServer = ['owner', 'admin'].includes(currentUserRole);
 
+    console.log('ServerSettings - currentUserId:', currentUserId);
+    console.log('ServerSettings - server.ownerId:', server?.ownerId);
+    console.log('ServerSettings - isOwner:', isOwner);
+    console.log('ServerSettings - currentUserRole:', currentUserRole);
+    console.log('ServerSettings - canManageServer:', canManageServer);
+
     if (!canManageServer) {
         return (
             <div className="server-settings">
-                <div className="error">У вас нет прав для управления этим сервером</div>
+                <div className="error">
+                    <h2>Доступ запрещен</h2>
+                    <p>У вас нет прав для управления этим сервером.</p>
+                    <p>Ваша роль: {currentUserRole}</p>
+                    <button onClick={handleBackToServer} className="back-button">
+                        Вернуться к серверу
+                    </button>
+                </div>
             </div>
         );
     }
@@ -265,6 +331,10 @@ const ServerSettings: React.FC = observer(() => {
                     {activeTab === 'members' && (
                         <div className="members-tab">
                             <h2>Управление участниками</h2>
+                            <div className="debug-info">
+                                <p>Количество участников: {members.length}</p>
+                                <p>Данные участников: {JSON.stringify(members, null, 2)}</p>
+                            </div>
                             <ServerMembers 
                                 members={members}
                                 onRoleChange={handleRoleChange}
@@ -323,12 +393,7 @@ const ServerSettings: React.FC = observer(() => {
                                     <p>Это действие нельзя отменить. Все данные сервера будут удалены навсегда.</p>
                                     <button 
                                         className="danger-button"
-                                        onClick={() => {
-                                            if (window.confirm('Вы уверены, что хотите удалить этот сервер? Это действие нельзя отменить.')) {
-                                                // TODO: Добавить логику удаления сервера
-                                                console.log('Удаление сервера');
-                                            }
-                                        }}
+                                        onClick={handleDeleteServer}
                                     >
                                         Удалить сервер
                                     </button>

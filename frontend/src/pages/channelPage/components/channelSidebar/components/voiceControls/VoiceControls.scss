@@ -1,7 +1,296 @@
 .voice-controls {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid;
-    padding-bottom: 2rem;
-    gap: 1rem;
+    background-color: #292b2f;
+    border-top: 1px solid #202225;
+    padding: 8px;
+    gap: 8px;
+    min-height: 52px;
+    max-height: 300px;
+    overflow-y: auto;
+
+    // Состояние "не подключен"
+    &__not-connected {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: #40444b;
+    }
+
+    // Информация о канале
+    &__channel-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__channel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 8px;
+        background-color: #40444b;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #dcddde;
+    }
+
+    &__channel-name {
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    &__participant-count {
+        color: #72767d;
+        font-size: 11px;
+    }
+
+    // Список участников
+    &__participants {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    &__participant {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        background-color: #40444b;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: #4f545c;
+        }
+    }
+
+    &__participant-avatar {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #5865f2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffffff;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__speaking-indicator {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #43b581;
+        border: 2px solid #292b2f;
+        animation: pulse 1.5s infinite;
+    }
+
+    &__participant-name {
+        flex: 1;
+        font-size: 12px;
+        color: #dcddde;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__participant-status {
+        font-size: 12px;
+        color: #72767d;
+    }
+
+    // Контролы пользователя
+    &__user-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        background-color: #40444b;
+        border-radius: 4px;
+        gap: 8px;
+    }
+
+    &__user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #5865f2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        overflow: hidden;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__user-details {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        flex: 1;
+    }
+
+    &__username {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__status {
+        font-size: 11px;
+        color: #72767d;
+    }
+
+    // Кнопки
+    &__buttons {
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+
+    &__button {
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4f545c;
+        color: #dcddde;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+
+        &:hover {
+            background-color: #5d6268;
+            color: #ffffff;
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &--muted {
+            background-color: #ed4245;
+            color: #ffffff;
+
+            &:hover {
+                background-color: #f04747;
+            }
+        }
+
+        &--deafened {
+            background-color: #ed4245;
+            color: #ffffff;
+
+            &:hover {
+                background-color: #f04747;
+            }
+        }
+
+        &--settings {
+            background-color: #4f545c;
+
+            &:hover {
+                background-color: #5d6268;
+            }
+        }
+
+        &--disconnect {
+            background-color: #ed4245;
+            color: #ffffff;
+
+            &:hover {
+                background-color: #f04747;
+            }
+        }
+    }
+
+    // Слайдер громкости
+    &__volume-slider {
+        padding: 8px;
+        background-color: #40444b;
+        border-radius: 4px;
+    }
+
+    &__volume-input {
+        width: 100%;
+        height: 4px;
+        border-radius: 2px;
+        background: #4f545c;
+        outline: none;
+        -webkit-appearance: none;
+
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #5865f2;
+            cursor: pointer;
+        }
+
+        &::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #5865f2;
+            cursor: pointer;
+            border: none;
+        }
+    }
+}
+
+// Анимация для индикатора разговора
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

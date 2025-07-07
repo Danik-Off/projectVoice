@@ -3,6 +3,7 @@ import './ServerCreateModal.scss';
 import { useTranslation } from 'react-i18next';
 
 import serverStore from '../../../../../store/serverStore';
+import notificationStore from '../../../../../store/NotificationStore';
 
 
 interface ServerCreateModalProps {
@@ -20,10 +21,12 @@ const ServerCreateModal: React.FC<ServerCreateModalProps> = ({ isOpen, onClose }
     const handleCreateServer = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-
-        serverStore.createServer({ name: serverName, description: serverDescription});
-
-        onClose();
+        try {
+            await serverStore.createServer({ name: serverName, description: serverDescription});
+            onClose();
+        } catch (error) {
+            notificationStore.addNotification('Ошибка создания сервера', 'error');
+        }
     };
 
     if (!isOpen) return null;

@@ -18,6 +18,10 @@ const ServerSidebar: React.FC = observer(() => {
         serverStore.fetchServers();
     }, []);
 
+    // Добавляем логирование для отладки
+    console.log('ServerSidebar - servers count:', serverStore.servers.length);
+    console.log('ServerSidebar - servers:', serverStore.servers);
+
     return (
         <aside className="server-sidebar">
             <div className="add-button" onClick={() => setModalOpen(true)}>

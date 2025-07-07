@@ -49,7 +49,7 @@ const ChannelList: React.FC = observer(() => {
 
         // Если тип канала - голосовой, подключаемся к комнате
         if (channel.type === 'voice') {
-            voiceRoomStore.connectToRoom(channel.id);
+            voiceRoomStore.connectToRoom(channel.id, channel.name);
         } else {
             voiceRoomStore.disconnectToRoom();
         }

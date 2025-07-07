@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { authStore } from '../../store/authStore';
 import Spinner from '../../components/spinner/Spinner';
 import './Auth.scss';
@@ -10,6 +11,20 @@ import { useTranslation } from 'react-i18next';
 const AuthPage: React.FC = observer(() => {
     const [isLogin, setIsLogin] = useState(true);
     const { t, i18n } = useTranslation();
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const redirect = searchParams.get('redirect');
+
+    // Если пользователь уже авторизован, перенаправляем его
+    useEffect(() => {
+        if (authStore.isAuthenticated) {
+            if (redirect) {
+                navigate(redirect);
+            } else {
+                navigate('/');
+            }
+        }
+    }, [redirect, navigate]);
 
     const toggleLanguage = () => {
         const newLanguage = i18n.language === 'en' ? 'ru' : 'en'; // Переключение между английским и русским

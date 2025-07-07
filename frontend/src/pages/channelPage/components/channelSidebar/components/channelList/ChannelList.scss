@@ -4,9 +4,7 @@
     background-color: #2f3136; /* Dark gray background */
     color: #ffffff; /* White text */
     padding: 20px; /* Add some padding */
-    border-radius: 8px; /* Rounded corners */
-    width: 300px; /* Fixed width for the channel list */
-    max-height: 80vh; /* Limit height */
+    flex: 1;
     overflow-y: auto; /* Scroll if necessary */
     display: flex;
     flex-direction: column;

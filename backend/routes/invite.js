@@ -61,8 +61,60 @@ router.post('/:serverId/invite', authenticateToken, async (req, res) => {
     }
 });
 
-// Принять приглашение
-router.get('/invite/:token', authenticateToken, async (req, res) => {
+// Принять приглашение (публичный роут)
+router.get('/invite/:token', async (req, res) => {
+    // #swagger.tags = ['Invites']
+    try {
+        const invite = await Invite.findOne({
+            where: {
+                token: req.params.token,
+            },
+        });
+
+        if (!invite) {
+            return res.status(404).json({ error: 'Invite not found or expired' });
+        }
+
+        // Проверка срока действия
+        if (invite.expiresAt && new Date() > new Date(invite.expiresAt)) {
+            return res.status(400).json({ error: 'Invite has expired' });
+        }
+
+        // Проверка использования и ограничений
+        if (invite.maxUses && invite.uses >= invite.maxUses) {
+            return res.status(400).json({ error: 'Invite has reached its maximum uses' });
+        }
+
+        // Получаем информацию о сервере
+        const server = await Server.findByPk(invite.serverId);
+        if (!server) {
+            return res.status(404).json({ error: 'Server not found' });
+        }
+
+        // Возвращаем информацию о приглашении и сервере
+        res.status(200).json({ 
+            invite: {
+                id: invite.id,
+                token: invite.token,
+                serverId: invite.serverId,
+                maxUses: invite.maxUses,
+                uses: invite.uses,
+                expiresAt: invite.expiresAt
+            },
+            server: {
+                id: server.id,
+                name: server.name,
+                description: server.description,
+                icon: server.icon
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Принять приглашение (для аутентифицированных пользователей)
+router.post('/invite/:token/accept', authenticateToken, async (req, res) => {
     // #swagger.tags = ['Invites']
     try {
         const invite = await Invite.findOne({

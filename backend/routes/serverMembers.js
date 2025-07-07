@@ -11,23 +11,24 @@ router.get('/:serverId/members', authenticateToken, async (req, res) => {
     try {
         const membersData = await ServerMember.findAll({
             where: { serverId: req.params.serverId },
-            attributes: ['userId', 'serverId', 'role'], // выберите только нужные поля из ServerMember
+            attributes: ['id', 'userId', 'serverId', 'role', 'createdAt', 'updatedAt'],
             include: [
                 {
                     model: User,
                     as: 'user',
-                    attributes: ['username', 'profilePicture'], // выберите только нужные поля из User
+                    attributes: ['id', 'username', 'profilePicture'],
                 },
             ],
-            raw: true, // возвращает чистый результат
         });
 
         const members = membersData.map((member) => ({
+            id: member.id,
             userId: member.userId,
-            username: member['user.username'],
             serverId: member.serverId,
             role: member.role,
-            profilePicture: member['user.profilePicture'],
+            user: member.user,
+            createdAt: member.createdAt,
+            updatedAt: member.updatedAt,
         }));
 
         res.status(200).json(members);

@@ -15,6 +15,7 @@ const ServerMembers: React.FC<ServerMembersProps> = observer(({
     onRoleChange, 
     onRemoveMember 
 }) => {
+    console.log('ServerMembers - received members:', members);
     const [expandedRoles, setExpandedRoles] = useState<{ [key: string]: boolean }>({});
 
     const currentUser = authStore.user;
