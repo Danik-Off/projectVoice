@@ -152,6 +152,34 @@ PORT=${PORT:-5001}
 
 log "ℹ️  Конфиг БД: host=$DB_HOST port=$DB_PORT db=$DB_DATABASE user=$DB_USERNAME dialect=${DB_DIALECT:-mysql}"
 
+# Если .env существует, но ключевые переменные пустые — автозаполнить при --env-auto или --force-env
+need_fill=0
+[ -z "${DB_DATABASE}" ] && need_fill=1
+[ -z "${DB_USERNAME}" ] && need_fill=1
+
+if [ "$need_fill" -eq 1 ]; then
+  if [ "$ENV_AUTO" -eq 1 ] || [ "$FORCE_ENV" -eq 1 ]; then
+    log "🧪 Обнаружены пустые переменные в .env — автозаполняю..."
+    DB_HOST_DEF="${DB_HOST:-localhost}"
+    DB_PORT_DEF="${DB_PORT:-3306}"
+    DB_DIALECT_DEF="${DB_DIALECT:-mysql}"
+    DB_DATABASE_DEF="${DB_DATABASE:-projectvoice}"
+    DB_USERNAME_DEF="${DB_USERNAME:-projectvoice}"
+    DB_PASSWORD_DEF="${DB_PASSWORD:-$(gen_password)}"
+    PORT_DEF="${PORT:-5001}"
+    NODE_ENV_DEF="${NODE_ENV:-development}"
+    JWT_SECRET_DEF="${JWT_SECRET:-$(gen_secret)}"
+    JWT_EXPIRES_DEF="${JWT_EXPIRES_IN:-24h}"
+
+    write_env_file "$DB_USERNAME_DEF" "$DB_PASSWORD_DEF" "$DB_DATABASE_DEF" "$DB_HOST_DEF" "$DB_DIALECT_DEF" "$DB_PORT_DEF" "$PORT_DEF" "$NODE_ENV_DEF" "$JWT_SECRET_DEF" "$JWT_EXPIRES_DEF"
+    log "✅ .env обновлён автозначениями"
+    # Перечитать .env
+    set -a; source ./.env || true; set +a
+  else
+    log "⚠️  В .env отсутствуют DB_DATABASE/DB_USERNAME. Запустите: bash setup.sh --env-auto --force-env"
+  fi
+fi
+
 # MySQL: установка (только macOS при наличии brew)
 if ! command -v mysql >/dev/null 2>&1; then
   if [ "$os" = "Darwin" ] && command -v brew >/dev/null 2>&1; then
