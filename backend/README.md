@@ -7,10 +7,12 @@
 
 -   [Описание](#описание)
 -   [Требования](#требования)
+-   [Быстрый старт](#быстрый-старт)
 -   [Установка](#установка)
 -   [Запуск приложения](#запуск-приложения)
 -   [Миграция базы данных](#миграция-базы-данных)
 -   [API](#api)
+-   [Документация](#документация)
 -   [Лицензия](#лицензия)
 
 ## Описание
@@ -22,37 +24,47 @@
 
 -   Node.js >= 14.x
 -   npm >= 6.x
--   База данных (MySQL или PostgreSQL)
+-   MySQL >= 8.0
+
+## Быстрый старт
+
+Для быстрой настройки проекта используйте автоматический скрипт:
+
+```bash
+./setup.sh
+```
+
+Или следуйте подробной инструкции в [QUICK_START.md](QUICK_START.md).
 
 ## Установка
 
 1. Клонируйте репозиторий:
 
-    ```
-    git clone https://github.com/yourusername/chat-backend.git
-    ```
-
-2. Перейдите в директорию проекта:
-
-    ```
-    cd chat-backend
+    ```bash
+    git clone https://github.com/yourusername/projectVoice.git
+    cd projectVoice/backend
     ```
 
-3. Установите зависимости:
+2. Установите зависимости:
 
-    ```
+    ```bash
     npm install
     ```
 
-4. Создайте файл `.env` в корневой директории и добавьте ваши настройки:
+3. Настройте переменные окружения:
 
-    ```
-    PORT=3000
-    JWT_SECRET=your_jwt_secret
-    DATABASE_URL=your_database_url
+    ```bash
+    cp .env.example .env
+    # Отредактируйте .env файл под ваши настройки
     ```
 
-    Замените `your_jwt_secret` и `your_database_url` на соответствующие значения.
+4. Настройте базу данных MySQL (см. [DEPLOYMENT.md](DEPLOYMENT.md))
+
+5. Запустите миграции:
+
+    ```bash
+    npm run db:migrate
+    ```
 
 ## Запуск приложения
 
@@ -96,35 +108,21 @@ npm run db:seed
 
 ## API
 
-### Регистрация пользователя
+Полная документация API доступна по адресу: `http://localhost:5001/api-docs`
 
--   **POST** `/api/auth/register`
--   **Тело запроса**:
+### Основные эндпоинты
 
-    ```
-    {
-        "username": "your_username",
-        "email": "your_email@example.com",
-        "password": "your_password"
-    }
-    ```
+-   **POST** `/api/auth/register` - Регистрация пользователя
+-   **POST** `/api/auth/login` - Авторизация пользователя
+-   **GET** `/api/users/me` - Получение информации о текущем пользователе
+-   **GET** `/api/servers` - Получение списка серверов
+-   **POST** `/api/servers` - Создание нового сервера
 
-### Логин пользователя
+## Документация
 
--   **POST** `/api/auth/login`
--   **Тело запроса**:
-
-    ```
-    {
-        "email": "your_email@example.com",
-        "password": "your_password"
-    }
-    ```
-
-### Получение информации о пользователе
-
--   **GET** `/api/users/:id` или `/api/users/me`
--   **Заголовки**: `Authorization: Bearer your_jwt_token`
+- [QUICK_START.md](QUICK_START.md) - Быстрый старт (5 минут)
+- [DEPLOYMENT.md](DEPLOYMENT.md) - Полная инструкция по развертыванию
+- [ENV_SETUP.md](ENV_SETUP.md) - Настройка переменных окружения
 
 ## Лицензия
 
