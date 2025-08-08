@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Скрипт для автоматической настройки окружения
-# Использование: ./setup.sh [--no-install] [--no-db-provision] [--run]
+# Использование: ./setup.sh [--no-install] [--no-db-provision] [--run] [--env-auto] [--force-env]
 
 set -euo pipefail
 
@@ -13,11 +13,15 @@ cd "$ROOT_DIR"
 NO_INSTALL=0
 NO_DB_PROVISION=0
 RUN_AFTER=0
+ENV_AUTO=0
+FORCE_ENV=0
 for arg in "$@"; do
   case "$arg" in
     --no-install) NO_INSTALL=1 ;;
     --no-db-provision) NO_DB_PROVISION=1 ;;
     --run) RUN_AFTER=1 ;;
+    --env-auto) ENV_AUTO=1 ;;
+    --force-env) FORCE_ENV=1 ;;
   esac
 done
 
@@ -46,34 +50,92 @@ else
   log "⏭️  Пропуск установки зависимостей (--no-install)"
 fi
 
-# Создание .env при отсутствии
-if [ ! -f .env ]; then
-  if [ -f .env.example ]; then
-    log "🔧 Создаем файл .env из .env.example..."
-    cp .env.example .env
+# Генераторы секретов
+gen_secret() {
+  if command -v openssl >/dev/null 2>&1; then
+    openssl rand -hex 32
   else
-    log "📝 .env.example не найден — генерирую базовый .env..."
-    cat > .env << 'EOF'
+    node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" 2>/dev/null || echo "$(date +%s%N)"
+  fi
+}
+
+gen_password() {
+  if command -v openssl >/dev/null 2>&1; then
+    openssl rand -base64 18 | tr -dc 'A-Za-z0-9' | head -c 18
+  else
+    node -e "console.log(require('crypto').randomBytes(18).toString('base64').replace(/[^A-Za-z0-9]/g,'' ).slice(0,18))" 2>/dev/null || echo "Pass$(date +%s)"
+  fi
+}
+
+write_env_file() {
+  local DB_USERNAME_V="$1"
+  local DB_PASSWORD_V="$2"
+  local DB_DATABASE_V="$3"
+  local DB_HOST_V="$4"
+  local DB_DIALECT_V="$5"
+  local DB_PORT_V="$6"
+  local PORT_V="$7"
+  local NODE_ENV_V="$8"
+  local JWT_SECRET_V="$9"
+  local JWT_EXPIRES_V="${10}"
+
+  cat > .env << EOF
 # Database Configuration
-DB_USERNAME=
-DB_PASSWORD=
-DB_DATABASE=
-DB_HOST=localhost
-DB_DIALECT=mysql
-DB_PORT=3306
+DB_USERNAME=${DB_USERNAME_V}
+DB_PASSWORD=${DB_PASSWORD_V}
+DB_DATABASE=${DB_DATABASE_V}
+DB_HOST=${DB_HOST_V}
+DB_DIALECT=${DB_DIALECT_V}
+DB_PORT=${DB_PORT_V}
 
 # Server Configuration
-PORT=5001
-NODE_ENV=development
+PORT=${PORT_V}
+NODE_ENV=${NODE_ENV_V}
 
 # JWT Configuration
-JWT_SECRET=change_me
-JWT_EXPIRES_IN=24h
+JWT_SECRET=${JWT_SECRET_V}
+JWT_EXPIRES_IN=${JWT_EXPIRES_V}
 EOF
-  fi
-  log "✅ Файл .env создан. Отредактируйте его при необходимости."
+}
+
+# Создание/заполнение .env
+if [ -f .env ] && [ "$FORCE_ENV" -eq 0 ]; then
+  log "✅ Файл .env уже существует (используйте --force-env для перезаписи)"
 else
-  log "✅ Файл .env уже существует"
+  if [ "$ENV_AUTO" -eq 1 ]; then
+    # Автоматический режим (без ввода)
+    DB_HOST_DEF="${DB_HOST:-localhost}"
+    DB_PORT_DEF="${DB_PORT:-3306}"
+    DB_DIALECT_DEF="${DB_DIALECT:-mysql}"
+    DB_DATABASE_DEF="${DB_DATABASE:-projectvoice}"
+    DB_USERNAME_DEF="${DB_USERNAME:-projectvoice}"
+    DB_PASSWORD_DEF="${DB_PASSWORD:-$(gen_password)}"
+    PORT_DEF="${PORT:-5001}"
+    NODE_ENV_DEF="${NODE_ENV:-development}"
+    JWT_SECRET_DEF="${JWT_SECRET:-$(gen_secret)}"
+    JWT_EXPIRES_DEF="${JWT_EXPIRES_IN:-24h}"
+
+    write_env_file "$DB_USERNAME_DEF" "$DB_PASSWORD_DEF" "$DB_DATABASE_DEF" "$DB_HOST_DEF" "$DB_DIALECT_DEF" "$DB_PORT_DEF" "$PORT_DEF" "$NODE_ENV_DEF" "$JWT_SECRET_DEF" "$JWT_EXPIRES_DEF"
+    log "✅ Файл .env сгенерирован автоматически (--env-auto)"
+  else
+    # Интерактивный режим
+    log "🧩 Заполняю .env (нажмите Enter, чтобы принять значение по умолчанию)"
+    read -r -p "DB_HOST [localhost]: " DB_HOST_INP; DB_HOST_INP=${DB_HOST_INP:-localhost}
+    read -r -p "DB_PORT [3306]: " DB_PORT_INP; DB_PORT_INP=${DB_PORT_INP:-3306}
+    read -r -p "DB_DIALECT [mysql]: " DB_DIALECT_INP; DB_DIALECT_INP=${DB_DIALECT_INP:-mysql}
+    read -r -p "DB_DATABASE [projectvoice]: " DB_DATABASE_INP; DB_DATABASE_INP=${DB_DATABASE_INP:-projectvoice}
+    read -r -p "DB_USERNAME [projectvoice]: " DB_USERNAME_INP; DB_USERNAME_INP=${DB_USERNAME_INP:-projectvoice}
+    read -r -s -p "DB_PASSWORD [генерируется]: " DB_PASSWORD_INP; echo ""
+    DB_PASSWORD_INP=${DB_PASSWORD_INP:-$(gen_password)}
+    read -r -p "PORT [5001]: " PORT_INP; PORT_INP=${PORT_INP:-5001}
+    read -r -p "NODE_ENV [development]: " NODE_ENV_INP; NODE_ENV_INP=${NODE_ENV_INP:-development}
+    read -r -s -p "JWT_SECRET [генерируется]: " JWT_SECRET_INP; echo ""
+    JWT_SECRET_INP=${JWT_SECRET_INP:-$(gen_secret)}
+    read -r -p "JWT_EXPIRES_IN [24h]: " JWT_EXPIRES_INP; JWT_EXPIRES_INP=${JWT_EXPIRES_INP:-24h}
+
+    write_env_file "$DB_USERNAME_INP" "$DB_PASSWORD_INP" "$DB_DATABASE_INP" "$DB_HOST_INP" "$DB_DIALECT_INP" "$DB_PORT_INP" "$PORT_INP" "$NODE_ENV_INP" "$JWT_SECRET_INP" "$JWT_EXPIRES_INP"
+    log "✅ Файл .env создан"
+  fi
 fi
 
 # Загрузка переменных окружения из .env
