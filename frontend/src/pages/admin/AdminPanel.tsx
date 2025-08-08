@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import { adminService } from '../../services/adminService';
 import { authStore } from '../../store/authStore';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import './AdminPanel.scss';
 
 interface Stats {
@@ -75,7 +75,7 @@ interface BlockServerModalProps {
 
 const BlockServerModal: React.FC<BlockServerModalProps> = ({ isOpen, onClose, onBlock, serverName }) => {
     const [reason, setReason] = useState('');
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -117,7 +117,7 @@ const BlockServerModal: React.FC<BlockServerModalProps> = ({ isOpen, onClose, on
 };
 
 const AdminPanel: React.FC = observer(() => {
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
     const [stats, setStats] = useState<Stats | null>(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('dashboard');

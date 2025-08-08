@@ -245,18 +245,18 @@ const Settings = observer(() => {
                                 </div>
                                 
                                 <div className="about-links">
-                                    <a href="#" className="about-link">
+                                    <button type="button" className="about-link">
                                         <span className="link-icon">📖</span>
                                         {t('settingsPage.about.documentation')}
-                                    </a>
-                                    <a href="#" className="about-link">
+                                    </button>
+                                    <button type="button" className="about-link">
                                         <span className="link-icon">🐛</span>
                                         {t('settingsPage.about.reportBug')}
-                                    </a>
-                                    <a href="#" className="about-link">
+                                    </button>
+                                    <button type="button" className="about-link">
                                         <span className="link-icon">💡</span>
                                         {t('settingsPage.about.suggestFeature')}
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './ServerHeader.scss';
 import serverStore from '../../../../../../store/serverStore';
 import { authStore } from '../../../../../../store/authStore';
-import PencilIcon from '../../../../../../icons/PencilIcon';
+// import PencilIcon from '../../../../../../icons/PencilIcon';
 
 const ServerHeader: React.FC = observer(() => {
     const currentServer = serverStore.currentServer;

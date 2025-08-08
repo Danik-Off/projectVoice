@@ -11,7 +11,7 @@ import './Main.scss'; // Main CSS for layout
 
 const Layout = observer(() => {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [voiceControlsHeight, setVoiceControlsHeight] = useState(0);
+    // const [voiceControlsHeight, setVoiceControlsHeight] = useState(0);
     const [wasConnectedToVoice, setWasConnectedToVoice] = useState(false);
     
     const initMedia = () => {
