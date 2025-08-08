@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import './BlockedAccountModal.scss';
 
 interface BlockedAccountModalProps {
@@ -17,7 +16,6 @@ const BlockedAccountModal: React.FC<BlockedAccountModalProps> = ({
     blockedAt,
     blockedBy
 }) => {
-    const { t } = useTranslation();
 
     if (!isOpen) return null;
 

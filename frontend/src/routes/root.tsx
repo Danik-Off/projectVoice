@@ -12,7 +12,6 @@ import AdminPanel from '../pages/admin/AdminPanel';
 import AdminRoute from '../store/AdminRoute';
 import ServerSettings from '../pages/serverSettings/ServerSettings';
 import InvitePage from '../pages/invite/InvitePage';
-import TestInvitePage from '../pages/invite/TestInvitePage';
 
 export const router = createBrowserRouter([
     {

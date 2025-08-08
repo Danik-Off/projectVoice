@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import './BlockedServerModal.scss';
 
 interface BlockedServerModalProps {
@@ -19,7 +18,6 @@ const BlockedServerModal: React.FC<BlockedServerModalProps> = ({
     blockedAt,
     blockedBy
 }) => {
-    const { t } = useTranslation();
 
     if (!isOpen) return null;
 
