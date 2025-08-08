@@ -11,7 +11,7 @@ import './Main.scss'; // Main CSS for layout
 
 const Layout = observer(() => {
     const [isModalOpen, setModalOpen] = useState(false);
-    // const [voiceControlsHeight, setVoiceControlsHeight] = useState(0);
+    const [voiceControlsHeight, setVoiceControlsHeight] = useState(0);
     const [wasConnectedToVoice, setWasConnectedToVoice] = useState(false);
     
     const initMedia = () => {
@@ -83,7 +83,8 @@ const Layout = observer(() => {
             <div 
                 className="content-page"
                 style={{ 
-                    transition: 'margin-bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                    transition: 'margin-bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    marginBottom: shouldShowVoiceControls ? `${voiceControlsHeight}px` : '0px'
                 }}
             >
                 <div className="content-wrapper">
