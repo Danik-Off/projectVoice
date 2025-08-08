@@ -1,18 +1,21 @@
 // swagger-gen.js
 const swaggerAutogen = require('swagger-autogen')();
 const path = require('path');
+require('dotenv').config();
 
 // Путь к файлам, которые будут использоваться для генерации документации
 const outputFile = path.join(__dirname, 'swagger-output.json'); // Путь для генерируемого файла
 const endpointsFiles = [path.join(__dirname, '../../index.js')]; // Путь к файлам с роутами
 
 // Конфигурация документации
+const port = process.env.PORT || 5001;
+const host = `localhost:${port}`;
 const doc = {
     info: {
         title: 'projectVoice Api', // Название API
         description: 'rest api',
     },
-    host: 'localhost:3000', // Хост
+    host, // Хост
     schemes: ['http'], // Схемы (HTTP/HTTPS)
     tags: [
         { name: 'Auth', description: 'API для аутентификации' },

@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const { Sequelize } = require('sequelize');
 const path = require('path');
+const { Sequelize } = require('sequelize');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -24,8 +24,8 @@ const { exec } = require('child_process');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./utils/swagger/swagger-output.json');
 
-// Загрузка переменных окружения
-dotenv.config();
+// Загрузка переменных окружения (из backend/.env)
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const WEBSOCKET_PATH = `/socket`;
 

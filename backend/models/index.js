@@ -5,12 +5,46 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__filename);
-require("dotenv").config();
-const env = process.env.NODE_ENV;
-const config = require(__dirname + "/../config/config.js")[env];
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+
+// Нормализуем NODE_ENV и безопасно выбираем конфиг
+const allConfig = require(__dirname + "/../config/config.js");
+const rawEnv = process.env.NODE_ENV || "development";
+const normalizedEnv = String(rawEnv).toLowerCase();
+
+const envAliases = {
+  prod: "production",
+  production: "production",
+  dev: "development",
+  development: "development",
+  test: "test",
+};
+
+const resolvedEnv = envAliases[normalizedEnv] || "development";
+const config = allConfig[resolvedEnv];
 const db = {};
 
-console.log("выбрана конфигурация:", env);
+if (!config) {
+  console.error(
+    `Конфигурация для NODE_ENV="${rawEnv}" не найдена. Доступные окружения: ${Object.keys(
+      allConfig
+    ).join(", ")}. Используйте одно из них или исправьте переменную окружения.`
+  );
+  process.exit(1);
+}
+
+console.log("выбрана конфигурация:", resolvedEnv);
+
+// Валидация обязательных полей конфига
+const requiredFields = ["database", "username", "host", "dialect"];
+const missing = requiredFields.filter((k) => !config[k]);
+if (missing.length) {
+  console.error(
+    `Отсутствуют обязательные параметры в конфиге БД (${resolvedEnv}): ${missing.join(", ")}.\n` +
+      `Проверьте .env (DB_DATABASE, DB_USERNAME, DB_PASSWORD?, DB_HOST, DB_DIALECT, DB_PORT).`
+  );
+  process.exit(1);
+}
 
 // Обработка ошибок при подключении к базе данных
 const sequelize = new Sequelize(
