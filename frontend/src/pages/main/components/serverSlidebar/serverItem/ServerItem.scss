@@ -1,198 +1,78 @@
 @import '../../../../../styles/main';
 
-.server-item {
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 255, 255, 0.05) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        transition: left 0.5s ease;
-        z-index: 1;
-    }
-
-    &::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(114, 137, 218, 0.1) 0%, transparent 70%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-    }
-
-    &:hover {
-        transform: scale(1.1) translateY(-3px);
-        box-shadow: 0 12px 30px rgba(114, 137, 218, 0.4);
-        border-color: var(--accent-color);
-        background: linear-gradient(135deg, var(--hover-bg) 0%, var(--accent-color) 100%);
-
-        &::before {
-            left: 100%;
-        }
-
-        &::after {
-            opacity: 1;
-        }
-
-        .server-icon,
-        .server-icon-placeholder {
-            transform: scale(1.05);
-        }
-    }
-
-    &:active {
-        transform: scale(0.95);
-    }
-
+// Стили для серверов в списке (переопределяют базовые стили .server)
+.server {
+    // Базовые стили уже определены в ServerSidebar.scss
+    
+    // Стили для изображений серверов
     .server-icon {
         width: 100%;
         height: 100%;
-        border-radius: 16px;
+        border-radius: 12px;
         object-fit: cover;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
         position: relative;
         z-index: 2;
-        filter: brightness(0.9) contrast(1.1);
     }
 
-    .server-icon-placeholder {
+    // Стили для текстовых иконок (первая буква названия)
+    &:not(:has(img)) .server-icon {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, var(--card-bg) 0%, rgba(114, 137, 218, 0.1) 100%);
-        color: var(--text-color);
+        background: transparent;
+        color: inherit;
         font-size: 18px;
         font-weight: 700;
-        border-radius: 16px;
+        border-radius: 12px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
         text-transform: uppercase;
         position: relative;
         z-index: 2;
         letter-spacing: 0.5px;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
 
-    &:hover .server-icon-placeholder {
-        background: linear-gradient(135deg, var(--hover-bg) 0%, var(--accent-color) 100%);
-        border-color: var(--accent-color);
+    // Заблокированный сервер
+    &.blocked {
+        background: #ed4245;
         color: white;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
+        opacity: 0.8;
+        position: relative;
 
-    &:hover .server-icon {
-        border-color: var(--accent-color);
-        filter: brightness(1.1) contrast(1.2);
-    }
-
-    // Индикатор активного сервера
-    .active-indicator {
-        position: absolute;
-        left: -8px;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 3;
-        animation: slideInLeft 0.3s ease-out;
-
-        .indicator-dot {
-            width: 8px;
-            height: 8px;
-            background: linear-gradient(135deg, var(--accent-color) 0%, var(--button-bg) 100%);
+        &::before {
+            content: '🚫';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 12px;
+            z-index: 4;
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(114, 137, 218, 0.6);
-            animation: pulse 2s infinite;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ed4245;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        .server-icon {
+            filter: grayscale(0.5) brightness(0.7);
+        }
+
+        &:hover .server-icon {
+            filter: grayscale(0.3) brightness(0.9);
         }
     }
-}
 
-// Индикатор активного сервера
-.server-item.active {
-    background: linear-gradient(135deg, var(--accent-color) 0%, var(--button-bg) 100%);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.3), 0 8px 25px rgba(114, 137, 218, 0.4);
-    transform: scale(1.05);
-
-    &::after {
-        opacity: 1;
-        background: radial-gradient(circle, rgba(114, 137, 218, 0.2) 0%, transparent 70%);
-    }
-
-    .server-icon,
-    .server-icon-placeholder {
-        border-color: var(--accent-color);
-        color: white;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .server-icon-placeholder {
-        background: linear-gradient(135deg, var(--accent-color) 0%, var(--button-bg) 100%);
-    }
-}
-
-// Заблокированный сервер
-.server-item.blocked {
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-    border-color: #e74c3c;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-    opacity: 0.8;
-    position: relative;
-
-    &::before {
-        content: '🚫';
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        font-size: 12px;
-        z-index: 4;
-        background: rgba(0, 0, 0, 0.8);
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid #e74c3c;
-    }
-
-    &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
-        opacity: 1;
-    }
-
-    .server-icon,
-    .server-icon-placeholder {
-        filter: grayscale(0.5) brightness(0.7);
-    }
-
-    &:hover .server-icon,
-    &:hover .server-icon-placeholder {
-        filter: grayscale(0.3) brightness(0.9);
-    }
-}
-
-// Анимация появления
-.server-item {
+    // Анимация появления
     animation: fadeInUp 0.5s ease-out;
 }
 
@@ -204,28 +84,5 @@
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateY(-50%) translateX(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(-50%) translateX(0);
-    }
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 10px rgba(114, 137, 218, 0.6);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(114, 137, 218, 0.8);
-    }
-    100% {
-        box-shadow: 0 0 10px rgba(114, 137, 218, 0.6);
     }
 }

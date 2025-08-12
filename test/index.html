@@ -1,75 +1,563 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Discord-like Interface</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceVerse - Уникальная Платформа</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <!-- Server List -->
-    <div class="server-list">
-      <div class="server">S</div>
-      <div class="server">D</div>
-      <div class="server">+</div>
+    <div class="app">
+        <!-- Боковая панель серверов с уникальным дизайном -->
+        <div class="servers-panel">
+            <div class="server home active" data-tooltip="Главная">
+                <div class="server-icon">🏠</div>
+                <div class="server-glow"></div>
+            </div>
+            
+            <div class="server-separator">
+                <div class="separator-line"></div>
+                <div class="separator-dot"></div>
+            </div>
+            
+            <div class="server" data-tooltip="Космические Игры">
+                <div class="server-icon">🚀</div>
+                <div class="server-badge">3</div>
+            </div>
+            
+            <div class="server" data-tooltip="Технологии">
+                <div class="server-icon">⚡</div>
+                <div class="server-badge">12</div>
+            </div>
+            
+            <div class="server" data-tooltip="Музыка">
+                <div class="server-icon">🎼</div>
+                <div class="server-badge">5</div>
+            </div>
+            
+            <div class="server" data-tooltip="Книги">
+                <div class="server-icon">📚</div>
+            </div>
+            
+            <div class="server-separator">
+                <div class="separator-line"></div>
+                <div class="separator-dot"></div>
+            </div>
+            
+            <div class="server add" data-tooltip="Создать Сервер">
+                <div class="server-icon">+</div>
+                <div class="add-ripple"></div>
+            </div>
+            
+            <div class="server settings" data-tooltip="Настройки">
+                <div class="server-icon">⚙️</div>
+            </div>
+            
+            <div class="server admin" data-tooltip="Админка">
+                <div class="server-icon">👑</div>
+            </div>
+        </div>
+
+        <!-- Панель каналов с уникальным дизайном -->
+        <div class="channels-panel">
+            <!-- Заголовок сервера с анимированными элементами -->
+            <div class="server-header">
+                <!-- Верхняя панель с кнопками управления -->
+                <div class="server-controls-top">
+                    <div class="server-status">
+                        <div class="status-indicator online"></div>
+                        <span class="status-text">Online</span>
+                    </div>
+                    
+                    <div class="controls-group">
+                        <button class="control-btn search active" title="Поиск (Ctrl+K)">
+                            <span class="btn-icon">🔍</span>
+                            <div class="search-indicator"></div>
+                            <div class="btn-ripple"></div>
+                        </button>
+                        <button class="control-btn notifications" title="Уведомления">
+                            <span class="btn-icon">🔔</span>
+                            <div class="notification-badge">3</div>
+                            <div class="btn-ripple"></div>
+                        </button>
+                        <button class="control-btn pinned" title="Закрепленные сообщения">
+                            <span class="btn-icon">📌</span>
+                            <div class="count-badge">5</div>
+                            <div class="btn-ripple"></div>
+                        </button>
+                        <button class="control-btn members" title="Список участников">
+                            <span class="btn-icon">👥</span>
+                            <div class="count-badge">42</div>
+                            <div class="btn-ripple"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Основная информация о сервере -->
+                <div class="server-info">
+                    <div class="server-logo">
+                        <div class="logo-container">
+                            <span class="logo-icon">🚀</span>
+                            <div class="logo-rings">
+                                <div class="ring ring-1"></div>
+                                <div class="ring ring-2"></div>
+                                <div class="ring ring-3"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="server-content">
+                            <h1 class="server-name">
+                                <span class="name-text">Cosmic Hub</span>
+                                <div class="name-underline"></div>
+                            </h1>
+                            <div class="server-stats">
+                                <div class="stat-item">
+                                    <div class="stat-dot online"></div>
+                                    <span class="stat-text">42 online</span>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-dot total"></div>
+                                    <span class="stat-text">1,337 members</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Нижняя панель с дополнительными действиями -->
+                <div class="server-actions-bottom">
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" placeholder="Поиск по серверу..." class="server-search-input">
+                            <div class="search-focus-line"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="actions-group">
+                        <button class="control-btn invite" title="Пригласить">
+                            <span class="btn-icon">🌟</span>
+                            <div class="btn-ripple"></div>
+                        </button>
+                        <button class="control-btn settings" title="Настройки сервера">
+                            <span class="btn-icon">⚙️</span>
+                            <div class="btn-ripple"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Список каналов с уникальными категориями -->
+            <div class="channels-list">
+                <div class="category">
+                    <div class="category-header">
+                        <div class="category-icon">💬</div>
+                        <span class="category-name">ТЕКСТОВЫЕ КАНАЛЫ</span>
+                        <div class="category-line"></div>
+                    </div>
+                    <div class="channels">
+                        <div class="channel active">
+                            <div class="channel-indicator"></div>
+                            <span class="hash">#</span>
+                            <span class="name">general</span>
+                            <div class="channel-status">active</div>
+                        </div>
+                        <div class="channel">
+                            <div class="channel-indicator"></div>
+                            <span class="hash">#</span>
+                            <span class="name">announcements</span>
+                            <div class="channel-badge">new</div>
+                        </div>
+                        <div class="channel">
+                            <div class="channel-indicator"></div>
+                            <span class="hash">#</span>
+                            <span class="name">chat</span>
+                        </div>
+                        <div class="channel">
+                            <div class="channel-indicator"></div>
+                            <span class="hash">#</span>
+                            <span class="name">help</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-header">
+                        <div class="category-icon">🎵</div>
+                        <span class="category-name">ГОЛОСОВЫЕ КАНАЛЫ</span>
+                        <div class="category-line"></div>
+                    </div>
+                    <div class="channels">
+                        <div class="channel voice active-voice">
+                            <div class="voice-waves">
+                                <div class="wave"></div>
+                                <div class="wave"></div>
+                                <div class="wave"></div>
+                            </div>
+                            <span class="icon">🔊</span>
+                            <span class="name">General</span>
+                            <span class="count">3</span>
+                        </div>
+                        <div class="channel voice">
+                            <span class="icon">🎼</span>
+                            <span class="name">Music</span>
+                            <span class="count">1</span>
+                        </div>
+                        <div class="channel voice">
+                            <span class="icon">🚀</span>
+                            <span class="name">Gaming</span>
+                            <span class="count">5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основная область чата с уникальным дизайном -->
+        <div class="chat-area">
+            <!-- Заголовок чата с анимированными элементами -->
+            <div class="chat-header">
+                <div class="channel-info">
+                    <div class="channel-marker">
+                        <span class="hash">#</span>
+                        <div class="marker-line"></div>
+                    </div>
+                    <h2 class="channel-name">general</h2>
+                    <div class="topic-container">
+                        <span class="topic">Общие обсуждения и новости</span>
+                        <div class="topic-underline"></div>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="action-btn" title="Уведомления">
+                        <span class="action-icon">🔔</span>
+                        <div class="action-ripple"></div>
+                    </button>
+                    <button class="action-btn" title="Закрепить">
+                        <span class="action-icon">📌</span>
+                        <div class="action-ripple"></div>
+                    </button>
+                    <button class="action-btn" title="Участники">
+                        <span class="action-icon">👥</span>
+                        <div class="action-ripple"></div>
+                    </button>
+                    <button class="action-btn" title="Поиск">
+                        <span class="action-icon">🔍</span>
+                        <div class="action-ripple"></div>
+                    </button>
+                    <button class="action-btn" title="Меню">
+                        <span class="action-icon">📋</span>
+                        <div class="action-ripple"></div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Область сообщений с уникальным дизайном -->
+            <div class="messages-container">
+                <div class="message">
+                    <div class="avatar-container">
+                        <div class="avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=alex" alt="Alex">
+                        </div>
+                        <div class="avatar-status online"></div>
+                        <div class="avatar-ripple"></div>
+                    </div>
+                    <div class="content">
+                        <div class="message-header">
+                            <span class="name">Alex</span>
+                            <div class="message-time">
+                                <span class="time-text">Today at 2:30 PM</span>
+                                <div class="time-dot"></div>
+                            </div>
+                        </div>
+                        <div class="message-text">
+                            Привет всем! Как дела? 🚀
+                        </div>
+                        <div class="message-reactions">
+                            <div class="reaction">👍 3</div>
+                            <div class="reaction">❤️ 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="avatar-container">
+                        <div class="avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=maria" alt="Maria">
+                        </div>
+                        <div class="avatar-status online"></div>
+                        <div class="avatar-ripple"></div>
+                    </div>
+                    <div class="content">
+                        <div class="message-header">
+                            <span class="name">Maria</span>
+                            <div class="message-time">
+                                <span class="time-text">Today at 2:32 PM</span>
+                                <div class="time-dot"></div>
+                            </div>
+                        </div>
+                        <div class="message-text">
+                            Привет Alex! Все отлично, спасибо! ✨
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="avatar-container">
+                        <div class="avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=john" alt="John">
+                        </div>
+                        <div class="avatar-status online"></div>
+                        <div class="avatar-ripple"></div>
+                    </div>
+                    <div class="content">
+                        <div class="message-header">
+                            <span class="name">John</span>
+                            <div class="message-time">
+                                <span class="time-text">Today at 2:35 PM</span>
+                                <div class="time-dot"></div>
+                            </div>
+                        </div>
+                        <div class="message-text">
+                            Кто хочет поиграть в новую игру? 🎮
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="avatar-container">
+                        <div class="avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=alex" alt="Alex">
+                        </div>
+                        <div class="avatar-status online"></div>
+                        <div class="avatar-ripple"></div>
+                    </div>
+                    <div class="content">
+                        <div class="message-header">
+                            <span class="name">Alex</span>
+                            <div class="message-time">
+                                <span class="time-text">Today at 2:37 PM</span>
+                                <div class="time-dot"></div>
+                            </div>
+                        </div>
+                        <div class="message-text">
+                            Я! В какую игру думаешь? 🤔
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Поле ввода сообщения с уникальным дизайном -->
+            <div class="message-input-container">
+                <div class="input-wrapper">
+                    <div class="input-actions-left">
+                        <button class="input-action-btn" title="Прикрепить файл">
+                            <span class="action-icon">📎</span>
+                            <div class="btn-ripple"></div>
+                        </button>
+                        <button class="input-action-btn" title="Эмодзи">
+                            <span class="action-icon">😊</span>
+                            <div class="btn-ripple"></div>
+                        </button>
+                    </div>
+                    
+                    <div class="input-field-container">
+                        <input type="text" placeholder="Написать сообщение в #general" class="message-input">
+                        <div class="input-focus-line"></div>
+                    </div>
+                    
+                    <div class="input-actions-right">
+                        <button class="input-action-btn" title="Музыка">
+                            <span class="action-icon">🎵</span>
+                            <div class="btn-ripple"></div>
+                        </button>
+                        <button class="input-action-btn" title="Отправить">
+                            <span class="action-icon">🚀</span>
+                            <div class="btn-ripple"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Панель участников с уникальным дизайном -->
+        <div class="members-panel">
+            <div class="members-header">
+                <h3 class="members-title">
+                    <span class="title-text">Участники — 1,337</span>
+                    <div class="title-underline"></div>
+                </h3>
+            </div>
+            
+            <div class="members-list">
+                <div class="member-group">
+                    <div class="group-header">
+                        <div class="group-icon online"></div>
+                        <span class="group-title">Онлайн — 42</span>
+                        <div class="group-line"></div>
+                    </div>
+                    
+                    <div class="member online">
+                        <div class="member-avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=alex" alt="Alex">
+                            <div class="status-indicator online"></div>
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <div class="member-info">
+                            <span class="member-name">Alex</span>
+                            <div class="member-status">Playing 🎮</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member online">
+                        <div class="member-avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=maria" alt="Maria">
+                            <div class="status-indicator online"></div>
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <div class="member-info">
+                            <span class="member-name">Maria</span>
+                            <div class="member-status">Listening 🎵</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member online">
+                        <div class="member-avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=john" alt="John">
+                            <div class="status-indicator online"></div>
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <div class="member-info">
+                            <span class="member-name">John</span>
+                            <div class="member-status">Online</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="member-group">
+                    <div class="group-header">
+                        <div class="group-icon offline"></div>
+                        <span class="group-title">Оффлайн — 1,295</span>
+                        <div class="group-line"></div>
+                    </div>
+                    
+                    <div class="member offline">
+                        <div class="member-avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" alt="User">
+                            <div class="status-indicator offline"></div>
+                        </div>
+                        <div class="member-info">
+                            <span class="member-name">User123</span>
+                            <div class="member-status">Last seen 2h ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member offline">
+                        <div class="member-avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user2" alt="User">
+                            <div class="status-indicator offline"></div>
+                        </div>
+                        <div class="member-info">
+                            <span class="member-name">User456</span>
+                            <div class="member-status">Last seen 1d ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Уникальная панель голосового чата -->
+        <div class="voice-panel">
+            <div class="voice-header">
+                <div class="voice-channel-info">
+                    <div class="voice-icon-container">
+                        <span class="voice-icon">🔊</span>
+                        <div class="voice-pulse"></div>
+                    </div>
+                    <div class="voice-details">
+                        <span class="channel-name">General</span>
+                        <div class="voice-stats">
+                            <span class="participants">3 участника</span>
+                            <span class="call-duration">15:32</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="voice-controls">
+                <button class="voice-control-btn mute" title="Выключить микрофон">
+                    <span class="control-icon">🎤</span>
+                    <div class="control-ripple"></div>
+                    <div class="control-status"></div>
+                </button>
+                
+                <button class="voice-control-btn deafen" title="Выключить звук">
+                    <span class="control-icon">🎧</span>
+                    <div class="control-ripple"></div>
+                    <div class="control-status"></div>
+                </button>
+                
+                <button class="voice-control-btn video" title="Видео">
+                    <span class="control-icon">📹</span>
+                    <div class="control-ripple"></div>
+                    <div class="control-status"></div>
+                </button>
+                
+                <button class="voice-control-btn screen" title="Поделиться экраном">
+                    <span class="control-icon">🖥️</span>
+                    <div class="control-ripple"></div>
+                    <div class="control-status"></div>
+                </button>
+                
+                <button class="voice-control-btn participants" title="Участники">
+                    <span class="control-icon">👥</span>
+                    <div class="control-ripple"></div>
+                    <div class="control-status"></div>
+                </button>
+                
+                <button class="voice-control-btn end-call" title="Завершить звонок">
+                    <span class="control-icon">📞</span>
+                    <div class="control-ripple"></div>
+                    <div class="control-status"></div>
+                </button>
+            </div>
+            
+            <div class="voice-participants-mini">
+                <div class="participant-mini speaking">
+                    <div class="mini-avatar">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=alex" alt="Alex">
+                    </div>
+                    <div class="speaking-indicator">
+                        <div class="speaking-dot"></div>
+                        <div class="speaking-dot"></div>
+                        <div class="speaking-dot"></div>
+                    </div>
+                </div>
+                
+                <div class="participant-mini">
+                    <div class="mini-avatar">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=maria" alt="Maria">
+                    </div>
+                </div>
+                
+                <div class="participant-mini">
+                    <div class="mini-avatar">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=john" alt="John">
+                    </div>
+                </div>
+                
+                <div class="more-participants">
+                    <span class="more-text">+2</span>
+                    <div class="more-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Channel List -->
-    <div class="channel-list">
-      <h2>Server Name</h2>
-      <div class="channel"># general <span class="channel-users">(3)</span></div>
-      <div class="channel"># random <span class="channel-users">(1)</span></div>
-      <div class="channel"># memes <span class="channel-users">(2)</span></div>
-
-      <!-- Voice Chat -->
-      <div class="voice-chat">
-        <h3>Voice Chat</h3>
-        <div class="voice-user">
-          User1 <span class="voice-status online">🔊</span>
-        </div>
-        <div class="voice-user">
-          User2 <span class="voice-status online">🔊</span>
-        </div>
-        <div class="voice-user">
-          User3 <span class="voice-status offline">🔕</span>
-        </div>
-      </div>
-
-      <!-- Voice Controls -->
-      <div class="voice-controls">
-        <div class="control">
-          <button class="mute-button">Mute</button>
-          <span class="mic-status">Mic: <span class="status-indicator on">On</span></span>
-        </div>
-        <button class="leave-button">Leave</button>
-      </div>
-    </div>
-
-    <!-- Chat Panel -->
-    <div class="chat-panel">
-      <div class="chat-header">
-        <div class="profile">
-          <img src="profile-pic.jpg" alt="Profile" class="profile-pic">
-          <span class="username">User Name</span>
-        </div>
-      </div>
-      <div class="chat-content">
-        <div class="message">
-          <span class="username">User1:</span> Hello, everyone!
-        </div>
-        <div class="message">
-          <span class="username">User2:</span> Hi! What's up?
-        </div>
-        <div class="message">
-          <span class="username">User3:</span> I have a question about the project.
-        </div>
-      </div>
-      <div class="message-input">
-        <input type="text" placeholder="Type a message..." />
-        <button>Send</button>
-      </div>
-    </div>
-  </div>
 </body>
 </html>

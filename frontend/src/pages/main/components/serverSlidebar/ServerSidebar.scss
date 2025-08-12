@@ -1,154 +1,156 @@
 @import '../../../../styles/main';
-.server-sidebar {
+
+.servers {
     width: 72px;
-    background: linear-gradient(180deg, var(--sidebar-bg) 0%, rgba(47, 49, 54, 0.95) 100%);
+    background: #1e1f22;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 16px 0;
-    position: relative;
-    border-right: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+    gap: 8px;
+    border-right: 1px solid #2a2b2e;
+    padding: 12px 0;
+    justify-content: flex-start;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #2a2b2e transparent;
 
-    &::before {
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #2a2b2e;
+        border-radius: 2px;
+
+        &:hover {
+            background: #3a3b3e;
+        }
+    }
+}
+
+.server {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #2a2b2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    font-size: 20px;
+    color: #8e9297;
+    flex-shrink: 0;
+
+    &:hover {
+        background: #5865f2;
+        color: white;
+        border-radius: 16px;
+        transform: scale(1.05);
+    }
+
+    &.active {
+        background: #5865f2;
+        color: white;
+        border-radius: 16px;
+    }
+
+    &.active::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent 0%, var(--accent-color) 50%, transparent 100%);
-        opacity: 0.3;
+        left: -16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 40px;
+        background: white;
+        border-radius: 0 4px 4px 0;
     }
 
-    .server-icon:hover {
-        background: linear-gradient(135deg, var(--button-hover-bg) 0%, var(--accent-color) 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(114, 137, 218, 0.3);
-    }
-
-    .server-icon.active {
-        background: linear-gradient(135deg, var(--accent-color) 0%, var(--button-bg) 100%);
-        box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.3), 0 8px 25px rgba(114, 137, 218, 0.4);
-    }
-
-    .server-sidebar__server-list {
-        overflow: hidden;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        margin: 20px 0;
-        overflow-y: auto;
-        width: 100%;
-        padding:12px;
-        scrollbar-width: thin;
-        scrollbar-color: var(--border-color) transparent;
-
-        &::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        &::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--border-color) 0%, var(--accent-color) 100%);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-
-            &:hover {
-                background: linear-gradient(180deg, var(--accent-color) 0%, var(--button-bg) 100%);
-            }
-        }
-    }
-
-    .add-button, .settings-button, .admin-button {
-        width: 48px;
-        height: 48px;
+    &.home {
+        background: #5865f2;
+        color: white;
         border-radius: 16px;
-        background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 255, 255, 0.05) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: var(--text-color);
+    }
+
+    &.home::before {
+        content: '';
+        position: absolute;
+        left: -16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 40px;
+        background: white;
+        border-radius: 0 4px 4px 0;
+    }
+
+    &.add {
+        background: #2a2b2e;
+        color: #3ba55c;
         font-size: 24px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        font-weight: 300;
+
+        &:hover {
+            background: #3ba55c;
+            color: white;
+            border-radius: 16px;
+        }
+    }
+
+    &.settings {
+        margin-top: auto;
+        background: #2a2b2e;
+        border-radius: 12px;
         position: relative;
-        overflow: hidden;
 
         &::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s ease;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 2px;
+            background: #2a2b2e;
+            border-radius: 1px;
         }
 
         &:hover {
-            background: linear-gradient(135deg, var(--hover-bg) 0%, var(--accent-color) 100%);
-            transform: scale(1.1) translateY(-2px);
-            box-shadow: 0 8px 25px rgba(114, 137, 218, 0.4);
-            border-color: var(--accent-color);
-
-            &::before {
-                left: 100%;
-            }
-        }
-
-        &:active {
-            transform: scale(0.95);
+            background: #5865f2;
+            color: white;
+            border-radius: 16px;
         }
     }
 
-    .add-button {
-        font-size: 24px;
+    &.admin {
+        background: #2a2b2e;
+        color: #faa61a;
+        font-size: 18px;
+
+        &:hover {
+            background: #faa61a;
+            color: white;
+            border-radius: 16px;
+        }
     }
 
-    .settings-button {
+    .server-icon {
         font-size: 20px;
     }
-
-    .admin-button {
-        font-size: 18px;
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        color: white;
-        border-color: #e74c3c;
-
-        &:hover {
-            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
-            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
-            border-color: #c0392b;
-        }
-    }
 }
 
-// Скроллбар для списка серверов
-.server-sidebar__server-list::-webkit-scrollbar {
-    width: 4px;
-}
-
-.server-sidebar__server-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.server-sidebar__server-list::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 2px;
-}
-
-.server-sidebar__server-list::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-text-color);
+.server-separator {
+    width: 32px;
+    height: 2px;
+    background: #2a2b2e;
+    border-radius: 1px;
+    margin: 4px 0;
+    flex-shrink: 0;
 }
 

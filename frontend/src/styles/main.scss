@@ -1,266 +1,263 @@
-@import 'theme/_dark'; // По умолчанию импорт  тёмной темы, можно динамически менять на _dark
+@import 'theme/_dark'; // По умолчанию импорт тёмной темы, можно динамически менять на _dark
 @import 'colors';
 @import 'sizes';
+@import 'animations';
+@import 'utilities';
 @import 'typography';
 @import 'basic';
-// Основные стили с поддержкой тем
+
+// VoiceVerse - Основные стили с поддержкой тем
 :root {
     // CSS переменные будут установлены динамически через ThemeStore
+    // Используем новую систему цветов и размеров
 }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: $primary-bg;
+    color: $text-primary;
     margin: 0;
     padding: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+// Фоновые эффекты
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(100, 181, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(229, 115, 115, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(129, 199, 132, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 // Общие стили для карточек
 .card {
-    background: var(--card-bg);
+    background: $secondary-bg;
     backdrop-filter: blur(20px);
-    border-radius: 16px;
-    border: 1px solid var(--card-border);
-    box-shadow: 0 8px 32px var(--shadow-color);
-    transition: all 0.3s ease;
+    border-radius: $border-radius;
+    border: 1px solid $border-primary;
+    box-shadow: $shadow-light;
+    transition: all $animation-duration $animation-timing;
+    
+    &:hover {
+        box-shadow: $shadow-medium;
+        transform: translateY(-$hover-lift);
+    }
 }
 
 // Стили для кнопок
 .btn {
-    background: var(--button-bg);
-    color: var(--button-text);
+    background: $button-primary-bg;
+    color: $text-primary;
     border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
+    border-radius: $border-radius;
+    padding: $spacing-sm $spacing-md;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all $animation-duration $animation-timing;
+    height: $button-height;
     
     &:hover {
-        background: var(--button-hover-bg);
-        box-shadow: 0 4px 12px var(--shadow-color);
+        background: $button-primary-hover;
+        box-shadow: $shadow-medium;
+        transform: translateY(-$hover-lift);
     }
     
     &:focus {
         outline: none;
-        box-shadow: 0 0 0 3px var(--accent-color);
+        box-shadow: 0 0 0 $focus-ring-width $primary-accent;
     }
     
     &.btn-secondary {
-        background: transparent;
-        color: var(--text-color);
-        border: 1px solid var(--border-color);
+        background: $button-secondary-bg;
+        color: $text-primary;
+        border: 1px solid $border-primary;
         
         &:hover {
-            background: var(--hover-bg);
+            background: $button-secondary-hover;
+        }
+    }
+    
+    &.btn-accent {
+        background: $gradient-accent;
+        color: white;
+        
+        &:hover {
+            transform: translateY(-$hover-lift) scale($hover-scale);
+            box-shadow: $glow-primary;
         }
     }
 }
 
 // Стили для полей ввода
 .input {
-    background: var(--input-bg);
-    color: var(--input-text);
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    padding: 12px 16px;
+    background: $input-bg;
+    color: $text-primary;
+    border: 2px solid $input-border;
+    border-radius: $border-radius;
+    padding: $spacing-sm $spacing-md;
     font-size: 14px;
-    transition: all 0.3s ease;
+    height: $input-height;
+    transition: all $animation-duration $animation-timing;
     
     &:focus {
         outline: none;
-        border-color: var(--accent-color);
-        box-shadow: 0 0 0 3px var(--accent-color);
+        border-color: $input-focus-border;
+        box-shadow: $input-focus-shadow;
     }
     
     &::placeholder {
-        color: var(--placeholder-text);
+        color: $text-disabled;
     }
 }
 
 // Стили для сайдбаров
 .sidebar {
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color);
-    transition: background-color 0.3s ease;
+    background: $secondary-bg;
+    border-right: 1px solid $border-primary;
+    transition: background-color $animation-duration $animation-timing;
 }
 
 // Стили для сообщений
 .message {
-    background: var(--message-bg);
-    color: var(--message-text);
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-// Стили для модальных окон
-.modal {
-    background: var(--card-bg);
-    border-radius: 16px;
-    border: 1px solid var(--card-border);
-    box-shadow: 0 20px 60px var(--shadow-color);
-}
-
-// Стили для уведомлений
-.notification {
-    background: var(--card-bg);
-    color: var(--text-color);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    box-shadow: 0 8px 24px var(--shadow-color);
-}
-
-// Анимации
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    background: $tertiary-bg;
+    color: $text-primary;
+    padding: $message-padding;
+    border-radius: $border-radius;
+    margin-bottom: $spacing-sm;
+    transition: background-color $animation-duration $animation-timing;
+    
+    &:hover {
+        background: $message-bg-hover;
+        transform: translateX($hover-translate);
     }
 }
 
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
+// Стили для скроллбаров
+::-webkit-scrollbar {
+    width: $scrollbar-width;
+}
+
+::-webkit-scrollbar-track {
+    background: $scrollbar-track;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $scrollbar-thumb;
+    border-radius: $border-radius-round;
+    
+    &:hover {
+        background: $scrollbar-thumb-hover;
     }
-    to {
-        opacity: 1;
-        transform: translateX(0);
+}
+
+// Стили для фокусных состояний
+*:focus {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 2px solid $primary-accent;
+    outline-offset: $focus-ring-offset;
+}
+
+// Стили для переходов
+* {
+    transition: 
+        background-color $animation-duration $animation-timing,
+        color $animation-duration $animation-timing,
+        border-color $animation-duration $animation-timing,
+        box-shadow $animation-duration $animation-timing,
+        transform $animation-duration $animation-timing;
+}
+
+// Стили для анимаций по умолчанию
+.animate-on-hover {
+    &:hover {
+        transform: translateY(-$hover-lift);
     }
 }
 
-.fade-in {
-    animation: fadeIn 0.3s ease-out;
+.animate-on-click {
+    &:active {
+        transform: scale($active-scale) translateY($active-translate);
+    }
 }
 
-.slide-in {
-    animation: slideIn 0.3s ease-out;
-}
-
-// Утилиты
-.text-primary {
-    color: var(--text-color);
-}
-
-.text-secondary {
-    color: var(--secondary-text-color);
-}
-
-.text-accent {
-    color: var(--accent-color);
-}
-
-.text-success {
-    color: var(--success-color);
-}
-
-.text-error {
-    color: var(--error-color);
-}
-
-.text-warning {
-    color: var(--warning-color);
-}
-
-.bg-primary {
-    background: var(--background-color);
-}
-
-.bg-secondary {
-    background: var(--sidebar-bg);
-}
-
-.bg-card {
-    background: var(--card-bg);
-}
-
-.border {
-    border: 1px solid var(--border-color);
-}
-
-.shadow {
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-// Адаптивность
-@media (max-width: 768px) {
+// Стили для адаптивности
+@media (max-width: $breakpoint-mobile) {
     .card {
-        border-radius: 12px;
+        border-radius: $border-radius-small;
     }
     
     .btn {
-        padding: 10px 20px;
-        font-size: 13px;
+        height: $button-height-small;
+        padding: $spacing-xs $spacing-sm;
     }
     
     .input {
-        padding: 10px 14px;
-        font-size: 13px;
+        height: $input-height-small;
+        padding: $spacing-xs $spacing-sm;
     }
 }
 
-// Глобальные стили для выпадающих списков
-select {
-    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
-    color: var(--text-color) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 12px !important;
-    padding: 1rem 1.25rem !important;
-    font-size: 1rem !important;
-    transition: all 0.3s ease !important;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    cursor: pointer !important;
-    appearance: none !important;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237289da' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
-    background-repeat: no-repeat !important;
-    background-position: right 1rem center !important;
-    background-size: 1.5em 1.5em !important;
-    padding-right: 3rem !important;
-
-    &:focus {
-        outline: none !important;
-        border-color: var(--accent-color) !important;
-        box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    &:hover {
-        background: linear-gradient(135deg, rgba(114, 137, 218, 0.1) 0%, rgba(88, 101, 242, 0.1) 100%) !important;
-        border-color: var(--accent-color) !important;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237289da' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
-    }
-
-    option {
-        background: var(--bg-primary) !important;
-        color: var(--text-color) !important;
-        padding: 0.75rem !important;
-        border: none !important;
-        font-size: 1rem !important;
-        
-        &:hover {
-            background: linear-gradient(135deg, var(--accent-color) 0%, var(--button-bg) 100%) !important;
-            color: white !important;
-        }
+@media (max-width: $breakpoint-tablet) {
+    .sidebar {
+        width: $sidebar-width;
     }
 }
 
-// Дополнительные стили для Firefox
-@-moz-document url-prefix() {
-    select {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237289da' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
-    }
+// Стили для темной темы (по умолчанию)
+.theme-dark {
+    --background-color: #{$primary-bg};
+    --text-color: #{$text-primary};
+    --border-color: #{$border-primary};
+    --card-bg: #{$secondary-bg};
+    --card-border: #{$border-primary};
+    --shadow-color: #{$shadow-light};
+    --button-bg: #{$button-primary-bg};
+    --button-hover-bg: #{$button-primary-hover};
+    --button-text: #{$text-primary};
+    --input-bg: #{$input-bg};
+    --input-text: #{$text-primary};
+    --border-color: #{$border-primary};
+    --accent-color: #{$primary-accent};
+    --hover-bg: #{$hover-bg};
+    --message-bg: #{$tertiary-bg};
+    --message-text: #{$text-primary};
+    --placeholder-text: #{$text-disabled};
+    --sidebar-bg: #{$secondary-bg};
 }
 
-// Дополнительные стили для Webkit браузеров
-select::-ms-expand {
-    display: none !important;
+// Стили для светлой темы
+.theme-light {
+    --background-color: #f8f9fa;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --card-bg: #ffffff;
+    --card-border: #dee2e6;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --button-bg: #{$primary-accent};
+    --button-hover-bg: #{$primary-accent};
+    --button-text: #ffffff;
+    --input-bg: #ffffff;
+    --input-text: #212529;
+    --border-color: #dee2e6;
+    --accent-color: #{$primary-accent};
+    --hover-bg: #f8f9fa;
+    --message-bg: #ffffff;
+    --message-text: #212529;
+    --placeholder-text: #6c757d;
+    --sidebar-bg: #f8f9fa;
 }
 

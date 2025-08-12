@@ -52,25 +52,41 @@ const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) =
     console.log('ServerSidebar - servers:', serverStore.servers);
 
     return (
-        <aside className="server-sidebar">
-            <div className="add-button" onClick={onOpenModal}>
-                +
+        <aside className="servers">
+            {/* Домашний сервер */}
+            <div className="server home active" onClick={() => navigate('/')}>
+                <div className="server-icon">🏠</div>
             </div>
-            <div className="server-sidebar__server-list">
-                {serverStore.servers.map((server) => (
-                    <ServerItem 
-                        key={server.id} 
-                        server={server} 
-                        onClick={() => handleServerClick(server)}
-                    />
-                ))}
+            
+            {/* Разделитель */}
+            <div className="server-separator"></div>
+            
+            {/* Список серверов */}
+            {serverStore.servers.map((server) => (
+                <ServerItem 
+                    key={server.id} 
+                    server={server} 
+                    onClick={() => handleServerClick(server)}
+                />
+            ))}
+            
+            {/* Разделитель перед кнопками */}
+            <div className="server-separator"></div>
+            
+            {/* Кнопка добавления сервера */}
+            <div className="server add" onClick={onOpenModal}>
+                <div className="server-icon">+</div>
             </div>
-            <div className="settings-button" onClick={handleSetting}>
-                ⚙️
+            
+            {/* Кнопка настроек */}
+            <div className="server settings" onClick={handleSetting}>
+                <div className="server-icon">⚙️</div>
             </div>
+            
+            {/* Кнопка админ панели */}
             {authStore.user?.role === 'admin' && (
-                <div className="admin-button" onClick={handleAdminPanel}>
-                    👑
+                <div className="server admin" onClick={handleAdminPanel}>
+                    <div className="server-icon">👑</div>
                 </div>
             )}
 

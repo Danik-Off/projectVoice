@@ -26,16 +26,11 @@ const ServerItem: React.FC<ServerItemProps> = ({ server, onClick }) => {
     };
 
     return (
-        <div className={`server-item ${isActive ? 'active' : ''} ${server.isBlocked ? 'blocked' : ''}`} onClick={handleClick}>
+        <div className={`server ${isActive ? 'active' : ''} ${server.isBlocked ? 'blocked' : ''}`} onClick={handleClick}>
             {serverIcon ? (
                 <img src={serverIcon} alt={`${server.name} icon`} className="server-icon" />
             ) : (
-                <div className="server-icon-placeholder">{serverNameInitial}</div>
-            )}
-            {isActive && (
-                <div className="active-indicator">
-                    <div className="indicator-dot"></div>
-                </div>
+                <div className="server-icon">{serverNameInitial}</div>
             )}
         </div>
     );

@@ -1,25 +1,107 @@
-// Общие цвета для иконок и элементов
-$accent-color: #7289da; // Цвет выделения
-$error-color: #f04747; // Цвет ошибок
-$success-color: #43b581; // Цвет успеха
+// VoiceVerse - Уникальная цветовая схема (щадящая для глаз)
 
-// Основные цвета темы
-$background-color: #36393f;
-$text-color: #ffffff;
-$text-muted: #72767d;
-$border-color: #2f3136;
+// Основная цветовая палитра - более мягкая для глаз
+$primary-bg: #1a1a1a;
+$secondary-bg: #2a2a2a;
+$tertiary-bg: #333333;
+$accent-bg: #404040;
 
-// Цвета фона
-$bg-primary: #2f3136;
-$bg-secondary: #36393f;
-$sidebar-bg: #2f3136;
+// Акцентные цвета - приглушенные
+$primary-accent: #64b5f6;
+$secondary-accent: #e57373;
+$tertiary-accent: #81c784;
+$success-accent: #81c784;
+$warning-accent: #ffb74d;
 
-// Цвета кнопок
-$button-bg: #5865f2;
-$button-text: #ffffff;
-$button-hover-bg: #4752c4;
+// Градиенты - более мягкие
+$gradient-primary: linear-gradient(135deg, #5c6bc0 0%, #7986cb 100%);
+$gradient-secondary: linear-gradient(135deg, #ba68c8 0%, #ce93d8 100%);
+$gradient-accent: linear-gradient(135deg, #4fc3f7 0%, #81d4fa 100%);
+$gradient-dark: linear-gradient(135deg, #424242 0%, #616161 100%);
 
-// Цвета сообщений
-$message-bg: #40444b;
-$message-text: #dcddde;
-$message-padding: 10px;
+// Тени и свечения - менее яркие
+$shadow-light: 0 2px 10px rgba(100, 181, 246, 0.08);
+$shadow-medium: 0 4px 20px rgba(100, 181, 246, 0.12);
+$shadow-heavy: 0 8px 40px rgba(100, 181, 246, 0.15);
+$glow-primary: 0 0 20px rgba(100, 181, 246, 0.2);
+$glow-secondary: 0 0 30px rgba(229, 115, 115, 0.2);
+
+// Цвета текста
+$text-primary: #e0e0e0;
+$text-secondary: rgba(224, 224, 224, 0.8);
+$text-muted: rgba(224, 224, 224, 0.6);
+$text-disabled: rgba(224, 224, 224, 0.4);
+
+// Цвета границ
+$border-primary: rgba(100, 181, 246, 0.08);
+$border-secondary: rgba(100, 181, 246, 0.15);
+$border-accent: rgba(100, 181, 246, 0.2);
+
+// Цвета состояний
+$hover-bg: rgba(100, 181, 246, 0.08);
+$active-bg: rgba(100, 181, 246, 0.15);
+$focus-bg: rgba(100, 181, 246, 0.12);
+
+// Цвета уведомлений
+$info-color: #64b5f6;
+$warning-color: #ffb74d;
+$error-color: #e57373;
+$success-color: #81c784;
+
+// Цвета для голосового чата
+$voice-active: rgba(100, 181, 246, 0.2);
+$voice-muted: rgba(229, 115, 115, 0.15);
+$voice-deafened: rgba(255, 183, 77, 0.15);
+
+// Цвета для серверов
+$server-online: rgba(129, 199, 132, 0.4);
+$server-offline: rgba(224, 224, 224, 0.3);
+$server-separator: rgba(100, 181, 246, 0.2);
+
+// Цвета для аватаров
+$avatar-glow: rgba(100, 181, 246, 0.15);
+$avatar-status-online: #81c784;
+$avatar-status-offline: rgba(224, 224, 224, 0.3);
+
+// Цвета для сообщений
+$message-bg-hover: rgba(100, 181, 246, 0.03);
+$message-reaction-bg: rgba(100, 181, 246, 0.08);
+$message-reaction-hover: rgba(100, 181, 246, 0.15);
+
+// Цвета для кнопок
+$button-primary-bg: rgba(100, 181, 246, 0.08);
+$button-primary-hover: rgba(100, 181, 246, 0.15);
+$button-secondary-bg: rgba(186, 104, 200, 0.08);
+$button-secondary-hover: rgba(186, 104, 200, 0.15);
+
+// Цвета для полей ввода
+$input-bg: $tertiary-bg;
+$input-border: rgba(100, 181, 246, 0.08);
+$input-focus-border: $primary-accent;
+$input-focus-shadow: $shadow-medium;
+
+// Цвета для скроллбаров
+$scrollbar-track: rgba(100, 181, 246, 0.03);
+$scrollbar-thumb: rgba(100, 181, 246, 0.2);
+$scrollbar-thumb-hover: rgba(100, 181, 246, 0.3);
+
+// Цвета для анимаций
+$ripple-color: rgba(100, 181, 246, 0.2);
+$pulse-color: rgba(100, 181, 246, 0.15);
+$shimmer-color: rgba(100, 181, 246, 0.03);
+
+// Цвета для модальных окон
+$modal-overlay: rgba(0, 0, 0, 0.7);
+$modal-bg: $secondary-bg;
+$modal-border: $border-primary;
+
+// Цвета для тултипов
+$tooltip-bg: $tertiary-bg;
+$tooltip-text: $text-primary;
+$tooltip-border: $border-primary;
+
+// Цвета для уведомлений
+$notification-success: rgba(129, 199, 132, 0.15);
+$notification-warning: rgba(255, 183, 77, 0.15);
+$notification-error: rgba(229, 115, 115, 0.15);
+$notification-info: rgba(100, 181, 246, 0.15);
