@@ -1,0 +1,519 @@
+@import '../../../../styles/main.scss';
+// AudioSettings.scss - Стили для компонентов аудио настроек
+
+// Основные стили для аудио настроек
+.audio-settings-container {
+  padding: $spacing-lg;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.audio-settings-header {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+  
+  .section-title {
+    font-size: 2rem;
+    color: $primary-text;
+    margin-bottom: $spacing-sm;
+    font-weight: 600;
+  }
+  
+  .section-description {
+    font-size: $font-size-base;
+    color: $secondary-text;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+// Навигация по разделам
+.audio-settings-nav {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xl;
+  flex-wrap: wrap;
+  
+  .nav-button {
+    padding: $spacing-sm $spacing-md;
+    border: 2px solid $border-primary;
+    background: $secondary-bg;
+    color: $primary-text;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: all $animation-duration ease;
+    font-weight: 500;
+    
+    &:hover {
+      background: $primary-accent;
+      color: white;
+      border-color: $primary-accent;
+      transform: translateY(-2px);
+    }
+    
+    &.active {
+      background: $primary-accent;
+      color: white;
+      border-color: $primary-accent;
+      box-shadow: $shadow-medium;
+    }
+  }
+}
+
+// Содержимое разделов
+.audio-settings-content {
+  .settings-section-content {
+    .section-header {
+      text-align: center;
+      margin-bottom: $spacing-lg;
+      
+      h3 {
+        font-size: $font-size-xl;
+        color: $primary-text;
+        margin-bottom: $spacing-xs;
+        font-weight: 600;
+      }
+      
+      p {
+        color: $secondary-text;
+        font-size: $font-size-base;
+      }
+    }
+  }
+}
+
+// Сетка для устройств
+.audio-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: $spacing-lg;
+  margin-bottom: $spacing-xl;
+}
+
+// Футер с советами
+.audio-settings-footer {
+  margin-top: $spacing-xl;
+  padding: $spacing-lg;
+  background: $secondary-bg;
+  border-radius: $border-radius;
+  border: 1px solid $border-primary;
+  
+  .footer-info {
+    h4 {
+      font-size: $font-size-lg;
+      color: $primary-text;
+      margin-bottom: $spacing-md;
+      text-align: center;
+    }
+    
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: $spacing-md;
+      
+      .tip-item {
+        background: $primary-bg;
+        padding: $spacing-md;
+        border-radius: $border-radius;
+        border: 1px solid $border-secondary;
+        
+        h5 {
+          font-size: $font-size-base;
+          color: $primary-text;
+          margin-bottom: $spacing-sm;
+          font-weight: 600;
+        }
+        
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          
+          li {
+            color: $secondary-text;
+            font-size: $font-size-small;
+            margin-bottom: $spacing-xs;
+            padding-left: $spacing-sm;
+            position: relative;
+            
+            &::before {
+              content: "•";
+              color: $primary-accent;
+              position: absolute;
+              left: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Стили для карточек настроек
+.audio-settings-card {
+  background: $primary-bg;
+  border: 1px solid $border-primary;
+  border-radius: $border-radius;
+  overflow: hidden;
+  transition: all $animation-duration ease;
+  
+  &:hover {
+    box-shadow: $shadow-medium;
+    transform: translateY(-2px);
+  }
+  
+  .card-header {
+    background: $secondary-bg;
+    padding: $spacing-md;
+    border-bottom: 1px solid $border-primary;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    .header-content {
+      h3 {
+        font-size: $font-size-lg;
+        color: $primary-text;
+        margin: 0 0 $spacing-xs 0;
+        font-weight: 600;
+      }
+      
+      p {
+        color: $secondary-text;
+        font-size: $font-size-small;
+        margin: 0;
+      }
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: $spacing-sm;
+    }
+  }
+  
+  .card-content {
+    padding: $spacing-md;
+  }
+}
+
+// Стили для групп настроек
+.setting-group {
+  margin-bottom: $spacing-lg;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  .setting-label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+    font-weight: 500;
+    color: $primary-text;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+      color: $primary-accent;
+    }
+  }
+  
+  .setting-control {
+    .setting-description {
+      font-size: $font-size-small;
+      color: $secondary-text;
+      margin-top: $spacing-xs;
+      font-style: italic;
+    }
+  }
+}
+
+// Стили для элементов управления
+.device-select,
+.quality-select {
+  width: 100%;
+  padding: $spacing-sm;
+  border: 1px solid $border-primary;
+  border-radius: $border-radius;
+  background: $primary-bg;
+  color: $primary-text;
+  font-size: $font-size-base;
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-accent;
+    box-shadow: 0 0 0 2px rgba($primary-accent, 0.2);
+  }
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  
+  .volume-slider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: $border-secondary;
+    outline: none;
+    
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: $primary-accent;
+      cursor: pointer;
+      box-shadow: $shadow-light;
+    }
+    
+    &::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: $primary-accent;
+      cursor: pointer;
+      border: none;
+      box-shadow: $shadow-light;
+    }
+  }
+  
+  .volume-value {
+    min-width: 50px;
+    text-align: center;
+    font-weight: 500;
+    color: $primary-text;
+  }
+}
+
+// Стили для радио кнопок и чекбоксов
+.radio-group,
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  
+  .radio-item,
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    cursor: pointer;
+    
+    input[type="radio"],
+    input[type="checkbox"] {
+      display: none;
+    }
+    
+    .radio-mark,
+    .checkmark {
+      width: 20px;
+      height: 20px;
+      border: 2px solid $border-primary;
+      border-radius: 50%;
+      position: relative;
+      transition: all $animation-duration ease;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $primary-accent;
+        opacity: 0;
+        transition: opacity $animation-duration ease;
+      }
+    }
+    
+    .checkmark {
+      border-radius: 4px;
+      
+      &::after {
+        width: 6px;
+        height: 10px;
+        border-radius: 0;
+        border: 2px solid white;
+        border-top: none;
+        border-left: none;
+        transform: translate(-50%, -60%) rotate(45deg);
+      }
+    }
+    
+    input:checked + .radio-mark,
+    input:checked + .checkmark {
+      border-color: $primary-accent;
+      background: $primary-accent;
+      
+      &::after {
+        opacity: 1;
+      }
+    }
+    
+    span:last-child {
+      color: $primary-text;
+      font-weight: 500;
+    }
+  }
+}
+
+// Стили для кнопки теста
+.test-button {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  background: $primary-accent;
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all $animation-duration ease;
+  
+  &:hover:not(:disabled) {
+    background: darken($primary-accent, 10%);
+    transform: translateY(-1px);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  &.testing {
+    background: $secondary-accent;
+    animation: pulse 1.5s infinite;
+  }
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Стили для информации об устройстве
+.device-info {
+  margin-top: $spacing-lg;
+  padding: $spacing-md;
+  background: $secondary-bg;
+  border-radius: $border-radius;
+  border: 1px solid $border-secondary;
+  
+  .info-header {
+    margin-bottom: $spacing-sm;
+    
+    h4 {
+      font-size: $font-size-base;
+      color: $primary-text;
+      margin: 0;
+      font-weight: 600;
+    }
+  }
+  
+  .info-content {
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $spacing-xs 0;
+      border-bottom: 1px solid $border-secondary;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      .info-label {
+        color: $secondary-text;
+        font-size: $font-size-small;
+      }
+      
+      .info-value {
+        color: $primary-text;
+        font-weight: 500;
+        font-size: $font-size-small;
+        
+        &.device-id {
+          font-family: monospace;
+          background: $tertiary-bg;
+          padding: 2px 6px;
+          border-radius: 3px;
+          font-size: 11px;
+        }
+        
+        &.status-active {
+          color: $success-color;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+// Стили для вкладок
+.tab-buttons {
+  display: flex;
+  gap: $spacing-xs;
+  
+  .tab-button {
+    padding: $spacing-xs $spacing-sm;
+    border: 1px solid $border-primary;
+    background: $secondary-bg;
+    color: $secondary-text;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: all $animation-duration ease;
+    font-size: $font-size-small;
+    
+    &:hover {
+      background: $border-primary;
+      color: $primary-text;
+    }
+    
+    &.active {
+      background: $primary-accent;
+      color: white;
+      border-color: $primary-accent;
+    }
+  }
+}
+
+// Стили для визуализатора
+.visualizer-section {
+  margin-bottom: $spacing-lg;
+  padding: $spacing-md;
+  background: $tertiary-bg;
+  border-radius: $border-radius;
+  border: 1px solid $border-secondary;
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+  .audio-settings-container {
+    padding: $spacing-md;
+  }
+  
+  .audio-settings-nav {
+    flex-direction: column;
+    align-items: center;
+    
+    .nav-button {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+  
+  .audio-settings-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+}

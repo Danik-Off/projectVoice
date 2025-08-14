@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import audioSettingsStore from '../../../../../store/AudioSettingsStore';
+import audioSettingsStore from '../../../../../../store/AudioSettingsStore';
 import { reaction } from 'mobx';
 import './MicrophoneVisualizer.scss';
 

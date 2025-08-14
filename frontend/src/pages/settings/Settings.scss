@@ -3,7 +3,7 @@
 .settings-page {
     width: 100%;
     min-height: 100vh;
-    background: var(--background-primary);
+    background: $primary-bg;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -17,8 +17,8 @@
         right: 0;
         bottom: 0;
         background: 
-            radial-gradient(circle at 20% 80%, rgba(114, 137, 218, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(67, 181, 129, 0.1) 0%, transparent 50%);
+            radial-gradient(circle at 20% 80%, rgba($primary-accent, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba($success-accent, 0.1) 0%, transparent 50%);
         pointer-events: none;
     }
 }
@@ -26,51 +26,50 @@
 .settings-header {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 24px 32px;
-    border-bottom: 1px solid var(--border-color);
-    background: var(--background-secondary);
+    justify-content: space-between;
+    padding: $spacing-lg $spacing-xl;
+    border-bottom: 1px solid $border-primary;
+    background: $secondary-bg;
     backdrop-filter: blur(10px);
     position: relative;
     z-index: 2;
 
-    .back-button {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: var(--background-tertiary);
-        border: 1px solid var(--border-color);
-        color: var(--text-primary);
-        padding: 10px 16px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        text-decoration: none;
-
-        &:hover {
-            background: var(--accent-color);
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
-        }
-
-        svg {
-            width: 16px;
-            height: 16px;
-        }
-    }
-
     .settings-title {
         font-size: 28px;
         font-weight: 700;
-        color: var(--text-primary);
-        margin: 0;
-        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-color) 100%);
+        color: $text-primary;
+        margin: 0 0 $spacing-md 0;
+        background: $gradient-primary;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+    }
+
+    .settings-notice {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+        padding: $spacing-md;
+        background: $notification-warning;
+        border: 1px solid rgba($warning-accent, 0.3);
+        border-radius: $border-radius-small;
+        max-width: 600px;
+        text-align: center;
+
+        .notice-icon {
+            font-size: $icon-size-large;
+            flex-shrink: 0;
+        }
+
+        .notice-content {
+            .notice-text {
+                margin: 0;
+                font-size: 14px;
+                color: $warning-accent;
+                font-weight: 500;
+                line-height: 1.4;
+            }
+        }
     }
 }
 
@@ -82,26 +81,26 @@
 }
 
 .settings-sidebar {
-    width: 280px;
-    background: var(--background-secondary);
-    border-right: 1px solid var(--border-color);
-    padding: 24px 0;
+    width: $sidebar-width;
+    background: $secondary-bg;
+    border-right: 1px solid $border-primary;
+    padding: $spacing-lg 0;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
-        width: 4px;
+        width: $scrollbar-width;
     }
 
     &::-webkit-scrollbar-track {
-        background: transparent;
+        background: $scrollbar-track;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: var(--background-tertiary);
+        background: $scrollbar-thumb;
         border-radius: 2px;
 
         &:hover {
-            background: var(--border-color);
+            background: $scrollbar-thumb-hover;
         }
     }
 }
@@ -109,45 +108,45 @@
 .settings-nav {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 0 16px;
+    gap: $spacing-xs;
+    padding: 0 $spacing-md;
 }
 
 .nav-tab {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: $spacing-md;
+    padding: $spacing-md;
     background: none;
     border: none;
-    border-radius: 12px;
+    border-radius: $border-radius;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: var(--text-muted);
+    transition: all $animation-duration $animation-timing;
+    color: $text-muted;
     font-size: 14px;
     font-weight: 500;
     text-align: left;
     width: 100%;
 
     &:hover {
-        background: var(--background-tertiary);
-        color: var(--text-primary);
-        transform: translateX(4px);
+        background: $hover-bg;
+        color: $text-primary;
+        transform: translateX($hover-translate);
     }
 
     &.active {
-        background: var(--accent-color);
+        background: $primary-accent;
         color: white;
-        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+        box-shadow: $shadow-medium;
 
         .tab-icon {
-            transform: scale(1.1);
+            transform: scale($hover-scale);
         }
     }
 
     .tab-icon {
-        font-size: 18px;
-        transition: transform 0.2s ease;
+        font-size: $icon-size;
+        transition: transform $animation-duration $animation-timing;
     }
 
     .tab-label {
@@ -157,23 +156,23 @@
 
 .settings-main {
     flex: 1;
-    padding: 32px;
+    padding: $spacing-xl;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
-        width: 6px;
+        width: $scrollbar-width;
     }
 
     &::-webkit-scrollbar-track {
-        background: transparent;
+        background: $scrollbar-track;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: var(--background-tertiary);
+        background: $scrollbar-thumb;
         border-radius: 3px;
 
         &:hover {
-            background: var(--border-color);
+            background: $scrollbar-thumb-hover;
         }
     }
 }
@@ -183,393 +182,558 @@
     margin: 0 auto;
 }
 
+// Унифицированные стили для всех настроек
 .settings-section {
-    background: var(--background-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    transition: all 0.2s ease;
-
-    &:hover {
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        transform: translateY(-1px);
+    margin-bottom: $spacing-xl;
+    
+    .section-header {
+        text-align: center;
+        margin-bottom: $spacing-lg;
+        padding: $spacing-lg;
+        background: $secondary-bg;
+        border-radius: $border-radius;
+        border: 1px solid $border-primary;
+        
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: $text-primary;
+            margin: 0 0 $spacing-sm 0;
+        }
+        
+        p {
+            color: $text-secondary;
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+        }
     }
+    
+    .section-content {
+        background: $primary-bg;
+        border: 1px solid $border-primary;
+        border-radius: $border-radius;
+        padding: $spacing-lg;
+        margin-bottom: $spacing-lg;
+    }
+}
 
-    .section-title {
+// Унифицированные карточки настроек
+.settings-card {
+    background: $primary-bg;
+    border: 1px solid $border-primary;
+    border-radius: $border-radius;
+    overflow: hidden;
+    transition: all $animation-duration ease;
+    margin-bottom: $spacing-lg;
+    
+    &:hover {
+        box-shadow: $shadow-medium;
+        transform: translateY(-2px);
+    }
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
+    
+    .card-header {
+        background: $secondary-bg;
+        padding: $spacing-md;
+        border-bottom: 1px solid $border-primary;
         display: flex;
         align-items: center;
-        gap: 12px;
-        font-size: 20px;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin: 0 0 20px 0;
-
-        .section-icon {
-            font-size: 24px;
+        justify-content: space-between;
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: $spacing-md;
+            
+            .icon-container {
+                width: 48px;
+                height: 48px;
+                background: $primary-accent;
+                border-radius: $border-radius;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                
+                svg {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+            
+            .header-text {
+                h3 {
+                    font-size: 18px;
+                    color: $text-primary;
+                    margin: 0 0 $spacing-xs 0;
+                    font-weight: 600;
+                }
+                
+                p {
+                    color: $text-secondary;
+                    font-size: 14px;
+                    margin: 0;
+                }
+            }
         }
+        
+        .header-actions {
+            display: flex;
+            gap: $spacing-sm;
+        }
+    }
+    
+    .card-content {
+        padding: $spacing-md;
     }
 }
 
-.setting-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border-color);
-
+// Унифицированные группы настроек
+.setting-group {
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md;
+    background: $tertiary-bg;
+    border-radius: $border-radius;
+    border: 1px solid $border-secondary;
+    
     &:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
+        margin-bottom: 0;
     }
-
-    .setting-info {
-        flex: 1;
-        min-width: 0;
-
-        .setting-label {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
+    
+    .setting-label {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        margin-bottom: $spacing-sm;
+        font-weight: 500;
+        color: $text-primary;
+        font-size: 16px;
+        
+        svg {
+            width: 20px;
+            height: 20px;
+            color: $primary-accent;
         }
-
+    }
+    
+    .setting-control {
         .setting-description {
             font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin: 0;
+            color: $text-secondary;
+            margin-top: $spacing-xs;
+            font-style: italic;
+            line-height: 1.4;
         }
-    }
-
-    .setting-control {
-        flex-shrink: 0;
-        margin-left: 24px;
     }
 }
 
-// Элементы управления
-.language-select,
-.privacy-select {
-    padding: 10px 16px;
-    background: var(--background-tertiary);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    color: var(--text-primary);
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 120px;
-
+// Унифицированные элементы управления
+.settings-input,
+.settings-select {
+    width: 100%;
+    padding: $spacing-sm;
+    border: 1px solid $border-primary;
+    border-radius: $border-radius;
+    background: $primary-bg;
+    color: $text-primary;
+    font-size: 16px;
+    transition: all $animation-duration ease;
+    
     &:focus {
         outline: none;
-        border-color: var(--accent-color);
-        box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.1);
+        border-color: $primary-accent;
+        box-shadow: 0 0 0 2px rgba($primary-accent, 0.2);
     }
-
+    
     &:hover {
-        border-color: var(--accent-color);
+        border-color: $primary-accent;
     }
 }
 
-.theme-toggle-btn {
-    width: 48px;
-    height: 48px;
+.settings-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: $border-secondary;
+    outline: none;
+    transition: all $animation-duration ease;
+    
+    &::-webkit-slider-thumb {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: $primary-accent;
+        cursor: pointer;
+        box-shadow: $shadow-light;
+        transition: all $animation-duration ease;
+        
+        &:hover {
+            transform: scale(1.1);
+            box-shadow: $shadow-medium;
+        }
+    }
+    
+    &::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: $primary-accent;
+        cursor: pointer;
+        border: none;
+        box-shadow: $shadow-light;
+        transition: all $animation-duration ease;
+        
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+// Унифицированные кнопки
+.settings-button {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    background: $primary-accent;
+    color: white;
     border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--background-tertiary) 0%, var(--background-secondary) 100%);
-    color: var(--text-primary);
+    border-radius: $border-radius;
     cursor: pointer;
-    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all $animation-duration ease;
+    
+    &:hover:not(:disabled) {
+        background: darken($primary-accent, 10%);
+        transform: translateY(-1px);
+        box-shadow: $shadow-medium;
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+    
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    &.secondary {
+        background: $secondary-accent;
+        
+        &:hover:not(:disabled) {
+            background: darken($secondary-accent, 10%);
+        }
+    }
+    
+    &.danger {
+        background: $error-color;
+        
+        &:hover:not(:disabled) {
+            background: darken($error-color, 10%);
+        }
+    }
+    
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+// Унифицированные переключатели
+.settings-toggle {
     display: flex;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    &:hover {
-        background: var(--accent-color);
-        color: white;
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
-    }
-
-    .theme-toggle-icon {
-        transition: transform 0.2s ease;
-    }
-
-    &:hover .theme-toggle-icon {
-        transform: rotate(180deg);
-    }
-}
-
-.color-picker {
-    display: flex;
-    gap: 8px;
-}
-
-.color-option {
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 8px;
+    gap: $spacing-sm;
     cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    &:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    
+    input[type="checkbox"] {
+        display: none;
     }
-
-    &::after {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        border: 2px solid var(--accent-color);
-        border-radius: 10px;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-    }
-
-    &:hover::after {
-        opacity: 1;
-    }
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 24px;
-
-    input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-
-        &:checked + .toggle-slider {
-            background: var(--accent-color);
+    
+    .toggle-switch {
+        width: 48px;
+        height: 24px;
+        background: $border-secondary;
+        border-radius: 12px;
+        position: relative;
+        transition: all $animation-duration ease;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all $animation-duration ease;
+            box-shadow: $shadow-light;
         }
-
-        &:checked + .toggle-slider::before {
+    }
+    
+    input:checked + .toggle-switch {
+        background: $primary-accent;
+        
+        &::after {
             transform: translateX(24px);
         }
     }
+    
+    .toggle-label {
+        color: $text-primary;
+        font-weight: 500;
+        font-size: 14px;
+    }
+}
 
-    .toggle-slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--background-tertiary);
-        transition: 0.3s;
-        border-radius: 24px;
-
-        &::before {
+// Унифицированные радио кнопки и чекбоксы
+.settings-radio,
+.settings-checkbox {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    cursor: pointer;
+    margin-bottom: $spacing-sm;
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
+    
+    input[type="radio"],
+    input[type="checkbox"] {
+        display: none;
+    }
+    
+    .radio-mark,
+    .checkmark {
+        width: 20px;
+        height: 20px;
+        border: 2px solid $border-primary;
+        border-radius: 50%;
+        position: relative;
+        transition: all $animation-duration ease;
+        flex-shrink: 0;
+        
+        &::after {
+            content: '';
             position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background: white;
-            transition: 0.3s;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background: $primary-accent;
+            opacity: 0;
+            transition: opacity $animation-duration ease;
+        }
+    }
+    
+    .checkmark {
+        border-radius: 4px;
+        
+        &::after {
+            width: 6px;
+            height: 10px;
+            border-radius: 0;
+            border: 2px solid white;
+            border-top: none;
+            border-left: none;
+            transform: translate(-50%, -60%) rotate(45deg);
+        }
+    }
+    
+    input:checked + .radio-mark,
+    input:checked + .checkmark {
+        border-color: $primary-accent;
+        background: $primary-accent;
+        
+        &::after {
+            opacity: 1;
+        }
+    }
+    
+    .radio-label,
+    .checkbox-label {
+        color: $text-primary;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+}
+
+// Унифицированные информационные блоки
+.settings-info {
+    background: $secondary-bg;
+    border: 1px solid $border-secondary;
+    border-radius: $border-radius;
+    padding: $spacing-md;
+    margin-top: $spacing-lg;
+    
+    .info-header {
+        margin-bottom: $spacing-sm;
+        
+        h4 {
+            font-size: 16px;
+            color: $text-primary;
+            margin: 0;
+            font-weight: 600;
+        }
+    }
+    
+    .info-content {
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: $spacing-xs 0;
+            border-bottom: 1px solid $border-secondary;
+            
+            &:last-child {
+                border-bottom: none;
+            }
+            
+            .info-label {
+                color: $text-secondary;
+                font-size: 14px;
+            }
+            
+            .info-value {
+                color: $text-primary;
+                font-weight: 500;
+                font-size: 14px;
+                
+                &.status-active {
+                    color: $success-color;
+                    font-weight: 600;
+                }
+                
+                &.status-inactive {
+                    color: $error-color;
+                    font-weight: 600;
+                }
+            }
         }
     }
 }
 
-.btn-secondary {
-    padding: 8px 16px;
-    background: var(--background-tertiary);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    color: var(--text-primary);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-        background: var(--accent-color);
-        color: white;
-        border-color: var(--accent-color);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+// Унифицированные сетки
+.settings-grid {
+    display: grid;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-lg;
+    
+    &.two-columns {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+    
+    &.three-columns {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    
+    &.four-columns {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 }
 
-// Секция "О приложении"
-.about-content {
-    text-align: center;
-    padding: 32px 0;
-}
-
-.app-info {
-    margin-bottom: 32px;
-
-    .app-logo {
-        margin-bottom: 16px;
-        display: inline-block;
-        padding: 16px;
-        background: var(--background-tertiary);
-        border-radius: 16px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    }
-
-    .app-name {
-        font-size: 32px;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin: 0 0 8px 0;
-        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-color) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .app-version {
-        font-size: 16px;
-        color: var(--text-muted);
-        margin: 0 0 16px 0;
+// Унифицированные вкладки
+.settings-tabs {
+    display: flex;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-lg;
+    border-bottom: 1px solid $border-primary;
+    
+    .tab-button {
+        padding: $spacing-sm $spacing-md;
+        border: none;
+        background: none;
+        color: $text-secondary;
+        border-radius: $border-radius $border-radius 0 0;
+        cursor: pointer;
+        transition: all $animation-duration ease;
+        font-size: 14px;
         font-weight: 500;
-    }
-
-    .app-description {
-        font-size: 16px;
-        color: var(--text-muted);
-        line-height: 1.6;
-        margin: 0;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-}
-
-.about-links {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-.about-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: var(--background-tertiary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    color: var(--text-primary);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-
-    &:hover {
-        background: var(--accent-color);
-        color: white;
-        transform: translateX(4px);
-        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
-    }
-
-    .link-icon {
-        font-size: 16px;
+        border-bottom: 2px solid transparent;
+        
+        &:hover {
+            color: $text-primary;
+            background: $hover-bg;
+        }
+        
+        &.active {
+            color: $primary-accent;
+            background: $primary-bg;
+            border-bottom-color: $primary-accent;
+        }
     }
 }
 
 // Адаптивность
 @media (max-width: 768px) {
-    .settings-container {
-        flex-direction: column;
-    }
-
-    .settings-sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        padding: 16px 0;
-    }
-
-    .settings-nav {
-        flex-direction: row;
-        overflow-x: auto;
-        padding: 0 16px;
-        gap: 8px;
-
-        &::-webkit-scrollbar {
-            height: 4px;
+    .settings-header {
+        padding: $spacing-md;
+        
+        .settings-title {
+            font-size: 24px;
         }
     }
-
-    .nav-tab {
-        flex-shrink: 0;
-        white-space: nowrap;
-        padding: 8px 12px;
-
-        .tab-label {
-            display: none;
-        }
-    }
-
+    
     .settings-main {
-        padding: 16px;
+        padding: $spacing-md;
     }
-
-    .settings-section {
-        padding: 16px;
+    
+    .settings-content {
+        max-width: 100%;
     }
-
-    .setting-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-
-        .setting-control {
-            margin-left: 0;
-            width: 100%;
+    
+    .settings-grid {
+        &.two-columns,
+        &.three-columns,
+        &.four-columns {
+            grid-template-columns: 1fr;
         }
     }
-
-    .about-links {
-        flex-direction: row;
+    
+    .settings-tabs {
         flex-wrap: wrap;
-        max-width: none;
+        
+        .tab-button {
+            flex: 1;
+            text-align: center;
+        }
     }
 }
 
 // Темная тема
-[data-theme="dark"] {
+[data-theme='dark'] {
     .settings-page {
-        background: var(--background-primary);
+        background: $primary-bg;
     }
 
     .settings-sidebar {
-        background: var(--background-secondary);
-        border-right-color: var(--border-color);
+        background: $secondary-bg;
+        border-right-color: $border-primary;
     }
 
     .settings-section {
-        background: var(--background-secondary);
-        border-color: var(--border-color);
+        background: $secondary-bg;
+        border-color: $border-primary;
     }
 }
 
 // Светлая тема
-[data-theme="light"] {
+[data-theme='light'] {
     .settings-page {
-        background: var(--background-primary);
+        background: $primary-bg;
     }
 
     .settings-sidebar {
@@ -582,3 +746,4 @@
         border-color: #e9ecef;
     }
 }
+

@@ -6,7 +6,7 @@ import { authStore } from '../../../../store/authStore';
 import BlockedServerModal from '../../../../components/BlockedServerModal';
 import './ServerSidebar.scss';
 import ServerItem from './serverItem/ServerItem';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface ServerSidebarProps {
     onOpenModal: () => void;
@@ -14,6 +14,7 @@ interface ServerSidebarProps {
 
 const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [blockedServer, setBlockedServer] = useState<{
         name: string;
         reason?: string;
@@ -42,6 +43,13 @@ const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) =
             navigate(`/server/${server.id}`);
         }
     };
+
+    // Определяем, находимся ли мы на главной странице
+    // Кнопка "Домой" должна быть активна только когда мы НЕ на главной
+    const isOnHomePage = location.pathname === '/' || 
+                        location.pathname === '/main' || 
+                        location.pathname === '/welcome' ||
+                        location.pathname.startsWith('/auth');
     
     useEffect(() => {
         serverStore.fetchServers();
@@ -50,11 +58,17 @@ const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) =
     // Добавляем логирование для отладки
     console.log('ServerSidebar - servers count:', serverStore.servers.length);
     console.log('ServerSidebar - servers:', serverStore.servers);
+    console.log('ServerSidebar - current path:', location.pathname);
+    console.log('ServerSidebar - isOnHomePage:', isOnHomePage);
+    console.log('ServerSidebar - home button active:', !isOnHomePage);
 
     return (
         <aside className="servers">
-            {/* Домашний сервер */}
-            <div className="server home active" onClick={() => navigate('/')}>
+            {/* Домашний сервер - активен только когда НЕ на главной */}
+            <div 
+                className={`server home ${isOnHomePage ? 'active' : ''}`} 
+                onClick={() => navigate('/')}
+            >
                 <div className="server-icon">🏠</div>
             </div>
             
@@ -70,20 +84,23 @@ const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) =
                 />
             ))}
             
-            {/* Разделитель перед кнопками */}
+            {/* Разделитель перед кнопкой добавления */}
             <div className="server-separator"></div>
             
-            {/* Кнопка добавления сервера */}
+            {/* Кнопка добавления сервера - теперь под списком */}
             <div className="server add" onClick={onOpenModal}>
                 <div className="server-icon">+</div>
             </div>
             
-            {/* Кнопка настроек */}
+            {/* Разделитель перед нижними кнопками */}
+            <div className="server-separator"></div>
+            
+            {/* Кнопка настроек - внизу */}
             <div className="server settings" onClick={handleSetting}>
                 <div className="server-icon">⚙️</div>
             </div>
             
-            {/* Кнопка админ панели */}
+            {/* Кнопка админ панели - внизу */}
             {authStore.user?.role === 'admin' && (
                 <div className="server admin" onClick={handleAdminPanel}>
                     <div className="server-icon">👑</div>

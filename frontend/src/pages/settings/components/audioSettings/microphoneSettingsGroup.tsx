@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { useTranslation } from 'react-i18next';
-import audioSettingsStore from '../../../store/AudioSettingsStore';
+import audioSettingsStore from '../../../../store/AudioSettingsStore';
 import MicrophoneVisualizer from './components/MicrophoneVisualizer/MicrophoneVisualizer';
 
 const MicrophoneSettingsGroup = observer(() => {

@@ -1,156 +1,156 @@
 @import '../../../../styles/main';
 
 .servers {
-    width: 72px;
-    background: #1e1f22;
+    width: $servers-panel-width;
+    background: $secondary-bg;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    border-right: 1px solid #2a2b2e;
-    padding: 12px 0;
+    gap: $spacing-sm;
+    border-right: 1px solid $border-primary;
+    padding: $spacing-md 0;
     justify-content: flex-start;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #2a2b2e transparent;
+    scrollbar-color: $border-primary transparent;
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
 
     &::-webkit-scrollbar {
-        width: 4px;
+        width: $scrollbar-width;
     }
 
     &::-webkit-scrollbar-track {
-        background: transparent;
+        background: $scrollbar-track;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: #2a2b2e;
-        border-radius: 2px;
+        background: $scrollbar-thumb;
+        border-radius: $border-radius-round;
 
         &:hover {
-            background: #3a3b3e;
+            background: $scrollbar-thumb-hover;
         }
+    }
+
+    // Фоновый эффект
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(100, 181, 246, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(229, 115, 115, 0.03) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
     }
 }
 
 .server {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: #2a2b2e;
+    width: $server-size;
+    height: $server-size;
+    border-radius: $border-radius-round;
+    background: $tertiary-bg;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all $animation-duration $animation-timing;
     position: relative;
-    font-size: 20px;
-    color: #8e9297;
+    font-size: $server-icon-size;
+    color: $text-muted;
     flex-shrink: 0;
+    border: 2px solid transparent;
+    z-index: 1;
 
     &:hover {
-        background: #5865f2;
+        background: $gradient-accent;
         color: white;
-        border-radius: 16px;
-        transform: scale(1.05);
+        transform: translateY(-$hover-lift) scale($hover-scale);
+        box-shadow: $shadow-medium;
+        border-color: $border-accent;
     }
 
     &.active {
-        background: #5865f2;
+        background: $gradient-accent;
         color: white;
-        border-radius: 16px;
-    }
-
-    &.active::before {
-        content: '';
-        position: absolute;
-        left: -16px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 40px;
-        background: white;
-        border-radius: 0 4px 4px 0;
-    }
-
-    &.home {
-        background: #5865f2;
-        color: white;
-        border-radius: 16px;
-    }
-
-    &.home::before {
-        content: '';
-        position: absolute;
-        left: -16px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 40px;
-        background: white;
-        border-radius: 0 4px 4px 0;
-    }
-
-    &.add {
-        background: #2a2b2e;
-        color: #3ba55c;
-        font-size: 24px;
-        font-weight: 300;
-
-        &:hover {
-            background: #3ba55c;
-            color: white;
-            border-radius: 16px;
-        }
+        border-color: $primary-accent;
     }
 
     &.settings {
-        margin-top: auto;
-        background: #2a2b2e;
-        border-radius: 12px;
+        background: $tertiary-bg;
+        border: 2px solid $border-primary;
         position: relative;
+        margin-top: auto; // Прижимаем к низу
 
         &::before {
             content: '';
             position: absolute;
-            top: -8px;
+            top: -$spacing-sm;
             left: 50%;
             transform: translateX(-50%);
-            width: 32px;
-            height: 2px;
-            background: #2a2b2e;
-            border-radius: 1px;
+            width: $spacing-xl;
+            height: $separator-height;
+            background: $border-primary;
+            border-radius: $border-radius-small;
         }
 
         &:hover {
-            background: #5865f2;
-            color: white;
-            border-radius: 16px;
+            background: $accent-bg;
+            color: $text-primary;
+            transform: translateY(-$hover-lift) scale($hover-scale);
+            border-color: $primary-accent;
+            box-shadow: $shadow-medium;
         }
     }
 
     &.admin {
-        background: #2a2b2e;
-        color: #faa61a;
-        font-size: 18px;
+        background: $gradient-primary;
+        color: white;
+        font-size: $icon-size;
+        border: 2px solid rgba(186, 104, 200, 0.3);
+        margin-top: $spacing-sm; // Отступ от настроек
 
         &:hover {
-            background: #faa61a;
+            background: $gradient-primary;
             color: white;
-            border-radius: 16px;
+            transform: translateY(-$hover-lift) scale($hover-scale);
+            border-color: rgba(186, 104, 200, 0.6);
+            box-shadow: 0 0 20px rgba(186, 104, 200, 0.3);
         }
     }
 
     .server-icon {
-        font-size: 20px;
+        font-size: $server-icon-size;
+        z-index: 2;
+        position: relative;
     }
 }
 
 .server-separator {
-    width: 32px;
-    height: 2px;
-    background: #2a2b2e;
-    border-radius: 1px;
-    margin: 4px 0;
+    width: $spacing-xl;
+    height: $separator-height;
+    background: $border-primary;
+    border-radius: $border-radius-small;
+    margin: $spacing-xs 0;
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    // Убрали мерцающие точки
 }
 
+// Анимации для серверов
+@keyframes serverPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}

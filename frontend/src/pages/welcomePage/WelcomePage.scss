@@ -93,10 +93,10 @@
 .hero-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: $spacing-3xl;
+    gap: $spacing-xl;
     align-items: center;
     min-height: 100vh;
-    padding: $spacing-3xl 0;
+    padding: $spacing-3xl;
 
     .hero-content {
         .hero-logo {
