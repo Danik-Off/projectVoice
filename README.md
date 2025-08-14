@@ -505,8 +505,9 @@ npm install
 Если у вас возникли вопросы или проблемы:
 
 - 📧 **Email**: project.voice@example.com
-- 💬 **Telegram**: [@projectvoice_support](https://t.me/projectvoice_support)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/projectVoice/issues)
+- 💬 **Telegram**: [@projectvoice](https://t.me/+55GQeX7tfF5mYmFi)
+- 💬 **VK**: [@projectvoice](https://vk.com/freeprojectvoice)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/Danik-Off/projectVoice/issues)
 - 📖 **Документация**: [Docs](./docs/)
 
 ---
@@ -526,33 +527,16 @@ npm install
 
 ---
 
-## 🙏 Благодарности
-
-Особая благодарность:
-- **React Team** за отличный фреймворк
-- **MobX Team** за реактивное управление состоянием  
-- **Socket.io Team** за WebSocket решение
-- **Sequelize Team** за ORM
-- **Всем контрибьюторам** проекта
-
----
-
 ## 🎯 Roadmap
 
-### Ближайшие планы (v1.1)
+### Ближайшие планы (v1.0)
+- [ ] Личные звонки
 - [ ] 📹 Видеозвонки
 - [ ] 📱 Мобильное приложение  
 - [ ] 🔒 E2E шифрование
 - [ ] 🤖 Боты и интеграции
 - [ ] 📊 Аналитика использования
-
-### Долгосрочные планы (v2.0)
-- [ ] 🎮 Игровые интеграции
-- [ ] 💾 Облачное хранилище
-- [ ] 🌍 CDN для медиа
-- [ ] 🔄 Федеративная архитектура
-
----
+- [ ] 📊 Админ панель
 
 <div align="center">
 
