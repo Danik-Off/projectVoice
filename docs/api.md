@@ -312,7 +312,7 @@
     {
         "id": 1,
         "content": "Hello, world!",
-        "timestamp": "2024-10-24T12:00:00Z"
+        "timestamp": "2025-10-24T12:00:00Z"
     }
    ```
 
@@ -329,7 +329,7 @@
         {
             "id": 1,
             "content": "Hello, world!",
-            "timestamp": "2024-10-24T12:00:00Z"
+            "timestamp": "2025-10-24T12:00:00Z"
         }
     ]
    ```

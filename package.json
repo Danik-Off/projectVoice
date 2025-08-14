@@ -1,8 +1,14 @@
 {
-  "name": "projectsocial",
+  "name": "projectvoice",
   "version": "0.0.1",
-  "description": "mini social network",
+  "description": "Современное веб-приложение для голосового и текстового общения с поддержкой серверов и каналов",
   "main": "index.js",
+  "author": "Ovchinnikov Danila",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Danik-Off/projectVoice"
+  },
+  "license": "MIT",
   "scripts": {
     "install:frontend": "npm --prefix ./frontend install",
     "install:backend": "npm --prefix ./backend install",
@@ -11,8 +17,6 @@
     "start:backend": "npm --prefix ./backend run dev",
     "start:all": "npm-run-all --parallel start:frontend start:backend"
   },
-  "author": "Ovchinnikov Danila",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5"
   },

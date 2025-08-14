@@ -3,14 +3,14 @@
 .voice-controls {
     position: fixed;
     bottom: 0;
-    left: 72px; // Отступ для sidebar
+    left: 80px; // Отступ для server sidebar (80px стандартная ширина)
     right: 0;
     z-index: 1000;
-    background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
-    border-top: 1px solid var(--border-color);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, $primary-bg 0%, $secondary-bg 100%);
+    border-top: $separator-height solid $border-primary;
+    box-shadow: $shadow-heavy;
     backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all $animation-duration $animation-timing;
     height: 72px; // Фиксированная высота для правильного позиционирования
 
     // Основная панель
@@ -39,12 +39,13 @@
         font-size: 20px;
         width: 40px;
         height: 40px;
-        background: linear-gradient(135deg, var(--accent-color) 0%, #5865f2 100%);
-        border-radius: 10px;
+        background: $gradient-primary;
+        border-radius: $border-radius-small;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+        box-shadow: $glow-primary;
+        color: $text-primary;
     }
 
     &__channel-details {
@@ -56,7 +57,7 @@
     &__channel-name {
         font-size: 16px;
         font-weight: 700;
-        color: var(--text-primary);
+        color: $text-primary;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -64,7 +65,7 @@
 
     &__participant-count {
         font-size: 12px;
-        color: var(--text-muted);
+        color: $text-secondary;
         font-weight: 500;
     }
 
@@ -357,8 +358,8 @@
         left: 0; // Убираем отступ для мобильных
 
         &__main-panel {
-            padding: 12px 16px;
-            gap: 12px;
+            padding: $spacing-sm $spacing-md;
+            gap: $spacing-sm;
         }
 
         &__channel-details {
@@ -370,13 +371,13 @@
         }
 
         &__controls {
-            gap: 4px;
+            gap: $spacing-xs;
         }
 
         &__button {
-            width: 40px;
-            height: 40px;
-            font-size: 14px;
+            width: $avatar-size;
+            height: $avatar-size;
+            font-size: $icon-size-small;
         }
     }
 }
@@ -393,8 +394,8 @@
 // Темная тема
 [data-theme="dark"] {
     .voice-controls {
-        background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
-        border-top-color: var(--border-color);
+        background: linear-gradient(135deg, $primary-bg 0%, $secondary-bg 100%);
+        border-top-color: $border-primary;
     }
 }
 

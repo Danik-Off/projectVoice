@@ -25,6 +25,10 @@
         .channel-content {
             padding-bottom: 72px; // Высота VoiceControls
         }
+        
+        .channel-sidebar {
+            padding-bottom: 72px; // Добавляем отступ снизу для сайдбара
+        }
     }
 
     // Анимация появления VoiceControls
@@ -72,6 +76,12 @@
         &.with-voice-controls {
             .channel-content {
                 height: calc(100vh - 60px - 72px); // Учитываем VoiceControls
+                padding-bottom: 0; // Убираем дублирование отступа
+            }
+            
+            .channel-sidebar {
+                height: calc(100vh - 60px - 72px); // Адаптируем сайдбар для мобильных
+                padding-bottom: 0;
             }
         }
     }

@@ -115,7 +115,7 @@ JWT_SECRET=your_secret_key
 ```
 
 ### База данных
-Миграция `20240707000000-add-admin-fields.js` добавляет:
+Миграция `20250707000000-add-admin-fields.js` добавляет:
 - Поле `role` (ENUM: 'user', 'moderator', 'admin')
 - Поле `isActive` (BOOLEAN)
 

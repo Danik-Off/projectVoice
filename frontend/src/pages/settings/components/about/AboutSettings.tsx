@@ -34,7 +34,7 @@ const AboutSettings: React.FC = () => {
                                 </div>
                                 <div className="info-row">
                                     <span className="info-label">Сборка:</span>
-                                    <span className="info-value">2024.12.19</span>
+                                    <span className="info-value">2025.12.19</span>
                                 </div>
                                 <div className="info-row">
                                     <span className="info-label">Разработчик:</span>

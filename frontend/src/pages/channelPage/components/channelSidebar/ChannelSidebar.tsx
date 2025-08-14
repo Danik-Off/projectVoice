@@ -6,7 +6,6 @@ import './ChannelSidebar.scss';
 import ChannelList from './components/channelList/ChannelList';
 import serverStore from '../../../../store/serverStore';
 import ServerHeader from './components/serverHeader/ServerHeader';
-import VoiceControls from './components/voiceControls/VoiceControls';
 
 const ChannelSidebar: React.FC = () => {
     const currentServer = serverStore.currentServer;
@@ -23,7 +22,6 @@ const ChannelSidebar: React.FC = () => {
                     Выберите сервер для начала работы
                 </div>
             )}
-            <VoiceControls />
         </aside>
     );
 };

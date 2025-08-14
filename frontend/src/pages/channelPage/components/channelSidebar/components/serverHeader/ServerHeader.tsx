@@ -1,11 +1,10 @@
 // src/components/ChannelSidebar/ServerHeader.tsx
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import './ServerHeader.scss';
 import serverStore from '../../../../../../store/serverStore';
 import { authStore } from '../../../../../../store/authStore';
-// import PencilIcon from '../../../../../../icons/PencilIcon';
 
 const ServerHeader: React.FC = observer(() => {
     const currentServer = serverStore.currentServer;
@@ -14,6 +13,32 @@ const ServerHeader: React.FC = observer(() => {
     const [inviteLink, setInviteLink] = useState('');
     const [isCreatingInvite, setIsCreatingInvite] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const tooltipRef = useRef<HTMLDivElement>(null);
+
+    // Закрытие dropdown при клике вне его
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setShowDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Позиционирование tooltip
+    useEffect(() => {
+        if (showTooltip && tooltipRef.current) {
+            const rect = tooltipRef.current.getBoundingClientRect();
+            if (rect.right > window.innerWidth - 20) {
+                tooltipRef.current.style.right = '0';
+                tooltipRef.current.style.left = 'auto';
+            }
+        }
+    }, [showTooltip]);
 
     const handleShare = async () => {
         if (!currentServer) return;
@@ -39,6 +64,7 @@ const ServerHeader: React.FC = observer(() => {
         } finally {
             setIsCreatingInvite(false);
         }
+        setShowDropdown(false);
     };
 
     const handleEditServer = () => {
@@ -51,6 +77,9 @@ const ServerHeader: React.FC = observer(() => {
     const copyInviteLink = async () => {
         try {
             await navigator.clipboard.writeText(inviteLink);
+            // Показываем уведомление об успешном копировании
+            setShowTooltip(true);
+            setTimeout(() => setShowTooltip(false), 2000);
         } catch (error) {
             console.error('Ошибка копирования:', error);
         }
@@ -85,10 +114,20 @@ const ServerHeader: React.FC = observer(() => {
         }
     };
 
+    const getRoleColor = (role: string) => {
+        switch (role) {
+            case 'owner': return '#ffd700';
+            case 'admin': return '#ff6b6b';
+            case 'moderator': return '#4ecdc4';
+            default: return '#95a5a6';
+        }
+    };
+
     if (!currentServer) {
         return (
             <div className="server-header">
                 <div className="no-server-state">
+                    <div className="no-server-icon">🏠</div>
                     <span className="no-server-text">Выберите сервер</span>
                 </div>
             </div>
@@ -99,47 +138,76 @@ const ServerHeader: React.FC = observer(() => {
         <>
             <div className="server-header">
                 <div className="server-info">
-                    <div className="server-icon">
-                        {currentServer.icon ? (
-                            <img 
-                                src={currentServer.icon} 
-                                alt={`${currentServer.name} icon`} 
-                            />
-                        ) : (
-                            <span>{currentServer.name.charAt(0).toUpperCase()}</span>
-                        )}
+                    <div className="server-icon-container">
+                        <div className="server-icon">
+                            {currentServer.icon ? (
+                                <img 
+                                    src={currentServer.icon} 
+                                    alt={`${currentServer.name} icon`} 
+                                />
+                            ) : (
+                                <span className="server-icon-text">
+                                    {currentServer.name.charAt(0).toUpperCase()}
+                                </span>
+                            )}
+                        </div>
+                        <div className="server-status-indicator online"></div>
                     </div>
                     
                     <div className="server-details">
-                        <h2 className="server-name">{currentServer.name}</h2>
+                        <h2 className="server-name" title={currentServer.name}>
+                            {currentServer.name}
+                        </h2>
                         <div className="server-meta">
-                            <span className="server-role">
-                                {getRoleIcon(userRole)} {userRole}
-                            </span>
+                            <div 
+                                className="server-role"
+                                style={{ '--role-color': getRoleColor(userRole) } as React.CSSProperties}
+                            >
+                                <span className="role-icon">{getRoleIcon(userRole)}</span>
+                                <span className="role-text">{userRole}</span>
+                            </div>
                             {currentServer.members && (
-                                <span className="member-count">
-                                    {currentServer.members.length} участников
-                                </span>
+                                <div className="member-count">
+                                    <span className="member-icon">👥</span>
+                                    <span className="member-text">{currentServer.members.length}</span>
+                                </div>
                             )}
                         </div>
                     </div>
                 </div>
 
                 <div className="server-actions">
-
+                    {canInvite && (
+                        <button 
+                            className="action-button share-button"
+                            onClick={handleShare}
+                            disabled={isCreatingInvite}
+                            title="Пригласить участников"
+                        >
+                            {isCreatingInvite ? (
+                                <div className="loading-spinner"></div>
+                            ) : (
+                                <span className="share-icon">📤</span>
+                            )}
+                        </button>
+                    )}
                     
                     {(canEditServer || canInvite) && (
-                        <div className="dropdown-container">
+                        <div className="dropdown-container" ref={dropdownRef}>
                             <button 
-                                className="action-button menu-button"
+                                className={`action-button menu-button ${showDropdown ? 'active' : ''}`}
                                 onClick={toggleDropdown}
                                 title="Дополнительные действия"
                             >
-                                ⋯
+                                <span className="menu-icon">⋯</span>
                             </button>
                             
                             {showDropdown && (
                                 <div className="dropdown-menu">
+                                    <div className="dropdown-header">
+                                        <span className="dropdown-title">Действия сервера</span>
+                                    </div>
+                                    
                                     {canInvite && (
                                         <button 
                                             className="dropdown-item"
@@ -147,7 +215,7 @@ const ServerHeader: React.FC = observer(() => {
                                             disabled={isCreatingInvite}
                                         >
                                             <span className="dropdown-icon">📤</span>
-                                            Пригласить участников
+                                            <span className="dropdown-text">Пригласить участников</span>
                                         </button>
                                     )}
                                     
@@ -157,16 +225,18 @@ const ServerHeader: React.FC = observer(() => {
                                             onClick={handleEditServer}
                                         >
                                             <span className="dropdown-icon">⚙️</span>
-                                            Настройки сервера
+                                            <span className="dropdown-text">Настройки сервера</span>
                                         </button>
                                     )}
                                     
+                                    <div className="dropdown-divider"></div>
+                                    
                                     <button 
-                                        className="dropdown-item"
+                                        className="dropdown-item close-item"
                                         onClick={() => setShowDropdown(false)}
                                     >
                                         <span className="dropdown-icon">❌</span>
-                                        Закрыть
+                                        <span className="dropdown-text">Закрыть</span>
                                     </button>
                                 </div>
                             )}
@@ -180,8 +250,13 @@ const ServerHeader: React.FC = observer(() => {
                 <div className="invite-modal-overlay" onClick={closeInviteModal}>
                     <div className="invite-modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h3>Пригласить на сервер</h3>
-                            <button className="modal-close" onClick={closeInviteModal}>×</button>
+                            <div className="modal-title">
+                                <span className="modal-icon">🎉</span>
+                                <h3>Пригласить на сервер</h3>
+                            </div>
+                            <button className="modal-close" onClick={closeInviteModal}>
+                                <span>×</span>
+                            </button>
                         </div>
                         
                         <div className="modal-content">
@@ -209,9 +284,13 @@ const ServerHeader: React.FC = observer(() => {
                                         className="invite-link-input"
                                         placeholder="Создание ссылки..."
                                     />
-                                    <button onClick={copyInviteLink} className="copy-button">
+                                    <button 
+                                        onClick={copyInviteLink} 
+                                        className="copy-button"
+                                        title="Копировать ссылку"
+                                    >
                                         <span className="copy-icon">📋</span>
-                                        Копировать
+                                        <span className="copy-text">Копировать</span>
                                     </button>
                                 </div>
                             </div>
@@ -223,6 +302,14 @@ const ServerHeader: React.FC = observer(() => {
                             </div>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Tooltip для уведомления о копировании */}
+            {showTooltip && (
+                <div className="copy-tooltip" ref={tooltipRef}>
+                    <span className="tooltip-icon">✅</span>
+                    <span className="tooltip-text">Ссылка скопирована!</span>
                 </div>
             )}
         </>

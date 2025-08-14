@@ -6,6 +6,12 @@
     height: 100%;
     background: var(--background-primary);
     position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    // Адаптация когда активны voice controls
+    .with-voice-controls & {
+        height: calc(100% - 72px); // Учитываем высоту VoiceControls
+    }
 }
 
 .channel-header {
@@ -278,9 +284,14 @@
     align-items: center;
     gap: 8px;
     box-shadow: 0 4px 16px rgba(114, 137, 218, 0.3);
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
     backdrop-filter: blur(10px);
+    
+    // Адаптация когда активны voice controls
+    .with-voice-controls & {
+        bottom: 92px; // 20px (обычный отступ) + 72px (высота VoiceControls)
+    }
 
     &:hover {
         background: linear-gradient(135deg, #5865f2, #4752c4);

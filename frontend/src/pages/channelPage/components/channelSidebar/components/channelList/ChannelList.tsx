@@ -7,7 +7,7 @@ import { Channel } from '../../../../../../types/channel';
 import './ChannelList.scss'; // Import the CSS file for styling
 import CreateChannelForm from './components/сreateChannelForm/CreateChannelForm';
 import voiceRoomStore from '../../../../../../store/roomStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import channelsStore from '../../../../../../store/channelsStore';
@@ -16,7 +16,10 @@ import Spinner from '../../../../../../components/spinner/Spinner';
 const ChannelList: React.FC = observer(() => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const params = useParams();
     const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
+    
+    const currentChannelId = params.channelId;
 
     // Загрузка данных о каналах при монтировании компонента
     useEffect(() => {
@@ -49,35 +52,58 @@ const ChannelList: React.FC = observer(() => {
     const textChannels = channelsStore?.channels?.filter((channel: Channel) => channel.type === 'text') || [];
     const voiceChannels = channelsStore?.channels?.filter((channel: Channel) => channel.type === 'voice') || [];
 
+    const getChannelClasses = (channel: Channel) => {
+        const baseClass = 'channel-list__item';
+        const typeClass = channel.type === 'voice' ? 'voice-channel' : 'text-channel';
+        const activeClass = currentChannelId === String(channel.id) ? 'active' : '';
+        const connectedClass = channel.type === 'voice' && voiceRoomStore.currentVoiceChannel?.id === channel.id ? 'connected' : '';
+        
+        return [baseClass, typeClass, activeClass, connectedClass].filter(Boolean).join(' ');
+    };
+
     const channelList = (
         <div className="channel-list">
-            <button className="button " onClick={() => setIsFormVisible(!isFormVisible)}>
+            <button className="button" onClick={() => setIsFormVisible(!isFormVisible)}>
                 {t('channelsPage.channelList.' + (isFormVisible ? 'cancel' : 'create') + 'Btn')}
             </button>
+            
             <h2>{t('channelsPage.channelList.textTitle')}</h2>
             {textChannels.length > 0 ? (
                 <ul className="channel-list__items">
                     {textChannels.map((channel: Channel) => (
-                        <li key={channel.id} onClick={() => handleNavigate(channel)} className="channel-list__item">
-                            {channel.name}
+                        <li 
+                            key={channel.id} 
+                            onClick={() => handleNavigate(channel)} 
+                            className={getChannelClasses(channel)}
+                            title={channel.name}
+                        >
+                            <span className="channel-name">{channel.name}</span>
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p className="channel-list__empty">No text channels available.</p>
+                <p className="channel-list__empty">{t('channelsPage.channelList.noTextChannels')}</p>
             )}
 
             <h2>{t('channelsPage.channelList.voiceTitle')}</h2>
             {voiceChannels.length > 0 ? (
                 <ul className="channel-list__items">
                     {voiceChannels.map((channel: Channel) => (
-                        <li key={channel.id} onClick={() => handleNavigate(channel)} className="channel-list__item">
-                            {channel.name}
+                        <li 
+                            key={channel.id} 
+                            onClick={() => handleNavigate(channel)} 
+                            className={getChannelClasses(channel)}
+                            title={channel.name}
+                        >
+                            <span className="channel-name">{channel.name}</span>
+                            {voiceRoomStore.currentVoiceChannel?.id === channel.id && (
+                                <span className="connection-indicator">🔊</span>
+                            )}
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p className="channel-list__empty">No voice channels available.</p>
+                <p className="channel-list__empty">{t('channelsPage.channelList.noVoiceChannels')}</p>
             )}
 
             {isFormVisible && <CreateChannelForm onClose={() => setIsFormVisible(false)} />}

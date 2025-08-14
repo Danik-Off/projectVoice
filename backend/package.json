@@ -1,7 +1,7 @@
 {
     "name": "backend",
     "version": "0.0.2",
-    "description": "Your project description here",
+    "description": "Backend для ProjectVoice - голосового приложения с WebRTC",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
@@ -22,8 +22,8 @@
         "docs-gen": "node ./utils/swagger/swagger-gen.js"
     },
     "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "author": "Ovchinnikov Danila",
+    "license": "MIT",
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",

@@ -192,7 +192,7 @@ const WelcomePage: React.FC = () => {
                 <footer className="welcome-footer">
                     <div className="footer-bottom">
                         <p className="copyright">
-                            © 2024 ProjectVoice by Danik Off. Создано с ❤️ для геймеров.
+                            © 2025 ProjectVoice by Danik Off. Создано с ❤️ для геймеров.
                         </p>
                     </div>
                 </footer>

@@ -1,6 +1,8 @@
 {
-    "name": "frontend",
+    "name": "projectvoice-frontend",
     "version": "0.0.1",
+    "description": "Frontend для ProjectVoice - голосового приложения с WebRTC",
+    "author": "Ovchinnikov Danila",
     "private": true,
     "dependencies": {
         "@emotion/react": "^11.13.3",
