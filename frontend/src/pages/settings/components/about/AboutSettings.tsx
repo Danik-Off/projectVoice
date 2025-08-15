@@ -1,11 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import versionInfo from '../../../../version.json';
 
 const AboutSettings: React.FC = () => {
+    const { t } = useTranslation();
+
     return (
         <div className="settings-section">
             <div className="section-header">
-                <h2>О приложении</h2>
-                <p>Информация о ProjectVoice</p>
+                <h2>{t('settingsPage.about.title')}</h2>
+                <p>{t('settingsPage.about.description')}</p>
             </div>
             
             <div className="section-content">
@@ -16,8 +20,8 @@ const AboutSettings: React.FC = () => {
                                 🎯
                             </div>
                             <div className="header-text">
-                                <h3>ProjectVoice</h3>
-                                <p>Простая альтернатива для голосового общения</p>
+                                <h3>{t('settingsPage.about.appInfo.title')}</h3>
+                                <p>{t('settingsPage.about.appInfo.subtitle')}</p>
                             </div>
                         </div>
                     </div>
@@ -25,23 +29,23 @@ const AboutSettings: React.FC = () => {
                     <div className="card-content">
                         <div className="settings-info">
                             <div className="info-header">
-                                <h4>Информация о приложении</h4>
+                                <h4>{t('settingsPage.about.appInfo.infoTitle')}</h4>
                             </div>
                             <div className="info-content">
                                 <div className="info-row">
-                                    <span className="info-label">Версия:</span>
-                                    <span className="info-value">1.0.0</span>
+                                    <span className="info-label">{t('settingsPage.about.appInfo.version')}</span>
+                                    <span className="info-value">{versionInfo.version}</span>
                                 </div>
                                 <div className="info-row">
-                                    <span className="info-label">Сборка:</span>
-                                    <span className="info-value">2025.12.19</span>
+                                    <span className="info-label">{t('settingsPage.about.appInfo.build')}</span>
+                                    <span className="info-value">{versionInfo.buildDate} ({versionInfo.gitHash})</span>
                                 </div>
                                 <div className="info-row">
-                                    <span className="info-label">Разработчик:</span>
+                                    <span className="info-label">{t('settingsPage.about.appInfo.developer')}</span>
                                     <span className="info-value">Danik Off</span>
                                 </div>
                                 <div className="info-row">
-                                    <span className="info-label">Лицензия:</span>
+                                    <span className="info-label">{t('settingsPage.about.appInfo.license')}</span>
                                     <span className="info-value">MIT</span>
                                 </div>
                             </div>
@@ -56,8 +60,8 @@ const AboutSettings: React.FC = () => {
                                 📖
                             </div>
                             <div className="header-text">
-                                <h3>Описание</h3>
-                                <p>Что такое ProjectVoice</p>
+                                <h3>{t('settingsPage.about.descriptionSection.title')}</h3>
+                                <p>{t('settingsPage.about.descriptionSection.subtitle')}</p>
                             </div>
                         </div>
                     </div>
@@ -66,12 +70,10 @@ const AboutSettings: React.FC = () => {
                         <div className="setting-group">
                             <div className="setting-control">
                                 <p style={{ lineHeight: '1.6', color: 'var(--text-secondary)' }}>
-                                    ProjectVoice — это простая, но эффективная альтернатива для голосового общения 
-                                    на базе peer-to-peer WebRTC. Создан для тех, кто хочет общаться с друзьями 
-                                    и товарищами без зависимости от внешних сервисов.
+                                    {t('settingsPage.about.descriptionSection.content')}
                                 </p>
                                 <div className="setting-description">
-                                    Приложение находится на раннем этапе разработки
+                                    {t('settingsPage.about.descriptionSection.note')}
                                 </div>
                             </div>
                         </div>
@@ -85,8 +87,8 @@ const AboutSettings: React.FC = () => {
                                 🔗
                             </div>
                             <div className="header-text">
-                                <h3>Ссылки</h3>
-                                <p>Полезные ресурсы</p>
+                                <h3>{t('settingsPage.about.links.title')}</h3>
+                                <p>{t('settingsPage.about.links.subtitle')}</p>
                             </div>
                         </div>
                     </div>
@@ -94,41 +96,41 @@ const AboutSettings: React.FC = () => {
                     <div className="card-content">
                         <div className="setting-group">
                             <label className="setting-label">
-                                <span>Документация</span>
+                                <span>{t('settingsPage.about.links.documentation')}</span>
                             </label>
                             <div className="setting-control">
                                 <div className="settings-grid two-columns">
                                     <button className="settings-button secondary">
-                                        📚 Руководство
+                                        {t('settingsPage.about.links.guide')}
                                     </button>
                                     <button className="settings-button secondary">
-                                        🐛 Отчеты об ошибках
+                                        {t('settingsPage.about.links.bugReport')}
                                     </button>
                                 </div>
                                 <div className="setting-description">
-                                    Помощь по использованию и обратная связь
+                                    {t('settingsPage.about.links.guideDescription')}
                                 </div>
                             </div>
                         </div>
                         
                         <div className="setting-group">
                             <label className="setting-label">
-                                <span>Сообщество</span>
+                                <span>{t('settingsPage.about.links.community')}</span>
                             </label>
                             <div className="setting-control">
                                 <div className="settings-grid three-columns">
                                     <button className="settings-button secondary">
-                                        💬 Telegram
+                                        {t('settingsPage.about.links.telegram')}
                                     </button>
                                     <button className="settings-button secondary">
-                                        📱 VK
+                                        {t('settingsPage.about.links.vk')}
                                     </button>
                                     <button className="settings-button secondary">
-                                        🐙 GitHub
+                                        {t('settingsPage.about.links.github')}
                                     </button>
                                 </div>
                                 <div className="setting-description">
-                                    Присоединяйтесь к сообществу разработчиков
+                                    {t('settingsPage.about.links.communityDescription')}
                                 </div>
                             </div>
                         </div>
@@ -142,8 +144,8 @@ const AboutSettings: React.FC = () => {
                                 ⚙️
                             </div>
                             <div className="header-text">
-                                <h3>Техническая информация</h3>
-                                <p>Детали реализации</p>
+                                <h3>{t('settingsPage.about.technical.title')}</h3>
+                                <p>{t('settingsPage.about.technical.subtitle')}</p>
                             </div>
                         </div>
                     </div>
@@ -151,23 +153,23 @@ const AboutSettings: React.FC = () => {
                     <div className="card-content">
                         <div className="settings-info">
                             <div className="info-header">
-                                <h4>Технологии</h4>
+                                <h4>{t('settingsPage.about.technical.technologies')}</h4>
                             </div>
                             <div className="info-content">
                                 <div className="info-row">
-                                    <span className="info-label">Frontend:</span>
+                                    <span className="info-label">{t('settingsPage.about.technical.frontend')}</span>
                                     <span className="info-value">React + TypeScript</span>
                                 </div>
                                 <div className="info-row">
-                                    <span className="info-label">Backend:</span>
+                                    <span className="info-label">{t('settingsPage.about.technical.backend')}</span>
                                     <span className="info-value">Node.js + Express</span>
                                 </div>
                                 <div className="info-row">
-                                    <span className="info-label">WebRTC:</span>
+                                    <span className="info-label">{t('settingsPage.about.technical.webrtc')}</span>
                                     <span className="info-value">Peer-to-peer</span>
                                 </div>
                                 <div className="info-row">
-                                    <span className="info-label">База данных:</span>
+                                    <span className="info-label">{t('settingsPage.about.technical.database')}</span>
                                     <span className="info-value">SQLite</span>
                                 </div>
                             </div>

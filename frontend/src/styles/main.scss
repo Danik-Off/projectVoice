@@ -1,4 +1,6 @@
-@import 'theme/_dark'; // По умолчанию импорт тёмной темы, можно динамически менять на _dark
+// Импорт тем - CSS переменные будут применены динамически
+@import 'theme/_dark';
+@import 'theme/_light';
 @import 'colors';
 @import 'sizes';
 @import 'animations';
@@ -7,15 +9,12 @@
 @import 'basic';
 
 // VoiceVerse - Основные стили с поддержкой тем
-:root {
-    // CSS переменные будут установлены динамически через ThemeStore
-    // Используем новую систему цветов и размеров
-}
+// CSS переменные устанавливаются в файлах тем и применяются через ThemeStore
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: $primary-bg;
-    color: $text-primary;
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -38,47 +37,22 @@ body::before {
     pointer-events: none;
     z-index: -1;
 }
-// Стили для темной темы (по умолчанию)
-.theme-dark {
-    --background-color: #{$primary-bg};
-    --text-color: #{$text-primary};
-    --border-color: #{$border-primary};
-    --card-bg: #{$secondary-bg};
-    --card-border: #{$border-primary};
-    --shadow-color: #{$shadow-light};
-    --button-bg: #{$button-primary-bg};
-    --button-hover-bg: #{$button-primary-hover};
-    --button-text: #{$text-primary};
-    --input-bg: #{$input-bg};
-    --input-text: #{$text-primary};
-    --border-color: #{$border-primary};
-    --accent-color: #{$primary-accent};
-    --hover-bg: #{$hover-bg};
-    --message-bg: #{$tertiary-bg};
-    --message-text: #{$text-primary};
-    --placeholder-text: #{$text-disabled};
-    --sidebar-bg: #{$secondary-bg};
-}
-
-// Стили для светлой темы
-.theme-light {
-    --background-color: #f8f9fa;
-    --text-color: #212529;
-    --border-color: #dee2e6;
-    --card-bg: #ffffff;
-    --card-border: #dee2e6;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --button-bg: #{$primary-accent};
-    --button-hover-bg: #{$primary-accent};
-    --button-text: #ffffff;
-    --input-bg: #ffffff;
-    --input-text: #212529;
-    --border-color: #dee2e6;
-    --accent-color: #{$primary-accent};
-    --hover-bg: #f8f9fa;
-    --message-bg: #ffffff;
-    --message-text: #212529;
-    --placeholder-text: #6c757d;
-    --sidebar-bg: #f8f9fa;
+// Дополнительные CSS переменные для обратной совместимости
+:root {
+    --background-color: var(--primary-bg);
+    --text-color: var(--text-primary);
+    --border-color: var(--border-primary);
+    --card-bg: var(--secondary-bg);
+    --card-border: var(--border-primary);
+    --shadow-color: var(--shadow-light);
+    --button-bg: var(--button-primary-bg);
+    --button-hover-bg: var(--button-primary-hover);
+    --button-text: var(--text-primary);
+    --input-text: var(--text-primary);
+    --accent-color: var(--primary-accent);
+    --message-bg: var(--tertiary-bg);
+    --message-text: var(--text-primary);
+    --placeholder-text: var(--text-disabled);
+    --sidebar-bg: var(--secondary-bg);
 }
 

@@ -1,4 +1,7 @@
 {
+    "common": {
+        "toggleTheme": "Toggle theme"
+    },
     "createServerModal": {
         "title": "Create Server",
         "titlePlaceholder": "Enter server name...",
@@ -22,6 +25,9 @@
         "username": "username",
         "email": "email",
         "password": "password",
+        "confirmPassword": "confirm password",
+        "passwordsMismatch": "Passwords do not match",
+        "passwordTooShort": "Password must be at least 6 characters",
         "btnLogin": "Login"
     },
     "settingsPage": {
@@ -34,6 +40,59 @@
             "notifications": "Notifications",
             "privacy": "Privacy",
             "about": "About"
+        },
+        "appearance": {
+            "title": "Appearance",
+            "description": "Customize theme and interface colors",
+            "theme": {
+                "title": "Theme",
+                "description": "Choose between light and dark theme",
+                "currentTheme": "Current theme",
+                "light": "Light",
+                "dark": "Dark",
+                "autoDescription": "Switch between light and dark themes",
+                "systemTheme": "System theme",
+                "followSystem": "Follow system",
+                "systemDescription": "Automatically match your system theme",
+                "autoSync": "Auto sync"
+            },
+            "accent": {
+                "title": "Accent Color",
+                "description": "Choose the main interface color",
+                "colorScheme": "Color scheme",
+                "active": "Active",
+                "select": "Select",
+                "instantApply": "Changes apply instantly",
+                "colors": {
+                    "blue": "Blue",
+                    "green": "Green",
+                    "purple": "Purple",
+                    "orange": "Orange",
+                    "red": "Red",
+                    "pink": "Pink"
+                }
+            },
+            "scale": {
+                "title": "Interface Size",
+                "description": "Adjust element scale",
+                "scale": "Scale",
+                "small": "Small",
+                "medium": "Medium",
+                "large": "Large",
+                "recommendation": "Medium size is recommended for most screens"
+            }
+        },
+        "general": {
+            "title": "General Settings",
+            "description": "Basic application parameters",
+            "language": {
+                "title": "Interface Language",
+                "subtitle": "Choose your preferred language",
+                "label": "Language",
+                "description": "Changes take effect immediately",
+                "english": "English",
+                "russian": "Russian"
+            }
         },
         "language": {
             "title": "Language",
@@ -50,47 +109,115 @@
         },
         "audio": {
             "title": "Audio Settings",
+            "description": "Configure microphone and speakers for optimal voice communication",
+            "tabs": {
+                "devices": "Devices",
+                "quality": "Quality"
+            },
             "microphone": "Microphone",
             "speakers": "Speakers",
-            "microphone": "Microphone:",
             "defaultMic": "Default Microphone",
             "speaker": "Speaker:",
             "defaultSpeaker": "Default Speaker",
-            "volume": "Volume:",
             "mute": "Mute:",
-            "testAudio": "Test Audio"
-        },
-        "appearance": {
-            "title": "Appearance",
-            "theme": "Theme",
-            "themeDescription": "Choose light or dark theme for the interface",
-            "darkMode": "Dark Mode",
-            "lightMode": "Light Mode",
-            "switchToDark": "Switch to dark mode",
-            "switchToLight": "Switch to light mode",
-            "accent": "Accent Color",
-            "accentColor": "Accent Color",
-            "accentDescription": "Choose the main color for the interface"
+            "testAudio": "Test Audio",
+            "volume": "Volume"
         },
         "notifications": {
             "title": "Notifications",
-            "enable": "Enable Notifications",
-            "enableDescription": "Receive notifications about new messages and events"
+            "description": "Configure alerts and notifications",
+            "general": {
+                "title": "General Notifications",
+                "subtitle": "Basic notification settings",
+                "enable": "Enable Notifications",
+                "enableDescription": "Allow the app to show notifications",
+                "sound": "Sound Notifications",
+                "soundDescription": "Play sound when receiving notifications"
+            },
+            "chat": {
+                "title": "Chat Notifications",
+                "subtitle": "Settings for messages and chats",
+                "newMessages": "New Messages",
+                "newMessagesDescription": "Notifications for new chat messages",
+                "mentions": "Mentions",
+                "mentionsDescription": "Notifications when you are mentioned in messages",
+                "voiceCalls": "Voice Calls",
+                "voiceCallsDescription": "Notifications for incoming voice calls"
+            },
+            "enabled": "Enabled",
+            "disabled": "Disabled"
         },
         "privacy": {
             "title": "Privacy",
-            "onlineStatus": "Online Status",
-            "onlineStatusDescription": "Choose how other users see your status",
+            "description": "Privacy and security settings",
+            "onlineStatus": {
+                "title": "Online Status",
+                "subtitle": "Who can see your status",
+                "visibility": "Status Visibility",
+                "visibilityDescription": "Determines who can see your online status",
+                "showActivity": "Show Activity",
+                "showActivityDescription": "Show which channel you are in",
+                "options": {
+                    "everyone": "All users",
+                    "friends": "Friends only",
+                    "none": "Hide status"
+                }
+            },
+            "security": {
+                "title": "Security",
+                "subtitle": "Account security settings",
+                "twoFactor": "Two-Factor Authentication",
+                "twoFactorDescription": "Additional layer of protection for your account",
+                "loginNotifications": "Login Notifications",
+                "loginNotificationsDescription": "Receive notifications about new account logins"
+            },
             "online": "Online",
             "idle": "Idle",
             "dnd": "Do Not Disturb",
-            "invisible": "Invisible"
+            "invisible": "Invisible",
+            "enabled": "Enabled",
+            "disabled": "Disabled"
         },
         "about": {
             "title": "About",
-            "documentation": "Documentation",
-            "reportBug": "Report Bug",
-            "suggestFeature": "Suggest Feature"
+            "description": "Information about ProjectVoice",
+            "appInfo": {
+                "title": "ProjectVoice",
+                "subtitle": "Simple alternative for voice communication",
+                "infoTitle": "Application Information",
+                "version": "Version:",
+                "build": "Build:",
+                "developer": "Developer:",
+                "license": "License:"
+            },
+            "descriptionSection": {
+                "title": "Description",
+                "subtitle": "What is ProjectVoice",
+                "content": "ProjectVoice is a simple but effective alternative for voice communication based on peer-to-peer WebRTC. Created for those who want to communicate with friends and colleagues without dependence on external services.",
+                "note": "The application is in early development stage"
+            },
+            "links": {
+                "title": "Links",
+                "subtitle": "Useful resources",
+                "documentation": "Documentation",
+                "guide": "📚 Guide",
+                "bugReport": "🐛 Bug Reports",
+                "guideDescription": "Help with usage and feedback",
+                "community": "Community",
+                "telegram": "💬 Telegram",
+                "vk": "📱 VK",
+                "github": "🐙 GitHub",
+                "communityDescription": "Join the developer community"
+            },
+            "technical": {
+                "title": "Technical Information",
+                "subtitle": "Implementation details",
+                "technologies": "Technologies",
+                "frontend": "Frontend:",
+                "backend": "Backend:",
+                "webrtc": "WebRTC:",
+                "database": "Database:"
+            }
         }
     },
     "serverSettings": {

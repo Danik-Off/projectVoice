@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import { themeStore } from '../../../../store/ThemeStore';
 
 const AppearanceSettings: React.FC = observer(() => {
+    const { t } = useTranslation();
+    const [followSystem, setFollowSystem] = useState(false);
+
+    const handleSystemThemeToggle = () => {
+        setFollowSystem(!followSystem);
+        if (!followSystem) {
+            // Если включаем следование системе, применяем системную тему
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            themeStore.setTheme(prefersDark ? 'dark' : 'light');
+        }
+    };
+
     return (
         <div className="settings-section">
             <div className="section-header">
-                <h2>Внешний вид</h2>
-                <p>Настройте тему и цвета интерфейса</p>
+                <h2>{t('settingsPage.appearance.title')}</h2>
+                <p>{t('settingsPage.appearance.description')}</p>
             </div>
             
             <div className="section-content">
+                {/* Основная настройка темы */}
                 <div className="settings-card">
                     <div className="card-header">
                         <div className="header-content">
@@ -18,109 +32,95 @@ const AppearanceSettings: React.FC = observer(() => {
                                 🎨
                             </div>
                             <div className="header-text">
-                                <h3>Тема оформления</h3>
-                                <p>Выберите светлую или темную тему</p>
+                                <h3>{t('settingsPage.appearance.theme.title')}</h3>
+                                <p>{t('settingsPage.appearance.theme.description')}</p>
                             </div>
                         </div>
                     </div>
                     
                     <div className="card-content">
+                        {/* Селектор темы с превью */}
                         <div className="setting-group">
-                            <label className="setting-label">
-                                <span>Текущая тема</span>
-                            </label>
+                            <div className="setting-control">
+                                <div className="theme-selector">
+                                    <div className="theme-options">
+                                        <button
+                                            className={`theme-option ${themeStore.currentTheme === 'light' ? 'active' : ''}`}
+                                            onClick={() => themeStore.setTheme('light')}
+                                            disabled={followSystem}
+                                        >
+                                            <div className="theme-preview light-preview">
+                                                <div className="preview-header"></div>
+                                                <div className="preview-sidebar"></div>
+                                                <div className="preview-content"></div>
+                                            </div>
+                                            <span className="theme-name">
+                                                ☀️ {t('settingsPage.appearance.theme.light')}
+                                            </span>
+                                        </button>
+                                        
+                                        <button
+                                            className={`theme-option ${themeStore.currentTheme === 'dark' ? 'active' : ''}`}
+                                            onClick={() => themeStore.setTheme('dark')}
+                                            disabled={followSystem}
+                                        >
+                                            <div className="theme-preview dark-preview">
+                                                <div className="preview-header"></div>
+                                                <div className="preview-sidebar"></div>
+                                                <div className="preview-content"></div>
+                                            </div>
+                                            <span className="theme-name">
+                                                🌙 {t('settingsPage.appearance.theme.dark')}
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Переключатель системной темы */}
+                        <div className="setting-group">
+                            <div className="setting-header">
+                                <label className="setting-label">
+                                    <span>{t('settingsPage.appearance.theme.systemTheme')}</span>
+                                </label>
+                            </div>
                             <div className="setting-control">
                                 <div className="settings-toggle">
                                     <input
                                         type="checkbox"
-                                        checked={themeStore.isDark}
-                                        onChange={(e) => themeStore.toggleTheme()}
+                                        checked={followSystem}
+                                        onChange={handleSystemThemeToggle}
                                     />
                                     <span className="toggle-switch"></span>
                                     <span className="toggle-label">
-                                        {themeStore.isDark ? 'Темная' : 'Светлая'}
+                                        {t('settingsPage.appearance.theme.followSystem')}
                                     </span>
                                 </div>
                                 <div className="setting-description">
-                                    Автоматически подстраивается под системные настройки
+                                    {t('settingsPage.appearance.theme.systemDescription')}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div className="settings-card">
-                    <div className="card-header">
-                        <div className="header-content">
-                            <div className="icon-container">
-                                🌈
+                        {/* Информация о текущей теме */}
+                        <div className="theme-info">
+                            <div className="info-item">
+                                <span className="info-label">{t('settingsPage.appearance.theme.currentTheme')}:</span>
+                                <span className="info-value">
+                                    {themeStore.currentTheme === 'dark' ? 
+                                        `🌙 ${t('settingsPage.appearance.theme.dark')}` : 
+                                        `☀️ ${t('settingsPage.appearance.theme.light')}`
+                                    }
+                                </span>
                             </div>
-                            <div className="header-text">
-                                <h3>Акцентный цвет</h3>
-                                <p>Выберите основной цвет интерфейса</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="card-content">
-                        <div className="setting-group">
-                            <label className="setting-label">
-                                <span>Цветовая схема</span>
-                            </label>
-                            <div className="setting-control">
-                                <div className="settings-grid three-columns">
-                                    {['blue', 'green', 'purple', 'orange', 'red', 'pink'].map((color) => (
-                                        <button
-                                            key={color}
-                                            className={`settings-button ${color === 'blue' ? 'active' : ''}`}
-                                            style={{
-                                                backgroundColor: color === 'blue' ? '#3b82f6' : 
-                                                               color === 'green' ? '#10b981' :
-                                                               color === 'purple' ? '#8b5cf6' :
-                                                               color === 'orange' ? '#f59e0b' :
-                                                               color === 'red' ? '#ef4444' : '#ec4899'
-                                            }}
-                                        >
-                                            {color === 'blue' ? 'Активен' : 'Выбрать'}
-                                        </button>
-                                    ))}
+                            {followSystem && (
+                                <div className="info-item">
+                                    <span className="info-badge">
+                                        🔄 {t('settingsPage.appearance.theme.autoSync')}
+                                    </span>
                                 </div>
-                                <div className="setting-description">
-                                    Изменения применяются мгновенно
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="settings-card">
-                    <div className="card-header">
-                        <div className="header-content">
-                            <div className="icon-container">
-                                📱
-                            </div>
-                            <div className="header-text">
-                                <h3>Размер интерфейса</h3>
-                                <p>Настройте масштаб элементов</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="card-content">
-                        <div className="setting-group">
-                            <label className="setting-label">
-                                <span>Масштаб</span>
-                            </label>
-                            <div className="setting-control">
-                                <div className="settings-grid three-columns">
-                                    <button className="settings-button secondary">Маленький</button>
-                                    <button className="settings-button">Средний</button>
-                                    <button className="settings-button secondary">Большой</button>
-                                </div>
-                                <div className="setting-description">
-                                    Рекомендуется средний размер для большинства экранов
-                                </div>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>

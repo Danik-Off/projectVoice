@@ -677,6 +677,177 @@
     }
 }
 
+// Стили для селектора тем
+.theme-selector {
+    width: 100%;
+    
+    .theme-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $spacing-md;
+        margin-bottom: $spacing-md;
+    }
+    
+    .theme-option {
+        position: relative;
+        border: 2px solid var(--border-primary);
+        border-radius: $border-radius;
+        background: var(--secondary-bg);
+        padding: $spacing-md;
+        cursor: pointer;
+        transition: all $animation-duration ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-sm;
+        
+        &:hover {
+            border-color: var(--primary-accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        &.active {
+            border-color: var(--primary-accent);
+            background: var(--primary-accent);
+            color: white;
+            box-shadow: var(--glow-primary);
+            
+            .theme-name {
+                color: white;
+                font-weight: 600;
+            }
+        }
+    }
+    
+    .theme-preview {
+        width: 60px;
+        height: 40px;
+        border-radius: $border-radius-small;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        
+        .preview-header,
+        .preview-sidebar,
+        .preview-content {
+            position: absolute;
+        }
+        
+        .preview-header {
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+        }
+        
+        .preview-sidebar {
+            top: 8px;
+            left: 0;
+            width: 16px;
+            bottom: 0;
+        }
+        
+        .preview-content {
+            top: 8px;
+            left: 16px;
+            right: 0;
+            bottom: 0;
+        }
+        
+        &.light-preview {
+            background: #ffffff;
+            
+            .preview-header {
+                background: #f8f9fa;
+            }
+            
+            .preview-sidebar {
+                background: #e9ecef;
+            }
+            
+            .preview-content {
+                background: #ffffff;
+            }
+        }
+        
+        &.dark-preview {
+            background: #1a1a1a;
+            
+            .preview-header {
+                background: #2a2a2a;
+            }
+            
+            .preview-sidebar {
+                background: #333333;
+            }
+            
+            .preview-content {
+                background: #1a1a1a;
+            }
+        }
+    }
+    
+    .theme-name {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+        text-align: center;
+        transition: color $animation-duration ease;
+    }
+    
+    .theme-option:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        
+        &:hover {
+            transform: none;
+            border-color: var(--border-primary);
+            box-shadow: none;
+        }
+    }
+}
+
+// Стили для информации о теме
+.theme-info {
+    background: var(--hover-bg);
+    border-radius: $border-radius;
+    padding: $spacing-md;
+    margin-top: $spacing-md;
+    
+    .info-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $spacing-sm;
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    
+    .info-label {
+        font-size: 14px;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+    
+    .info-value {
+        font-size: 14px;
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+    
+    .info-badge {
+        background: var(--primary-accent);
+        color: white;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-small;
+        font-size: 12px;
+        font-weight: 600;
+    }
+}
+
 // Адаптивность
 @media (max-width: 768px) {
     .settings-header {
@@ -709,6 +880,22 @@
         .tab-button {
             flex: 1;
             text-align: center;
+        }
+    }
+    
+    .theme-selector {
+        .theme-options {
+            grid-template-columns: 1fr;
+            gap: $spacing-sm;
+        }
+        
+        .theme-option {
+            padding: $spacing-sm;
+            
+            .theme-preview {
+                width: 50px;
+                height: 32px;
+            }
         }
     }
 }

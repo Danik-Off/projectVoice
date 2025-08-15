@@ -1,39 +1,39 @@
 .input[type='text'] {
     width: 100%;
-    padding: $input-padding;
+    padding: $spacing-md;
     margin-bottom: 1rem;
     border: none;
     border-radius: $border-radius;
-    background-color: $input-bg;
-    color: $input-text;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
 
     &::placeholder {
-        color: $placeholder-text;
+        color: var(--text-disabled);
     }
 }
 .textArea {
     width: 100%;
-    padding: $input-padding;
+    padding: $spacing-md;
     border: none;
     border-radius: $border-radius;
-    background-color: $input-bg;
-    color: $input-text;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
 
     &::placeholder {
-        color: $placeholder-text;
+        color: var(--text-disabled);
     }
 }
 .button {
-    background-color: #7289da;
+    background-color: var(--primary-accent);
     color: #ffffff;
     border: none;
-    padding: 10px;
-    border-radius: 5px;
+    padding: $spacing-md;
+    border-radius: $border-radius-small;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: $spacing-md;
     transition: background-color 0.2s;
 
     &:hover {
-        background-color: $button-hover-bg;
+        background-color: var(--button-primary-hover);
     }
 }

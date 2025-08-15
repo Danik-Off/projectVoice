@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { authStore } from '../../store/authStore';
+import { themeStore } from '../../store/ThemeStore';
 import Spinner from '../../components/spinner/Spinner';
 import BlockedAccountModal from '../../components/BlockedAccountModal';
 import './Auth.scss';
@@ -41,7 +42,7 @@ const AuthPage: React.FC = observer(() => {
     };
 
     return (
-        <div className="auth-container">
+        <div className={`auth-container theme-${themeStore.currentTheme}`}>
             {authStore.loading && (
                 <div className="spinner-container">
                     <Spinner />
@@ -88,10 +89,22 @@ const AuthPage: React.FC = observer(() => {
                             </button>
                         </p>
 
-                        <button onClick={toggleLanguage} className="language-toggle">
-                            <span className="language-icon">🌐</span>
-                            {i18n.language === 'en' ? 'Русский' : 'English'}
-                        </button>
+                        <div className="auth-footer-controls">
+                            <button onClick={toggleLanguage} className="language-toggle">
+                                <span className="language-icon">🌐</span>
+                                {i18n.language === 'en' ? 'Русский' : 'English'}
+                            </button>
+                            
+                            <button 
+                                onClick={() => themeStore.toggleTheme()} 
+                                className="theme-toggle"
+                                title={t('common.toggleTheme')}
+                            >
+                                <span className="theme-icon">
+                                    {themeStore.currentTheme === 'dark' ? '☀️' : '🌙'}
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
