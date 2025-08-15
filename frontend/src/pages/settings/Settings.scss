@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 
     &::before {
         content: '';
@@ -78,6 +78,7 @@
     flex: 1;
     position: relative;
     z-index: 2;
+    min-height: 0; /* Позволяет flex элементам сжиматься */
 }
 
 .settings-sidebar {
