@@ -44,31 +44,31 @@
 }
 
 // Утилиты для цветов фона
-.bg-primary { background-color: $primary-bg; }
-.bg-secondary { background-color: $secondary-bg; }
-.bg-tertiary { background-color: $tertiary-bg; }
-.bg-accent { background-color: $accent-bg; }
+.bg-primary { background-color: var(--primary-bg); }
+.bg-secondary { background-color: var(--secondary-bg); }
+.bg-tertiary { background-color: var(--tertiary-bg); }
+.bg-accent { background-color: var(--accent-bg); }
 
-.bg-gradient-primary { background: $gradient-primary; }
-.bg-gradient-secondary { background: $gradient-secondary; }
-.bg-gradient-accent { background: $gradient-accent; }
-.bg-gradient-dark { background: $gradient-dark; }
+.bg-gradient-primary { background: var(--gradient-primary); }
+.bg-gradient-secondary { background: var(--gradient-secondary); }
+.bg-gradient-accent { background: var(--gradient-accent); }
+.bg-gradient-dark { background: var(--gradient-dark); }
 
 // Утилиты для цветов текста
-.text-primary { color: $text-primary; }
-.text-secondary { color: $text-secondary; }
-.text-muted { color: $text-muted; }
-.text-disabled { color: $text-disabled; }
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-disabled { color: var(--text-disabled); }
 
-.text-accent { color: $primary-accent; }
-.text-success { color: $success-accent; }
-.text-warning { color: $warning-accent; }
-.text-error { color: $error-color; }
+.text-accent { color: var(--primary-accent); }
+.text-success { color: var(--success-accent); }
+.text-warning { color: var(--warning-accent); }
+.text-error { color: var(--error-color); }
 
 // Утилиты для границ
-.border-primary { border-color: $border-primary; }
-.border-secondary { border-color: $border-secondary; }
-.border-accent { border-color: $border-accent; }
+.border-primary { border-color: var(--border-primary); }
+.border-secondary { border-color: var(--border-secondary); }
+.border-accent { border-color: var(--border-accent); }
 
 .border-1 { border-width: 1px; }
 .border-2 { border-width: 2px; }
@@ -86,10 +86,10 @@
 .rounded-full { border-radius: $border-radius-round; }
 
 // Утилиты для теней
-.shadow-light { box-shadow: $shadow-light; }
-.shadow-medium { box-shadow: $shadow-medium; }
-.shadow-heavy { box-shadow: $shadow-heavy; }
-.shadow-glow { box-shadow: $glow-primary; }
+.shadow-light { box-shadow: var(--shadow-light); }
+.shadow-medium { box-shadow: var(--shadow-medium); }
+.shadow-heavy { box-shadow: var(--shadow-heavy); }
+.shadow-glow { box-shadow: var(--glow-primary); }
 
 // Утилиты для позиционирования
 .relative { position: relative; }
@@ -229,22 +229,22 @@
 .hover\:-translate-y-1:hover { transform: translateY(-$hover-lift); }
 .hover\:-translate-y-2:hover { transform: translateY(-$spacing-sm); }
 
-.hover\:bg-secondary:hover { background-color: $secondary-bg; }
-.hover\:bg-tertiary:hover { background-color: $tertiary-bg; }
-.hover\:bg-accent:hover { background-color: $accent-bg; }
+.hover\:bg-secondary:hover { background-color: var(--secondary-bg); }
+.hover\:bg-tertiary:hover { background-color: var(--tertiary-bg); }
+.hover\:bg-accent:hover { background-color: var(--accent-bg); }
 
-.hover\:text-accent:hover { color: $primary-accent; }
-.hover\:text-primary:hover { color: $text-primary; }
+.hover\:text-accent:hover { color: var(--primary-accent); }
+.hover\:text-primary:hover { color: var(--text-primary); }
 
-.hover\:border-accent:hover { border-color: $border-accent; }
-.hover\:shadow-medium:hover { box-shadow: $shadow-medium; }
-.hover\:shadow-glow:hover { box-shadow: $glow-primary; }
+.hover\:border-accent:hover { border-color: var(--border-accent); }
+.hover\:shadow-medium:hover { box-shadow: var(--shadow-medium); }
+.hover\:shadow-glow:hover { box-shadow: var(--glow-primary); }
 
 // Утилиты для focus эффектов
 .focus\:outline-none:focus { outline: none; }
-.focus\:ring:focus { box-shadow: 0 0 0 $focus-ring-width $primary-accent; }
-.focus\:ring-2:focus { box-shadow: 0 0 0 2px $primary-accent; }
-.focus\:ring-4:focus { box-shadow: 0 0 0 4px $primary-accent; }
+.focus\:ring:focus { box-shadow: 0 0 0 $focus-ring-width var(--primary-accent); }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px var(--primary-accent); }
+.focus\:ring-4:focus { box-shadow: 0 0 0 4px var(--primary-accent); }
 
 // Утилиты для active эффектов
 .active\:scale-95:active { transform: scale($active-scale); }
@@ -266,22 +266,22 @@
     }
     
     &::-webkit-scrollbar-track {
-        background: $scrollbar-track;
+        background: var(--scrollbar-track);
     }
     
     &::-webkit-scrollbar-thumb {
-        background: $scrollbar-thumb;
+        background: var(--scrollbar-thumb);
         border-radius: $border-radius-round;
         
         &:hover {
-            background: $scrollbar-thumb-hover;
+            background: var(--scrollbar-thumb-hover);
         }
     }
 }
 
 // Утилиты для градиентов
 .gradient-text {
-    background: $gradient-accent;
+    background: var(--gradient-accent);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -297,7 +297,7 @@
 // Утилиты для фокуса
 .focus-visible\:ring:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 $focus-ring-width $primary-accent;
+    box-shadow: 0 0 0 $focus-ring-width var(--primary-accent);
 }
 
 // Утилиты для группировки

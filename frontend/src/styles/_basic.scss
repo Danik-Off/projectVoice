@@ -1,3 +1,5 @@
+// VoiceVerse - Базовые стили для элементов форм
+
 .input[type='text'] {
     width: 100%;
     padding: $spacing-md;
@@ -11,6 +13,7 @@
         color: var(--text-disabled);
     }
 }
+
 .textArea {
     width: 100%;
     padding: $spacing-md;
@@ -23,6 +26,7 @@
         color: var(--text-disabled);
     }
 }
+
 .button {
     background-color: var(--primary-accent);
     color: #ffffff;

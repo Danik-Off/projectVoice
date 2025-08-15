@@ -1,12 +1,12 @@
-// Импорт тем - CSS переменные будут применены динамически
-@import 'theme/_dark';
-@import 'theme/_light';
-@import 'colors';
+// Импорт основных стилей
 @import 'sizes';
-@import 'animations';
-@import 'utilities';
+@import 'colors';
 @import 'typography';
+@import 'utilities';
+@import 'animations';
 @import 'basic';
+@import 'theme/_light';
+@import 'theme/_dark';
 
 // VoiceVerse - Основные стили с поддержкой тем
 // CSS переменные устанавливаются в файлах тем и применяются через ThemeStore
@@ -37,6 +37,7 @@ body::before {
     pointer-events: none;
     z-index: -1;
 }
+
 // Дополнительные CSS переменные для обратной совместимости
 :root {
     --background-color: var(--primary-bg);

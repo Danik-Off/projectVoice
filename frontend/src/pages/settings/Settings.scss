@@ -411,7 +411,7 @@
     transition: all $animation-duration ease;
     
     &:hover:not(:disabled) {
-        background: darken($primary-accent, 10%);
+        background: var(--primary-accent-hover, #4a9ee6);
         transform: translateY(-1px);
         box-shadow: $shadow-medium;
     }
@@ -430,7 +430,7 @@
         background: $secondary-accent;
         
         &:hover:not(:disabled) {
-            background: darken($secondary-accent, 10%);
+            background: var(--secondary-accent-hover, #d32f2f);
         }
     }
     
@@ -438,7 +438,7 @@
         background: $error-color;
         
         &:hover:not(:disabled) {
-            background: darken($error-color, 10%);
+            background: var(--error-color-hover, #d32f2f);
         }
     }
     
