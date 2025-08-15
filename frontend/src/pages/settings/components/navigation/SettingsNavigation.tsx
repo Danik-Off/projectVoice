@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-export type SettingsTab = 'general' | 'appearance' | 'audio' | 'notifications' | 'privacy' | 'about';
+export type SettingsTab = 'profile' | 'general' | 'appearance' | 'audio' | 'notifications' | 'privacy' | 'about';
 
 interface SettingsNavigationProps {
     activeTab: SettingsTab;
@@ -12,6 +12,7 @@ const SettingsNavigation: React.FC<SettingsNavigationProps> = ({ activeTab, onTa
     const { t } = useTranslation();
 
     const tabs: Array<{ id: SettingsTab; label: string; icon: string }> = [
+        { id: 'profile', label: t('settingsPage.tabs.profile'), icon: '👤' },
         { id: 'general', label: t('settingsPage.tabs.general'), icon: '⚙️' },
         { id: 'appearance', label: t('settingsPage.tabs.appearance'), icon: '🎨' },
         { id: 'audio', label: t('settingsPage.tabs.audio'), icon: '🎵' },

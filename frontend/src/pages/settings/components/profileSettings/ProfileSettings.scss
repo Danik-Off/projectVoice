@@ -1,0 +1,577 @@
+@import '../../../../styles/main.scss';
+
+.profile-settings {
+    .settings-section {
+        padding: $spacing-xl;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        margin-bottom: $spacing-xl;
+        text-align: center;
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 $spacing-md 0;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.6;
+        }
+    }
+
+    .settings-card {
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-primary);
+        border-radius: $border-radius-large;
+        overflow: hidden;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+        margin-bottom: $spacing-xl;
+
+        &:hover {
+            box-shadow: var(--shadow-medium);
+            border-color: var(--border-secondary);
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .card-header {
+        padding: $spacing-lg $spacing-xl;
+        background: var(--tertiary-bg);
+        border-bottom: 1px solid var(--border-primary);
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: $spacing-lg;
+
+            .icon-container {
+                width: 48px;
+                height: 48px;
+                background: var(--gradient-primary);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                flex-shrink: 0;
+            }
+
+            .header-text {
+                h3 {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    margin: 0 0 $spacing-sm 0;
+                }
+
+                p {
+                    font-size: 14px;
+                    color: var(--text-secondary);
+                    margin: 0;
+                    line-height: 1.5;
+                }
+            }
+        }
+    }
+
+    .card-content {
+        padding: $spacing-xl;
+    }
+
+    .profile-info-section {
+        .profile-avatar-section {
+            display: flex;
+            align-items: center;
+            gap: $spacing-lg;
+            margin-bottom: $spacing-xl;
+            padding-bottom: $spacing-lg;
+            border-bottom: 1px solid var(--border-primary);
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                overflow: hidden;
+                flex-shrink: 0;
+                border: 3px solid var(--border-accent);
+                background: var(--tertiary-bg);
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .avatar-placeholder {
+                    width: 100%;
+                    height: 100%;
+                    background: var(--gradient-primary);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 32px;
+                    font-weight: 700;
+                    color: white;
+                    text-transform: uppercase;
+                }
+            }
+
+            .btn-change-avatar {
+                padding: $spacing-sm $spacing-md;
+                background: var(--primary-accent);
+                color: white;
+                border: none;
+                border-radius: $border-radius-small;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover:not(:disabled) {
+                    background: var(--primary-accent-hover);
+                    transform: translateY(-1px);
+                }
+
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+            }
+        }
+
+        .profile-fields {
+            margin-bottom: $spacing-xl;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: $spacing-md;
+            justify-content: flex-end;
+        }
+    }
+
+    .setting-group {
+        margin-bottom: $spacing-lg;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .setting-header {
+        margin-bottom: $spacing-md;
+
+        .setting-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+    }
+
+    .setting-control {
+        .input-container {
+            position: relative;
+
+            .edit-input,
+            .password-input {
+                width: 100%;
+                padding: $spacing-sm $spacing-md;
+                border: 1px solid var(--border-secondary);
+                border-radius: $border-radius-small;
+                background: var(--input-bg);
+                color: var(--text-primary);
+                font-size: 14px;
+                transition: all 0.3s ease;
+
+                &:focus {
+                    outline: none;
+                    border-color: var(--primary-accent);
+                    box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+                }
+
+                &::placeholder {
+                    color: var(--text-disabled);
+                }
+
+                &.error {
+                    border-color: var(--error-color);
+                    box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2);
+
+                    &:focus {
+                        border-color: var(--error-color);
+                        box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2);
+                    }
+                }
+
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+            }
+
+            .error-message {
+                color: var(--error-color);
+                font-size: 12px;
+                margin-top: $spacing-xs;
+                font-weight: 500;
+            }
+        }
+
+        .info-display {
+            padding: $spacing-sm $spacing-md;
+            background: var(--tertiary-bg);
+            border: 1px solid var(--border-primary);
+            border-radius: $border-radius-small;
+            color: var(--text-primary);
+            font-size: 14px;
+            min-height: 20px;
+            display: flex;
+            align-items: center;
+
+            &.role-display {
+                .role-badge {
+                    background: var(--gradient-primary);
+                    color: white;
+                    padding: $spacing-xs $spacing-sm;
+                    border-radius: $border-radius-small;
+                    font-size: 12px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+            }
+        }
+
+        .btn-change-password,
+        .btn-logout {
+            padding: $spacing-sm $spacing-md;
+            border: none;
+            border-radius: $border-radius-small;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 36px;
+
+            &:hover:not(:disabled) {
+                transform: translateY(-1px);
+                box-shadow: var(--shadow-light);
+            }
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none;
+            }
+        }
+
+        .btn-change-password {
+            background: var(--secondary-accent);
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: var(--secondary-accent-hover);
+            }
+        }
+
+        .btn-logout {
+            background: var(--error-color);
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: var(--error-color-hover);
+            }
+        }
+    }
+
+    .profile-actions {
+        button {
+            padding: $spacing-sm $spacing-md;
+            border: none;
+            border-radius: $border-radius-small;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: $spacing-xs;
+
+            &:hover:not(:disabled) {
+                transform: translateY(-1px);
+                box-shadow: var(--shadow-light);
+            }
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            .loading-spinner {
+                animation: spin 1s linear infinite;
+            }
+        }
+
+        .btn-edit {
+            background: var(--primary-accent);
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: var(--primary-accent-hover);
+            }
+        }
+
+        .btn-save {
+            background: var(--success-accent);
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: var(--success-accent);
+                filter: brightness(0.9);
+            }
+        }
+
+        .btn-cancel {
+            background: var(--tertiary-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-secondary);
+
+            &:hover:not(:disabled) {
+                background: var(--hover-bg);
+                border-color: var(--border-accent);
+            }
+        }
+    }
+
+    // Модальное окно изменения пароля
+    .password-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--modal-overlay);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+    }
+
+    .password-modal {
+        background: var(--modal-bg);
+        border: 1px solid var(--modal-border);
+        border-radius: $border-radius-large;
+        width: 90%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-heavy);
+
+        &.logout-confirm-modal {
+            max-width: 400px;
+
+            .logout-message {
+                text-align: center;
+                color: var(--text-secondary);
+                font-size: 16px;
+                line-height: 1.6;
+                margin: 0;
+            }
+        }
+
+        .modal-header {
+            padding: $spacing-lg $spacing-xl;
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            h3 {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--text-primary);
+                margin: 0;
+            }
+
+            .btn-close {
+                background: none;
+                border: none;
+                color: var(--text-secondary);
+                font-size: 18px;
+                cursor: pointer;
+                padding: $spacing-xs;
+                border-radius: $border-radius-small;
+                transition: all 0.3s ease;
+
+                &:hover:not(:disabled) {
+                    background: var(--hover-bg);
+                    color: var(--text-primary);
+                }
+
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        .modal-content {
+            padding: $spacing-xl;
+
+            .setting-group {
+                margin-bottom: $spacing-lg;
+
+                .setting-label {
+                    display: block;
+                    margin-bottom: $spacing-sm;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: var(--text-primary);
+                }
+            }
+        }
+
+        .modal-actions {
+            padding: $spacing-lg $spacing-xl;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            gap: $spacing-md;
+            justify-content: flex-end;
+
+            button {
+                padding: $spacing-sm $spacing-md;
+                border: none;
+                border-radius: $border-radius-small;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                min-height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: $spacing-xs;
+
+                &:hover:not(:disabled) {
+                    transform: translateY(-1px);
+                    box-shadow: var(--shadow-light);
+                }
+
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+
+                .loading-spinner {
+                    animation: spin 1s linear infinite;
+                }
+            }
+
+            .btn-save {
+                background: var(--success-accent);
+                color: white;
+
+                &:hover:not(:disabled) {
+                    background: var(--success-accent);
+                    filter: brightness(0.9);
+                }
+            }
+
+            .btn-cancel {
+                background: var(--tertiary-bg);
+                color: var(--text-primary);
+                border: 1px solid var(--border-secondary);
+
+                &:hover:not(:disabled) {
+                    background: var(--hover-bg);
+                    border-color: var(--border-accent);
+                }
+            }
+
+            .btn-logout {
+                background: var(--error-color);
+                color: white;
+
+                &:hover:not(:disabled) {
+                    background: var(--error-color-hover);
+                }
+            }
+        }
+    }
+}
+
+// Анимация загрузки
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+    .profile-settings {
+        .settings-section {
+            padding: $spacing-lg;
+        }
+
+        .card-header .header-content {
+            flex-direction: column;
+            text-align: center;
+            gap: $spacing-md;
+        }
+
+        .profile-info-section .profile-avatar-section {
+            flex-direction: column;
+            text-align: center;
+            gap: $spacing-md;
+        }
+
+        .profile-actions {
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .password-modal {
+            width: 95%;
+            margin: $spacing-md;
+
+            .modal-actions {
+                flex-direction: column;
+                gap: $spacing-sm;
+
+                button {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

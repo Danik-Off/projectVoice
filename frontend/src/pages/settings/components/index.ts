@@ -8,6 +8,7 @@ export { default as AudioEffectsSettings } from './audioSettings/AudioEffectsSet
 // Settings Components
 export { default as SettingsHeader } from './header/SettingsHeader';
 export { default as SettingsNavigation } from './navigation/SettingsNavigation';
+export { default as ProfileSettings } from './profileSettings';
 export { default as GeneralSettings } from './general/GeneralSettings';
 export { default as AppearanceSettings } from './appearance/AppearanceSettings';
 export { default as NotificationsSettings } from './notifications/NotificationsSettings';

@@ -3,9 +3,9 @@ import { getCookie } from '../utils/cookie';
 import { userService } from '../services/userService';
 import { User } from '../types/user';
 
-class AuthStore {
+class UserStore {
     isAuthenticated = false;
-    user: User | null = null;
+    currentUser: User | null = null;
     token: string | null = null;
 
     constructor() {
@@ -21,7 +21,7 @@ class AuthStore {
                 const user = await userService.get(id);
 
                 if (user) {
-                    this.user = user; // Сохранение полученного пользователя
+                    this.currentUser = user; // Сохранение полученного пользователя
                 } else {
                     console.warn('User not found');
                 }
@@ -32,6 +32,36 @@ class AuthStore {
             console.error('Failed to fetch user data', error);
         }
     }
+
+    async updateProfile(profileData: { username: string; email: string }) {
+        try {
+            if (this.isAuthenticated && this.token && this.currentUser) {
+                const updatedUser = await userService.updateProfile(this.currentUser.id, profileData);
+                
+                if (updatedUser) {
+                    this.currentUser = { ...this.currentUser, ...updatedUser };
+                    return true;
+                }
+            }
+            return false;
+        } catch (error) {
+            console.error('Failed to update profile', error);
+            throw error;
+        }
+    }
+
+    async changePassword(oldPassword: string, newPassword: string) {
+        try {
+            if (this.isAuthenticated && this.token && this.currentUser) {
+                const success = await userService.changePassword(this.currentUser.id, oldPassword, newPassword);
+                return success;
+            }
+            return false;
+        } catch (error) {
+            console.error('Failed to change password', error);
+            throw error;
+        }
+    }
 }
 
-export const authStore = new AuthStore();
+export const userStore = new UserStore();

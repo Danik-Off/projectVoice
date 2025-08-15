@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import {
     SettingsHeader,
     SettingsNavigation,
+    ProfileSettings,
     GeneralSettings,
     AppearanceSettings,
     NotificationsSettings,
@@ -14,10 +15,12 @@ import {
 import AudioSettings from './components/audioSettings/AudioSettings';
 
 const Settings = observer(() => {
-    const [activeTab, setActiveTab] = useState<SettingsTab>('general');
+    const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
 
     const renderTabContent = () => {
         switch (activeTab) {
+            case 'profile':
+                return <ProfileSettings />;
             case 'general':
                 return <GeneralSettings />;
             case 'appearance':

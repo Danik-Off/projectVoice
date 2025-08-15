@@ -50,7 +50,7 @@ $info-color: var(--info-color, #64b5f6);
 $warning-color: var(--warning-color, #ffb74d);
 $error-color: var(--error-color, #e57373);
 $error-color-hover: var(--error-color-hover, #d32f2f);
-$success-color: var(--success-color, #81c784);
+$success-color: var(--success-accent, #81c784);
 
 // Цвета для голосового чата - используем CSS переменные с fallback значениями
 $voice-active: var(--voice-active, rgba(100, 181, 246, 0.2));

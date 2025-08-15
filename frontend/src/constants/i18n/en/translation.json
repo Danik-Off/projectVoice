@@ -34,12 +34,69 @@
         "title": "Settings",
         "back": "Back",
         "tabs": {
+            "profile": "Profile",
             "general": "General",
             "appearance": "Appearance",
             "audio": "Audio",
             "notifications": "Notifications",
             "privacy": "Privacy",
             "about": "About"
+        },
+        "profile": {
+            "title": "Profile Settings",
+            "description": "Manage your account information and security settings",
+            "basicInfo": {
+                "title": "Basic Information",
+                "description": "Update your profile details",
+                "username": "Username",
+                "usernamePlaceholder": "Enter your username",
+                "email": "Email",
+                "emailPlaceholder": "Enter your email",
+                "role": "Role",
+                "changeAvatar": "Change Avatar",
+                "edit": "Edit",
+                "save": "Save",
+                "cancel": "Cancel"
+            },
+            "security": {
+                "title": "Security",
+                "description": "Manage your account security",
+                "password": "Password",
+                "changePassword": "Change Password",
+                "currentPassword": "Current Password",
+                "currentPasswordPlaceholder": "Enter current password",
+                "newPassword": "New Password",
+                "newPasswordPlaceholder": "Enter new password",
+                "confirmPassword": "Confirm Password",
+                "confirmPasswordPlaceholder": "Confirm new password",
+                "savePassword": "Save Password",
+                "cancel": "Cancel",
+                "logout": "Logout",
+                "logoutConfirmTitle": "Confirm Logout",
+                "logoutConfirmMessage": "Are you sure you want to logout? You will need to log in again to access your account.",
+                "confirmLogout": "Yes, Logout"
+            }
+        },
+        "validation": {
+            "usernameRequired": "Username is required",
+            "usernameMinLength": "Username must be at least 3 characters",
+            "usernameMaxLength": "Username must be no more than 20 characters",
+            "emailRequired": "Email is required",
+            "emailInvalid": "Please enter a valid email address",
+            "currentPasswordRequired": "Current password is required",
+            "newPasswordRequired": "New password is required",
+            "passwordMinLength": "Password must be at least 6 characters",
+            "passwordMaxLength": "Password must be no more than 50 characters",
+            "confirmPasswordRequired": "Please confirm your new password",
+            "passwordsDoNotMatch": "Passwords do not match"
+        },
+        "messages": {
+            "profileUpdated": "Profile updated successfully!",
+            "passwordChanged": "Password changed successfully!",
+            "updateError": "Failed to update profile. Please try again.",
+            "passwordChangeError": "Failed to change password. Please check your current password and try again.",
+            "noChanges": "No changes to save",
+            "avatarFeatureComing": "Avatar upload feature coming soon!"
         },
         "appearance": {
             "title": "Appearance",

@@ -1,6 +1,24 @@
 // VoiceVerse - светлая тема
 // Создаем CSS переменные для светлой темы
 :root.theme-light {
+    // Spacing
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 64px;
+    --spacing-4xl: 80px;
+    
+    // Border radius
+    --border-radius: 12px;
+    --border-radius-small: 8px;
+    --border-radius-medium: 12px;
+    --border-radius-large: 20px;
+    --border-radius-xl: 28px;
+    --border-radius-round: 50%;
+    
     // Основные цвета фона
     --primary-bg: #ffffff;
     --secondary-bg: #f8f9fa;
