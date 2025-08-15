@@ -12,6 +12,7 @@ import AdminPanel from '../pages/admin/AdminPanel';
 import AdminRoute from '../store/AdminRoute';
 import ServerSettings from '../pages/serverSettings/ServerSettings';
 import InvitePage from '../pages/invite/InvitePage';
+import ProfileDemo from '../components/ProfileDemo';
 
 export const router = createBrowserRouter([
     {
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
             {
                 path: 'settings',
                 element: <Settings />,
+            },
+            {
+                path: 'profile-demo',
+                element: <ProfileDemo />,
             },
             {
                 path: 'admin',

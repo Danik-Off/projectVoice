@@ -284,24 +284,8 @@
         }
 
         .participant-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-color) 0%, #5865f2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: white;
-            overflow: hidden;
+            position: relative;
             flex-shrink: 0;
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
         }
 
         .participant-info {
@@ -402,5 +386,30 @@
     .voice-controls {
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
         border-top-color: #e9ecef;
+    }
+}
+
+// Индикатор речи для участников
+.voice-controls__speaking-indicator {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 12px;
+    height: 12px;
+    background: #43b581;
+    border-radius: 50%;
+    border: 2px solid var(--background-primary, #1a1a1a);
+    animation: speakingPulse 1.5s ease-in-out infinite;
+    z-index: 2;
+}
+
+@keyframes speakingPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
     }
 }

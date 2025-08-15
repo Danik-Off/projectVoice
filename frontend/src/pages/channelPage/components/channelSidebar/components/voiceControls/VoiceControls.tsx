@@ -5,6 +5,8 @@ import './VoiceControls.scss';
 import voiceRoomStore from '../../../../../../store/roomStore';
 import { authStore } from '../../../../../../store/authStore';
 import notificationStore from '../../../../../../store/NotificationStore';
+import { useUserProfile } from '../../../../../../components/UserProfileProvider';
+import ClickableAvatar from '../../../../../../components/ClickableAvatar';
 
 const VoiceControls: React.FC = observer(() => {
     const { t } = useTranslation();
@@ -12,6 +14,7 @@ const VoiceControls: React.FC = observer(() => {
     const [isDeafened, setIsDeafened] = useState<boolean>(false);
     const [showVolumeSlider, setShowVolumeSlider] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const { openProfile } = useUserProfile();
 
     const currentUser = authStore.user;
     const currentVoiceChannel = voiceRoomStore.currentVoiceChannel;
@@ -65,16 +68,14 @@ const VoiceControls: React.FC = observer(() => {
 
                 <div className="voice-controls__user-section">
                     <div className="voice-controls__user-info">
-                        <div className="voice-controls__avatar">
-                            {currentUser?.profilePicture ? (
-                                <img 
-                                    src={currentUser.profilePicture} 
-                                    alt={currentUser.username}
-                                />
-                            ) : (
-                                <span>{currentUser?.username?.charAt(0).toUpperCase() || 'U'}</span>
-                            )}
-                        </div>
+                        {currentUser && (
+                            <ClickableAvatar
+                                user={currentUser}
+                                size="medium"
+                                onClick={() => openProfile(currentUser, true)}
+                                className="voice-controls__avatar"
+                            />
+                        )}
                         <div className="voice-controls__user-details">
                             <span className="voice-controls__username">{currentUser?.username || 'User'}</span>
                             <span className="voice-controls__status">
@@ -135,19 +136,33 @@ const VoiceControls: React.FC = observer(() => {
                         <div className="voice-controls__participants-list">
                             {participants.map((participant) => (
                                 <div key={participant.socketId} className="voice-controls__participant">
-                                    <div className="voice-controls__participant-avatar">
-                                        {participant.userData?.profilePicture ? (
-                                            <img 
-                                                src={participant.userData.profilePicture} 
-                                                alt={participant.userData.username}
-                                            />
-                                        ) : (
-                                            <span>{participant.userData?.username?.charAt(0).toUpperCase() || 'U'}</span>
-                                        )}
-                                        {participant.isSpeaking && (
-                                            <div className="voice-controls__speaking-indicator"></div>
-                                        )}
-                                    </div>
+                                    {participant.userData && (
+                                        <ClickableAvatar
+                                            user={{
+                                                ...participant.userData,
+                                                email: `${participant.userData.username}@temp.com`, // Временное решение
+                                                isActive: true,
+                                                createdAt: new Date().toISOString(),
+                                                status: 'online'
+                                            }}
+                                            size="small"
+                                                                                onClick={() => {
+                                        if (participant.userData) {
+                                            openProfile({
+                                                ...participant.userData,
+                                                email: `${participant.userData.username}@temp.com`,
+                                                isActive: true,
+                                                createdAt: new Date().toISOString(),
+                                                status: 'online'
+                                            }, false);
+                                        }
+                                    }}
+                                            className="voice-controls__participant-avatar"
+                                        />
+                                    )}
+                                    {participant.isSpeaking && (
+                                        <div className="voice-controls__speaking-indicator"></div>
+                                    )}
                                     <div className="voice-controls__participant-info">
                                         <span className="voice-controls__participant-name">
                                             {participant.userData?.username || 'Unknown User'}

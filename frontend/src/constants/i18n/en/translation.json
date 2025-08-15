@@ -28,7 +28,18 @@
         "confirmPassword": "confirm password",
         "passwordsMismatch": "Passwords do not match",
         "passwordTooShort": "Password must be at least 6 characters",
-        "btnLogin": "Login"
+        "btnLogin": "Login",
+        "loginButton": {
+            "loading": "Signing in..."
+        },
+        "registerButton": {
+            "loading": "Creating account..."
+        },
+        "passwordStrength": {
+            "weak": "Weak password",
+            "medium": "Medium strength password",
+            "strong": "Strong password"
+        }
     },
     "settingsPage": {
         "title": "Settings",
@@ -81,10 +92,12 @@
             "usernameRequired": "Username is required",
             "usernameMinLength": "Username must be at least 3 characters",
             "usernameMaxLength": "Username must be no more than 20 characters",
+            "usernameInvalid": "Username can only contain letters, numbers and underscores",
             "emailRequired": "Email is required",
             "emailInvalid": "Please enter a valid email address",
             "currentPasswordRequired": "Current password is required",
             "newPasswordRequired": "New password is required",
+            "passwordRequired": "Password is required",
             "passwordMinLength": "Password must be at least 6 characters",
             "passwordMaxLength": "Password must be no more than 50 characters",
             "confirmPasswordRequired": "Please confirm your new password",
@@ -96,7 +109,10 @@
             "updateError": "Failed to update profile. Please try again.",
             "passwordChangeError": "Failed to change password. Please check your current password and try again.",
             "noChanges": "No changes to save",
-            "avatarFeatureComing": "Avatar upload feature coming soon!"
+            "avatarFeatureComing": "Avatar upload feature coming soon!",
+            "registrationSuccess": "Registration successful! Welcome to ProjectVoice!",
+            "registrationError": "Registration failed. Please try again.",
+            "loginError": "Login failed. Please check your credentials and try again."
         },
         "appearance": {
             "title": "Appearance",
@@ -434,5 +450,95 @@
             }
         },
         "message": "Join our community, share ideas and enjoy the freedom of voice communication. Let's create great connections together!"
+    },
+    "userProfile": {
+        "title": "User Profile",
+        "tabs": {
+            "overview": "Overview",
+            "activity": "Activity",
+            "servers": "Servers",
+            "friends": "Friends"
+        },
+        "status": {
+            "online": "Online",
+            "idle": "Idle",
+            "dnd": "Do Not Disturb",
+            "invisible": "Invisible",
+            "offline": "Offline"
+        },
+        "roles": {
+            "admin": "Administrator",
+            "moderator": "Moderator",
+            "member": "Member"
+        },
+        "about": {
+            "title": "About",
+            "onlineMessage": "This user is currently online and available for communication.",
+            "offlineMessage": "This user is currently offline or invisible."
+        },
+        "accountInfo": {
+            "title": "Account Information",
+            "email": "Email",
+            "memberSince": "Member Since",
+            "accountStatus": "Account Status",
+            "active": "Active",
+            "inactive": "Inactive",
+            "unknown": "Unknown"
+        },
+        "blockedAccount": {
+            "title": "Blocked Account",
+            "message": "This account has been blocked by administration.",
+            "reason": "Reason",
+            "blockedAt": "Blocked At",
+            "blockedBy": "Blocked By"
+        },
+        "activity": {
+            "title": "User Activity",
+            "subtitle": "Recent activity and statistics",
+            "stats": {
+                "title": "Activity Statistics",
+                "description": "Detailed statistics about user activity will be available soon."
+            },
+            "gaming": {
+                "title": "Gaming Activity",
+                "description": "Information about games and gaming sessions will be displayed here."
+            },
+            "music": {
+                "title": "Music Activity",
+                "description": "Currently playing music and listening history will be shown here."
+            }
+        },
+        "servers": {
+            "title": "Joined Servers",
+            "subtitle": "Servers where this user is a member",
+            "home": {
+                "title": "Home Server",
+                "description": "Personal server and main community hub."
+            },
+            "community": {
+                "title": "Community Servers",
+                "description": "Various community and interest-based servers."
+            },
+            "gaming": {
+                "title": "Gaming Servers",
+                "description": "Servers dedicated to specific games and gaming communities."
+            }
+        },
+        "friends": {
+            "title": "Friends & Connections",
+            "subtitle": "Friends list and mutual connections",
+            "stats": {
+                "friends": "Friends",
+                "mutual": "Mutual",
+                "servers": "Servers"
+            },
+            "placeholder": "Friends list will be available in future updates."
+        },
+        "actions": {
+            "sendMessage": "Send Message",
+            "addFriend": "Add Friend",
+            "blockUser": "Block User",
+            "editProfile": "Edit Profile"
+        }
     }
 }

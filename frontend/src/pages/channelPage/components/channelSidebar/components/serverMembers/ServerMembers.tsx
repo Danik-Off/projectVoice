@@ -3,6 +3,8 @@ import { observer } from 'mobx-react';
 import { useTranslation } from 'react-i18next';
 import { authStore } from '../../../../../../store/authStore';
 import { ServerMember } from '../../../../../../types/server';
+import { useUserProfile } from '../../../../../../components/UserProfileProvider';
+import ClickableAvatar from '../../../../../../components/ClickableAvatar';
 import './ServerMembers.scss';
 
 interface ServerMembersProps {
@@ -17,6 +19,7 @@ const ServerMembers: React.FC<ServerMembersProps> = observer(({
     onRemoveMember 
 }) => {
     const { t } = useTranslation();
+    const { openProfile } = useUserProfile();
     console.log('ServerMembers - received members:', members);
     const [expandedRoles, setExpandedRoles] = useState<{ [key: string]: boolean }>({});
 
@@ -84,16 +87,36 @@ const ServerMembers: React.FC<ServerMembersProps> = observer(({
                                 {roleMembers.map(member => (
                                     <div key={member.id} className="member-item">
                                         <div className="member-info">
-                                            <div className="member-avatar">
-                                                {member.user?.profilePicture ? (
-                                                    <img 
-                                                        src={member.user.profilePicture} 
-                                                        alt={member.user.username}
-                                                    />
-                                                ) : (
-                                                    <span>{member.user?.username?.charAt(0).toUpperCase() || 'U'}</span>
-                                                )}
-                                            </div>
+                                            {member.user && (
+                                                <ClickableAvatar
+                                                    user={{
+                                                        id: member.user.id,
+                                                        username: member.user.username,
+                                                        email: `${member.user.username}@temp.com`,
+                                                        profilePicture: member.user.profilePicture,
+                                                        role: member.role,
+                                                        isActive: true,
+                                                        createdAt: new Date().toISOString(),
+                                                        status: 'online'
+                                                    }}
+                                                    size="small"
+                                                    onClick={() => {
+                                                        if (member.user) {
+                                                            openProfile({
+                                                                id: member.user.id,
+                                                                username: member.user.username,
+                                                                email: `${member.user.username}@temp.com`,
+                                                                profilePicture: member.user.profilePicture,
+                                                                role: member.role,
+                                                                isActive: true,
+                                                                createdAt: new Date().toISOString(),
+                                                                status: 'online'
+                                                            }, false);
+                                                        }
+                                                    }}
+                                                    className="member-avatar"
+                                                />
+                                            )}
                                             <span className="member-name">
                                                 {member.user?.username || 'Unknown User'}
                                             </span>

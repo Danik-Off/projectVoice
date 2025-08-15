@@ -3,6 +3,8 @@ import { observer } from 'mobx-react';
 import { Message } from '../../../../types/message';
 import { messageStore } from '../../../../store/messageStore';
 import { authStore } from '../../../../store/authStore';
+import { useUserProfile } from '../../../../components/UserProfileProvider';
+import ClickableAvatar from '../../../../components/ClickableAvatar';
 import './MessageItem.scss';
 
 interface MessageItemProps {
@@ -18,6 +20,7 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
     const editInputRef = useRef<HTMLTextAreaElement>(null);
     const messageRef = useRef<HTMLDivElement>(null);
     const actionsTimeoutRef = useRef<NodeJS.Timeout>();
+    const { openProfile } = useUserProfile();
 
     const currentUser = authStore.user;
     const canEdit = messageStore.canEditMessage(message);
@@ -124,14 +127,7 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
         }
     };
 
-    const getInitials = (username: string) => {
-        return username
-            .split(' ')
-            .map(name => name.charAt(0))
-            .join('')
-            .toUpperCase()
-            .slice(0, 2);
-    };
+
 
     const getStatusIcon = () => {
         if (message.isDeleted) return '🗑️';
@@ -156,14 +152,35 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            {isFirstInGroup && (
-                <div className="message-avatar">
-                    {message.user?.avatar ? (
-                        <img src={message.user.avatar} alt={message.user.username} />
-                    ) : (
-                        <span>{getInitials(message.user?.username || 'U')}</span>
-                    )}
-                </div>
+            {isFirstInGroup && message.user && (
+                <ClickableAvatar
+                    user={{
+                        id: message.user.id || 0,
+                        username: message.user.username || 'Unknown',
+                        email: `${message.user.username || 'unknown'}@temp.com`,
+                        profilePicture: message.user.avatar,
+                        role: 'member',
+                        isActive: true,
+                        createdAt: new Date().toISOString(),
+                        status: 'online'
+                    }}
+                    size="medium"
+                    onClick={() => {
+                        if (message.user) {
+                            openProfile({
+                                id: message.user.id || 0,
+                                username: message.user.username || 'Unknown',
+                                email: `${message.user.username || 'unknown'}@temp.com`,
+                                profilePicture: message.user.avatar,
+                                role: 'member',
+                                isActive: true,
+                                createdAt: new Date().toISOString(),
+                                status: 'online'
+                            }, false);
+                        }
+                    }}
+                    className="message-avatar"
+                />
             )}
 
             <div className="message-content">

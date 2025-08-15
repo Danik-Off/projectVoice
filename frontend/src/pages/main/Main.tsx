@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ServerSidebar from './components/serverSlidebar/ServerSidebar';
 import ServerCreateModal from './components/serverSlidebar/serverCreateModal/ServerCreateModal';
 import VoiceControls from '../channelPage/components/channelSidebar/components/voiceControls/VoiceControls';
+import { UserProfileProvider } from '../../components/UserProfileProvider';
 import voiceRoomStore from '../../store/roomStore';
 import audioSettingsStore from '../../store/AudioSettingsStore';
 
@@ -35,17 +36,19 @@ const Layout = observer(() => {
 
 
     return (
-        <div className={`main-page ${shouldShowVoiceControls ? 'with-voice-controls' : ''}`} onClick={initMedia}>
-            {shouldShowVoiceControls && <VoiceControls />}
-            <ServerSidebar onOpenModal={() => setModalOpen(true)} />
-            <div className="content-page">
-                <div className="content-wrapper">
-                    <Outlet />
+        <UserProfileProvider>
+            <div className={`main-page ${shouldShowVoiceControls ? 'with-voice-controls' : ''}`} onClick={initMedia}>
+                {shouldShowVoiceControls && <VoiceControls />}
+                <ServerSidebar onOpenModal={() => setModalOpen(true)} />
+                <div className="content-page">
+                    <div className="content-wrapper">
+                        <Outlet />
+                    </div>
                 </div>
-            </div>
 
-            <ServerCreateModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
-        </div>
+                <ServerCreateModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+            </div>
+        </UserProfileProvider>
     );
 });
 

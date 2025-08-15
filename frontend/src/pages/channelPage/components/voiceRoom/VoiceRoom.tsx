@@ -2,8 +2,11 @@ import React from 'react';
 import './VoiceRoom.css'; // стили для оформления комнаты
 import voiceRoomStore from '../../../../store/roomStore';
 import { observer } from 'mobx-react';
+import { useUserProfile } from '../../../../components/UserProfileProvider';
+import ClickableAvatar from '../../../../components/ClickableAvatar';
 
 const VoiceRoom: React.FC = observer(() => {
+    const { openProfile } = useUserProfile();
     // const users = [
     //     { id: '1', name: 'Alice', isSpeaking: false },
     //     { id: '2', name: 'Bob', isSpeaking: true },
@@ -23,17 +26,36 @@ const VoiceRoom: React.FC = observer(() => {
                             user.isSpeaking ? 'speaking' : ''
                         }`}
                     >
-                        <div className="user-avatar">
-                            {user.userData?.profilePicture ? (
-                                <img 
-                                    src={user.userData.profilePicture} 
-                                    alt={user.userData.username}
-                                    style={{ width: '100%', height: '100%', borderRadius: '50%' }}
-                                />
-                            ) : (
-                                <span>{user.userData?.username?.charAt(0).toUpperCase() || 'U'}</span>
-                            )}
-                        </div>
+                                            {user.userData && (
+                        <ClickableAvatar
+                            user={{
+                                id: user.userData.id,
+                                username: user.userData.username,
+                                email: `${user.userData.username}@temp.com`,
+                                profilePicture: user.userData.profilePicture,
+                                role: user.userData.role,
+                                isActive: true,
+                                createdAt: new Date().toISOString(),
+                                status: 'online'
+                            }}
+                            size="medium"
+                            onClick={() => {
+                                if (user.userData) {
+                                    openProfile({
+                                        id: user.userData.id,
+                                        username: user.userData.username,
+                                        email: `${user.userData.username}@temp.com`,
+                                        profilePicture: user.userData.profilePicture,
+                                        role: user.userData.role,
+                                        isActive: true,
+                                        createdAt: new Date().toISOString(),
+                                        status: 'online'
+                                    }, false);
+                                }
+                            }}
+                            className="user-avatar"
+                        />
+                    )}
                         <div className="user-name">
                             {user.userData?.username || 'Unknown User'}
                         </div>

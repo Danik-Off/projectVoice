@@ -50,19 +50,29 @@ class AuthStore {
 
             this.isAuthenticated = true;
             this.loading = false;
+            
             // Перенаправление после успешного входа
-            window.location.href = redirect || '/'; // Используем redirect или '/'
+            if (redirect) {
+                window.location.href = redirect;
+            } else {
+                window.location.href = '/';
+            }
         } catch (error) {
             this.loading = false;
             if (error instanceof Error) {
                 // Обрабатываем как экземпляр Error
                 console.error('Login failed', error.message);
-                const errorAnswer = JSON.parse(error.message);
-                notificationStore.addNotification(errorAnswer.error, 'error');
+                try {
+                    const errorAnswer = JSON.parse(error.message);
+                    notificationStore.addNotification(errorAnswer.error, 'error');
+                } catch {
+                    notificationStore.addNotification(error.message, 'error');
+                }
             } else {
                 console.error('Login failed with unknown error', error);
                 notificationStore.addNotification('неизвестная ошибка', 'error');
             }
+            throw error; // Пробрасываем ошибку для обработки в компоненте
         }
     }
 
@@ -90,7 +100,8 @@ class AuthStore {
         try {
             this.loading = true;
             const data = await authService.register(username, email, password);
-            // После регистрации получаем информацию о пользователе
+            
+            // После успешной регистрации получаем информацию о пользователе
             const userData = await authService.getMe();
             this.user = userData;
             this.token = data.token;
@@ -100,11 +111,17 @@ class AuthStore {
 
             this.isAuthenticated = true;
             this.loading = false;
+            
             // Перенаправление после успешной регистрации
-            window.location.href = redirect || '/'; // Используем redirect или '/'
+            if (redirect) {
+                window.location.href = redirect;
+            } else {
+                window.location.href = '/';
+            }
         } catch (error) {
             this.loading = false;
             console.error('Registration failed', error);
+            throw error; // Пробрасываем ошибку для обработки в компоненте
         }
     }
 
