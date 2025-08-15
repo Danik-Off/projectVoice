@@ -7,11 +7,7 @@
     background: var(--background-primary);
     position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    // Адаптация когда активны voice controls
-    .with-voice-controls & {
-        height: calc(100% - 72px); // Учитываем высоту VoiceControls
-    }
+    overflow: hidden; // Запрещаем скролл на уровне контейнера
 }
 
 .channel-header {

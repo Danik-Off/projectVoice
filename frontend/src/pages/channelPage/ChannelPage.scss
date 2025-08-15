@@ -22,12 +22,17 @@
 
     // Состояние с VoiceControls
     &.with-voice-controls {
+        height: calc(100vh - 80px); // Ограничиваем высоту строго
         .channel-content {
-            padding-bottom: 72px; // Высота VoiceControls
+            height: calc(100vh - 80px); // Ограничиваем высоту строго
+            max-height: calc(100vh - 80px);
+            overflow: hidden; // Запрещаем скролл
         }
         
         .channel-sidebar {
-            padding-bottom: 72px; // Добавляем отступ снизу для сайдбара
+            height: calc(100vh - 80px);
+            max-height: calc(100vh - 80px);
+            overflow: hidden;
         }
     }
 
@@ -67,21 +72,11 @@
 // Адаптация для мобильных устройств
 @media (max-width: 768px) {
     .channel-page {
-        flex-direction: column;
-
-        .channel-content {
-            height: calc(100vh - 60px); // Учитываем высоту мобильного сайдбара
-        }
-
         &.with-voice-controls {
             .channel-content {
-                height: calc(100vh - 60px - 72px); // Учитываем VoiceControls
-                padding-bottom: 0; // Убираем дублирование отступа
-            }
-            
-            .channel-sidebar {
-                height: calc(100vh - 60px - 72px); // Адаптируем сайдбар для мобильных
-                padding-bottom: 0;
+                height: calc(100vh - 80px);
+                max-height: calc(100vh - 80px);
+                overflow: hidden;
             }
         }
     }

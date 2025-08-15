@@ -3,7 +3,7 @@
 .voice-controls {
     position: fixed;
     bottom: 0;
-    left: 80px; // Отступ для server sidebar (80px стандартная ширина)
+    left: $servers-panel-width; // Начинаем от серверной панели
     right: 0;
     z-index: 1000;
     background: linear-gradient(135deg, $primary-bg 0%, $secondary-bg 100%);
@@ -11,7 +11,7 @@
     box-shadow: $shadow-heavy;
     backdrop-filter: blur(10px);
     transition: all $animation-duration $animation-timing;
-    height: 72px; // Фиксированная высота для правильного позиционирования
+    height: $voice-panel-height;
 
     // Основная панель
     &__main-panel {
@@ -20,7 +20,7 @@
         justify-content: space-between;
         padding: 12px 24px;
         gap: 20px;
-        min-height: 72px;
+        min-height: $voice-panel-height;
     }
 
     // Информация о канале
@@ -355,7 +355,7 @@
 
     // Адаптация для мобильных устройств
     @media (max-width: 768px) {
-        left: 0; // Убираем отступ для мобильных
+        left: 0; // На мобильных на всю ширину
 
         &__main-panel {
             padding: $spacing-sm $spacing-md;

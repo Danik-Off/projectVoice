@@ -223,10 +223,12 @@
     },
     "channelsPage": {
         "channelList": {
-            "textTitle": "Текстовые комнаты",
-            "voiceTitle": "Голосовые комнаты",
-            "createBtn": "Создать комнату",
-            "cancelBtn": "Отмена"
+            "textTitle": "Текстовые каналы",
+            "voiceTitle": "Голосовые каналы",
+            "createBtn": "Создать канал",
+            "cancelBtn": "Отмена",
+            "noTextChannels": "Нет текстовых каналов",
+            "noVoiceChannels": "Нет голосовых каналов"
         }
     },
     "serverSettings": {

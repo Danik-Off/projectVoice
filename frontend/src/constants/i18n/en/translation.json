@@ -220,6 +220,16 @@
             }
         }
     },
+    "channelsPage": {
+        "channelList": {
+            "textTitle": "Text Channels",
+            "voiceTitle": "Voice Channels",
+            "createBtn": "Create Channel",
+            "cancelBtn": "Cancel",
+            "noTextChannels": "No text channels",
+            "noVoiceChannels": "No voice channels"
+        }
+    },
     "serverSettings": {
         "title": "Server Settings",
         "backToServer": "← Back to Server",
