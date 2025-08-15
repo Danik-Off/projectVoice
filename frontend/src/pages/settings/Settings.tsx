@@ -11,7 +11,7 @@ import {
     AboutSettings,
     SettingsTab
 } from './components';
-import AudioSettings from './components/audioSettings/audioSettings';
+import AudioSettings from './components/audioSettings/AudioSettings';
 
 const Settings = observer(() => {
     const [activeTab, setActiveTab] = useState<SettingsTab>('general');
