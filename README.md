@@ -9,7 +9,7 @@
 [![MobX](https://img.shields.io/badge/MobX-6.x-orange.svg)](https://mobx.js.org/)
 
 **Автор:** Ovchinnikov Danila  
-**Версия:** 1.0.0  
+**Версия:** 0.0.1  
 **Лицензия:** MIT License  
 
 ---
