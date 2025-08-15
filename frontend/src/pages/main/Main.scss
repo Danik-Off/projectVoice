@@ -26,6 +26,14 @@
     overflow: auto;
     display: flex;
     position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Адаптация для VoiceControls
+.with-voice-controls .content-wrapper {
+    height: calc(100vh - 80px); // Уменьшаем высоту на высоту VoiceControls
+    max-height: calc(100vh - 80px);
+    overflow: hidden; // Убираем скролл
 }
 
 
@@ -45,10 +53,18 @@
 
 // Адаптивность
 @media (max-width: 768px) {
-    // Адаптивность теперь управляется динамически через JavaScript
+    .with-voice-controls .content-wrapper {
+        height: calc(100vh - 80px); // Аналогично для мобильных
+        max-height: calc(100vh - 80px);
+        overflow: hidden;
+    }
 }
 
 @media (max-width: 480px) {
-    // Адаптивность теперь управляется динамически через JavaScript
+    .with-voice-controls .content-wrapper {
+        height: calc(100vh - 80px);
+        max-height: calc(100vh - 80px);
+        overflow: hidden;
+    }
 }
 

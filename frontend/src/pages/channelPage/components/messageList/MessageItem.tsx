@@ -13,8 +13,11 @@ interface MessageItemProps {
 const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGroup = false }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(message.content);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [showActions, setShowActions] = useState(false);
     const editInputRef = useRef<HTMLTextAreaElement>(null);
     const messageRef = useRef<HTMLDivElement>(null);
+    const actionsTimeoutRef = useRef<NodeJS.Timeout>();
 
     const currentUser = authStore.user;
     const canEdit = messageStore.canEditMessage(message);
@@ -28,9 +31,18 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
         }
     }, [isEditing]);
 
+    useEffect(() => {
+        return () => {
+            if (actionsTimeoutRef.current) {
+                clearTimeout(actionsTimeoutRef.current);
+            }
+        };
+    }, []);
+
     const handleEdit = () => {
         setIsEditing(true);
         setEditContent(message.content);
+        setShowActions(false);
     };
 
     const handleSave = async () => {
@@ -40,6 +52,7 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
                 setIsEditing(false);
             } catch (error) {
                 console.error('Ошибка обновления сообщения:', error);
+                // Здесь можно добавить уведомление об ошибке
             }
         } else {
             setIsEditing(false);
@@ -53,10 +66,13 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
 
     const handleDelete = async () => {
         if (window.confirm('Вы уверены, что хотите удалить это сообщение?')) {
+            setIsDeleting(true);
             try {
                 await messageStore.deleteMessage(message.id);
             } catch (error) {
                 console.error('Ошибка удаления сообщения:', error);
+                setIsDeleting(false);
+                // Здесь можно добавить уведомление об ошибке
             }
         }
     };
@@ -70,12 +86,42 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
         }
     };
 
+    const handleMouseEnter = () => {
+        if (actionsTimeoutRef.current) {
+            clearTimeout(actionsTimeoutRef.current);
+        }
+        setShowActions(true);
+    };
+
+    const handleMouseLeave = () => {
+        actionsTimeoutRef.current = setTimeout(() => {
+            setShowActions(false);
+        }, 300);
+    };
+
     const formatTime = (dateString: string) => {
         const date = new Date(dateString);
-        return date.toLocaleTimeString('ru-RU', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
+        const now = new Date();
+        const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
+        
+        if (diffInHours < 24) {
+            return date.toLocaleTimeString('ru-RU', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        } else if (diffInHours < 168) { // 7 дней
+            return date.toLocaleDateString('ru-RU', { 
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric'
+            });
+        } else {
+            return date.toLocaleDateString('ru-RU', { 
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
     };
 
     const getInitials = (username: string) => {
@@ -87,9 +133,15 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
             .slice(0, 2);
     };
 
+    const getStatusIcon = () => {
+        if (message.isDeleted) return '🗑️';
+        if (message.isEdited) return '✏️';
+        return '✓';
+    };
+
     if (message.isDeleted) {
         return (
-            <div className="message-item system-message">
+            <div className="message-item system-message deleted-message">
                 <div className="message-content">
                     <em>Сообщение было удалено</em>
                 </div>
@@ -99,15 +151,17 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
 
     return (
         <div 
-            className={`message-item ${isOwnMessage ? 'own-message' : ''}`}
+            className={`message-item ${isOwnMessage ? 'own-message' : ''} ${isDeleting ? 'deleting' : ''}`}
             ref={messageRef}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             {isFirstInGroup && (
                 <div className="message-avatar">
                     {message.user?.avatar ? (
                         <img src={message.user.avatar} alt={message.user.username} />
                     ) : (
-                        getInitials(message.user?.username || 'U')
+                        <span>{getInitials(message.user?.username || 'U')}</span>
                     )}
                 </div>
             )}
@@ -120,10 +174,12 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
                         </span>
                         <span className="message-time">
                             {formatTime(message.createdAt)}
-                            {message.isEdited && <span> (изменено)</span>}
+                            {message.isEdited && <span className="edit-indicator"> (изменено)</span>}
                         </span>
                         <div className="message-status">
-                            <span className="status-icon delivered">✓</span>
+                            <span className={`status-icon ${message.isDeleted ? 'deleted' : 'delivered'}`}>
+                                {getStatusIcon()}
+                            </span>
                         </div>
                     </div>
                 )}
@@ -138,10 +194,11 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
                             placeholder="Введите сообщение..."
                             rows={Math.min(editContent.split('\n').length + 1, 10)}
                             className="message-textarea"
+                            maxLength={2000}
                         />
                         <div className="edit-actions">
-                            <button className="save-btn" onClick={handleSave}>
-                                Сохранить
+                            <button className="save-btn" onClick={handleSave} disabled={!editContent.trim()}>
+                                {editContent.trim() ? 'Сохранить' : 'Отмена'}
                             </button>
                             <button className="cancel-btn" onClick={handleCancel}>
                                 Отмена
@@ -162,17 +219,18 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
                 {!isFirstInGroup && (
                     <div className="message-time">
                         {formatTime(message.createdAt)}
-                        {message.isEdited && <span> (изменено)</span>}
+                        {message.isEdited && <span className="edit-indicator"> (изменено)</span>}
                     </div>
                 )}
 
-                {(canEdit || canDelete) && (
+                {(canEdit || canDelete) && showActions && (
                     <div className="message-actions">
                         {canEdit && (
                             <button 
                                 className="action-btn edit-btn"
                                 onClick={handleEdit}
                                 title="Редактировать"
+                                disabled={isEditing}
                             >
                                 ✏️
                             </button>
@@ -182,8 +240,9 @@ const MessageItem: React.FC<MessageItemProps> = observer(({ message, isFirstInGr
                                 className="action-btn delete-btn"
                                 onClick={handleDelete}
                                 title="Удалить"
+                                disabled={isDeleting}
                             >
-                                🗑️
+                                {isDeleting ? '⏳' : '🗑️'}
                             </button>
                         )}
                     </div>

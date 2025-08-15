@@ -5,10 +5,10 @@
     border-top: 1px solid var(--border-color);
     background: var(--background-primary);
     backdrop-filter: blur(10px);
-    position: sticky;
     bottom: 0;
     z-index: 5;
     flex-shrink: 0;
+
 }
 
 .message-input-wrapper {

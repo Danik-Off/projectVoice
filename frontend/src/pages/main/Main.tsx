@@ -11,7 +11,6 @@ import './Main.scss'; // Main CSS for layout
 
 const Layout = observer(() => {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [voiceControlsHeight, setVoiceControlsHeight] = useState(0);
     const [wasConnectedToVoice, setWasConnectedToVoice] = useState(false);
     
     const initMedia = () => {
@@ -33,60 +32,13 @@ const Layout = observer(() => {
     // VoiceControls остается видимым, если пользователь был подключен к голосовому каналу
     const shouldShowVoiceControls = isConnectedToVoice || wasConnectedToVoice;
 
-    // Обновляем высоту VoiceControls при изменении состояния
-    useEffect(() => {
-        const updateVoiceControlsHeight = () => {
-            const voiceControls = document.querySelector('.voice-controls');
-            if (voiceControls) {
-                const height = voiceControls.getBoundingClientRect().height;
-                setVoiceControlsHeight(height);
-            }
-        };
 
-        // Обновляем высоту сразу
-        updateVoiceControlsHeight();
-        
-        // Используем ResizeObserver для отслеживания изменений размера
-        const resizeObserver = new ResizeObserver(() => {
-            updateVoiceControlsHeight();
-        });
-
-        const voiceControls = document.querySelector('.voice-controls');
-        if (voiceControls) {
-            resizeObserver.observe(voiceControls);
-        }
-
-        // Также наблюдаем за изменениями в DOM
-        const mutationObserver = new MutationObserver(() => {
-            setTimeout(updateVoiceControlsHeight, 50); // Небольшая задержка для анимаций
-        });
-
-        if (voiceControls) {
-            mutationObserver.observe(voiceControls, { 
-                childList: true, 
-                subtree: true, 
-                attributes: true,
-                attributeFilter: ['class']
-            });
-        }
-
-        return () => {
-            resizeObserver.disconnect();
-            mutationObserver.disconnect();
-        };
-    }, [shouldShowVoiceControls]);
 
     return (
-        <div className="main-page" onClick={initMedia}>
+        <div className={`main-page ${shouldShowVoiceControls ? 'with-voice-controls' : ''}`} onClick={initMedia}>
             {shouldShowVoiceControls && <VoiceControls />}
             <ServerSidebar onOpenModal={() => setModalOpen(true)} />
-            <div 
-                className="content-page"
-                style={{ 
-                    transition: 'margin-bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    marginBottom: shouldShowVoiceControls ? `${voiceControlsHeight}px` : '0px'
-                }}
-            >
+            <div className="content-page">
                 <div className="content-wrapper">
                     <Outlet />
                 </div>

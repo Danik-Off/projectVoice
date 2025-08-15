@@ -1,7 +1,7 @@
 @import '../../../../../../styles/main.scss';
 
 .voice-controls {
-    position: fixed;
+    position: fixed; // Возвращаем fixed позиционирование
     bottom: 0;
     left: $servers-panel-width; // Начинаем от серверной панели
     right: 0;
@@ -355,8 +355,6 @@
 
     // Адаптация для мобильных устройств
     @media (max-width: 768px) {
-        left: 0; // На мобильных на всю ширину
-
         &__main-panel {
             padding: $spacing-sm $spacing-md;
             gap: $spacing-sm;
