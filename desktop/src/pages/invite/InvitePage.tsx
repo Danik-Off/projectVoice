@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 import { authStore } from '../../store/authStore';
-import { API_URL } from '../../configs/apiConfig';
+import { inviteService } from '../../services/inviteService';
 import notificationStore from '../../store/NotificationStore';
 import './InvitePage.scss';
 
@@ -11,9 +11,9 @@ interface InviteData {
     id: number;
     token: string;
     serverId: number;
-    maxUses: number;
+    maxUses?: number;
     uses: number;
-    expiresAt: string;
+    expiresAt?: string;
 }
 
 interface ServerData {
@@ -38,25 +38,24 @@ const InvitePage: React.FC = observer(() => {
     console.log('InvitePage rendered with token:', token);
 
     const fetchInviteData = useCallback(async () => {
-        console.log('Fetching invite data for token:', token);
-        console.log('API URL:', `${API_URL}/invite/invite/${token}`);
+        console.log('🎯 InvitePage: Получение данных приглашения для токена:', token);
         
         try {
-            const response = await fetch(`${API_URL}/invite/invite/${token}`);
-            console.log('Response status:', response.status);
+            // Используем сервис для получения данных приглашения
+            const inviteData = await inviteService.getInvite(token!);
+            console.log('🎯 InvitePage: Данные приглашения получены:', inviteData);
             
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.log('Error data:', errorData);
-                throw new Error(errorData.error || t('invitePage.error'));
-            }
-
-            const data = await response.json();
-            console.log('Invite data received:', data);
-            setInviteData(data.invite);
-            setServerData(data.server);
+            setInviteData(inviteData);
+            
+            // Получаем данные сервера отдельно (пока что используем заглушку)
+            // TODO: Добавить метод в inviteService для получения данных сервера
+            setServerData({
+                id: inviteData.serverId,
+                name: `Server ${inviteData.serverId}`, // Временная заглушка
+                description: 'Описание сервера'
+            });
         } catch (err) {
-            console.error('Error fetching invite data:', err);
+            console.error('🎯 InvitePage: Ошибка получения данных приглашения:', err);
             const errorMessage = err instanceof Error ? err.message : t('invitePage.error');
             setError(errorMessage);
             notificationStore.addNotification(errorMessage, 'error');
@@ -80,22 +79,18 @@ const InvitePage: React.FC = observer(() => {
 
         setAccepting(true);
         try {
-            const response = await fetch(`${API_URL}/invite/invite/${token}/accept`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authStore.getToken()}`,
-                },
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || t('notifications.inviteAcceptError'));
-            }
-
+            console.log('🎯 InvitePage: Принятие приглашения с токеном:', token);
+            
+            // Используем сервис для принятия приглашения
+            await inviteService.acceptInvite(token!);
+            
+            console.log('🎯 InvitePage: Приглашение принято успешно');
+            
             // Перенаправляем на сервер
             navigate(`/server/${serverData?.id}`);
+            notificationStore.addNotification('Вы успешно присоединились к серверу!', 'success');
         } catch (err) {
+            console.error('🎯 InvitePage: Ошибка принятия приглашения:', err);
             const errorMessage = err instanceof Error ? err.message : t('notifications.inviteAcceptError');
             setError(errorMessage);
             notificationStore.addNotification(errorMessage, 'error');

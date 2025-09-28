@@ -45,79 +45,101 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
 
-            label {
-                font-size: 14px;
+            .form-label {
+                font-size: $font-size-md;
                 font-weight: 600;
                 color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-xs);
+
+                .required {
+                    color: var(--secondary-accent);
+                    font-size: $font-size-lg;
+                }
             }
 
-            input, textarea {
-                padding: 12px 16px;
-                background: var(--background-tertiary);
-                border: 1px solid var(--border-color);
-                border-radius: 8px;
+            .input, .textArea {
+                padding: var(--spacing-sm) var(--spacing-md);
+                background: var(--tertiary-bg);
+                border: 1px solid var(--border-primary);
+                border-radius: var(--border-radius-small);
                 color: var(--text-primary);
-                font-size: 14px;
-                transition: all 0.2s ease;
+                font-size: $font-size-md;
+                transition: all $animation-duration-fast $animation-timing;
 
                 &:focus {
                     outline: none;
-                    border-color: var(--accent-color);
-                    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.1);
+                    border-color: var(--primary-accent);
+                    box-shadow: 0 0 0 $focus-ring-width rgba(100, 181, 246, 0.1);
                 }
 
                 &::placeholder {
                     color: var(--text-muted);
                 }
+
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
             }
 
             .description {
-                height: 100px;
-                resize: none !important;
+                min-height: 80px;
+                resize: vertical;
                 font-family: inherit;
+                line-height: 1.5;
             }
         }
 
         .modal-buttons {
             display: flex;
-            gap: 12px;
-            margin-top: 8px;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
 
             .button {
                 flex: 1;
-                padding: 12px 24px;
+                padding: var(--spacing-sm) var(--spacing-lg);
                 border: none;
-                border-radius: 8px;
-                font-size: 14px;
+                border-radius: var(--border-radius-small);
+                font-size: $font-size-md;
                 font-weight: 600;
                 cursor: pointer;
-                transition: all 0.2s ease;
+                transition: all $animation-duration-fast $animation-timing;
+                height: $button-height;
 
-                &.primary {
-                    background: var(--accent-color);
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    transform: none !important;
+                }
+
+                &--primary {
+                    background: var(--primary-accent);
                     color: white;
 
-                    &:hover {
-                        background: #4752c4;
-                        transform: translateY(-1px);
-                        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+                    &:hover:not(:disabled) {
+                        background: var(--primary-accent-hover);
+                        transform: translateY(-$hover-lift);
+                        box-shadow: var(--shadow-medium);
                     }
 
-                    &:active {
+                    &:active:not(:disabled) {
                         transform: translateY(0);
                     }
                 }
 
-                &.secondary {
-                    background: var(--background-tertiary);
+                &--secondary {
+                    background: var(--tertiary-bg);
                     color: var(--text-primary);
-                    border: 1px solid var(--border-color);
+                    border: 1px solid var(--border-primary);
 
-                    &:hover {
-                        background: var(--background-primary);
-                        border-color: var(--accent-color);
+                    &:hover:not(:disabled) {
+                        background: var(--primary-bg);
+                        border-color: var(--primary-accent);
                     }
                 }
             }

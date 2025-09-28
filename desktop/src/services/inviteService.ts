@@ -30,8 +30,8 @@ class InviteService {
     }
 
     async acceptInvite(token: string): Promise<void> {
-        await apiClient(`/invite/invite/${token}`, { 
-            method: 'GET' 
+        await apiClient(`/invite/invite/${token}/accept`, { 
+            method: 'POST' 
         });
     }
 

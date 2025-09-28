@@ -6,6 +6,7 @@ import './ServerHeader.scss';
 import serverStore from '../../../../../../store/serverStore';
 import { authStore } from '../../../../../../store/authStore';
 import notificationStore from '../../../../../../store/NotificationStore';
+import { inviteService } from '../../../../../../services/inviteService';
 
 const ServerHeader: React.FC = observer(() => {
     const currentServer = serverStore.currentServer;
@@ -13,25 +14,8 @@ const ServerHeader: React.FC = observer(() => {
     const [showInviteModal, setShowInviteModal] = useState(false);
     const [inviteLink, setInviteLink] = useState('');
     const [isCreatingInvite, setIsCreatingInvite] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
-
-    // Закрытие dropdown при клике вне его
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setShowDropdown(false);
-            }
-        };
-
-        if (showDropdown) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-        
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [showDropdown]);
 
     // Позиционирование tooltip
     useEffect(() => {
@@ -49,33 +33,27 @@ const ServerHeader: React.FC = observer(() => {
         
         setIsCreatingInvite(true);
         try {
-            const response = await fetch(`/api/invites`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authStore.getToken()}`
-                },
-                body: JSON.stringify({ serverId: currentServer.id })
-            });
+            console.log('🎯 ServerHeader: Создание приглашения для сервера', currentServer.id);
             
-            if (response.ok) {
-                const invite = await response.json();
-                setInviteLink(`${window.location.origin}/invite/${invite.token}`);
-                setShowInviteModal(true);
-                notificationStore.addNotification('Приглашение создано успешно', 'success');
-            } else {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Ошибка создания приглашения');
-            }
+            // Используем правильный сервис для создания приглашения
+            const invite = await inviteService.createInvite(currentServer.id);
+            
+            console.log('🎯 ServerHeader: Приглашение создано', invite);
+            
+            // Формируем ссылку для приглашения
+            const inviteUrl = `${window.location.origin}/invite/${invite.token}`;
+            setInviteLink(inviteUrl);
+            setShowInviteModal(true);
+            
+            notificationStore.addNotification('Приглашение создано успешно', 'success');
         } catch (error) {
-            console.error('Ошибка создания приглашения:', error);
+            console.error('🎯 ServerHeader: Ошибка создания приглашения:', error);
             notificationStore.addNotification(
                 error instanceof Error ? error.message : 'Ошибка создания приглашения', 
                 'error'
             );
         } finally {
             setIsCreatingInvite(false);
-            setShowDropdown(false);
         }
     };
 
@@ -83,7 +61,6 @@ const ServerHeader: React.FC = observer(() => {
         if (currentServer) {
             navigate(`/server/${currentServer.id}/settings`);
         }
-        setShowDropdown(false);
     };
 
     const copyInviteLink = async () => {
@@ -102,10 +79,6 @@ const ServerHeader: React.FC = observer(() => {
     const closeInviteModal = () => {
         setShowInviteModal(false);
         setInviteLink('');
-    };
-
-    const toggleDropdown = () => {
-        setShowDropdown(!showDropdown);
     };
 
     // Проверяем права пользователя на сервере
@@ -206,55 +179,14 @@ const ServerHeader: React.FC = observer(() => {
                         </button>
                     )}
                     
-                    {(canEditServer || canInvite) && (
-                        <div className="dropdown-container" ref={dropdownRef}>
-                            <button 
-                                className={`action-button menu-button ${showDropdown ? 'active' : ''}`}
-                                onClick={toggleDropdown}
-                                title="Дополнительные действия"
-                            >
-                                <span className="menu-icon">⋯</span>
-                            </button>
-                            
-                            {showDropdown && (
-                                <div className="dropdown-menu">
-                                    <div className="dropdown-header">
-                                        <span className="dropdown-title">Действия сервера</span>
-                                    </div>
-                                    
-                                    {canInvite && (
-                                        <button 
-                                            className="dropdown-item"
-                                            onClick={handleShare}
-                                            disabled={isCreatingInvite}
-                                        >
-                                            <span className="dropdown-icon">📤</span>
-                                            <span className="dropdown-text">Пригласить участников</span>
-                                        </button>
-                                    )}
-                                    
-                                    {canEditServer && (
-                                        <button 
-                                            className="dropdown-item"
-                                            onClick={handleEditServer}
-                                        >
-                                            <span className="dropdown-icon">⚙️</span>
-                                            <span className="dropdown-text">Настройки сервера</span>
-                                        </button>
-                                    )}
-                                    
-                                    <div className="dropdown-divider"></div>
-                                    
-                                    <button 
-                                        className="dropdown-item close-item"
-                                        onClick={() => setShowDropdown(false)}
-                                    >
-                                        <span className="dropdown-icon">❌</span>
-                                        <span className="dropdown-text">Закрыть</span>
-                                    </button>
-                                </div>
-                            )}
-                        </div>
+                    {canEditServer && (
+                        <button 
+                            className="action-button settings-button"
+                            onClick={handleEditServer}
+                            title="Настройки сервера"
+                        >
+                            <span className="settings-icon">⚙️</span>
+                        </button>
                     )}
                 </div>
             </div>

@@ -1,0 +1,51 @@
+@import '../../../../styles/main.scss';
+
+.settings-sidebar {
+    width: $sidebar-width;
+    padding-right: var(--spacing-xl);
+    
+    .settings-nav {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--border-radius-small);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all $animation-duration-fast $animation-timing;
+            text-align: left;
+            width: 100%;
+            
+            &:hover {
+                background: var(--primary-bg);
+                border-color: var(--primary-accent);
+                transform: translateX($hover-translate);
+            }
+            
+            &.active {
+                background: var(--gradient-primary);
+                color: white;
+                border-color: var(--primary-accent);
+                box-shadow: var(--shadow-medium);
+            }
+            
+            .tab-icon {
+                font-size: $font-size-lg;
+                min-width: $icon-size-large;
+                text-align: center;
+            }
+            
+            .tab-label {
+                font-weight: 500;
+                font-size: $font-size-md;
+            }
+        }
+    }
+}
