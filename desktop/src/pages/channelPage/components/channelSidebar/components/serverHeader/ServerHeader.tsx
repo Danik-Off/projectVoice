@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './ServerHeader.scss';
 import serverStore from '../../../../../../store/serverStore';
 import { authStore } from '../../../../../../store/authStore';
+import notificationStore from '../../../../../../store/NotificationStore';
 
 const ServerHeader: React.FC = observer(() => {
     const currentServer = serverStore.currentServer;
@@ -25,9 +26,12 @@ const ServerHeader: React.FC = observer(() => {
             }
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
+        if (showDropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [showDropdown]);
 
     // Позиционирование tooltip
     useEffect(() => {
@@ -58,13 +62,21 @@ const ServerHeader: React.FC = observer(() => {
                 const invite = await response.json();
                 setInviteLink(`${window.location.origin}/invite/${invite.token}`);
                 setShowInviteModal(true);
+                notificationStore.addNotification('Приглашение создано успешно', 'success');
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Ошибка создания приглашения');
             }
         } catch (error) {
             console.error('Ошибка создания приглашения:', error);
+            notificationStore.addNotification(
+                error instanceof Error ? error.message : 'Ошибка создания приглашения', 
+                'error'
+            );
         } finally {
             setIsCreatingInvite(false);
+            setShowDropdown(false);
         }
-        setShowDropdown(false);
     };
 
     const handleEditServer = () => {
@@ -79,9 +91,11 @@ const ServerHeader: React.FC = observer(() => {
             await navigator.clipboard.writeText(inviteLink);
             // Показываем уведомление об успешном копировании
             setShowTooltip(true);
+            notificationStore.addNotification('Ссылка скопирована в буфер обмена', 'success');
             setTimeout(() => setShowTooltip(false), 2000);
         } catch (error) {
             console.error('Ошибка копирования:', error);
+            notificationStore.addNotification('Ошибка копирования ссылки', 'error');
         }
     };
 

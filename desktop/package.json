@@ -31,7 +31,7 @@
     },
       "scripts": {
     "start": "node scripts/generate-version.js && react-scripts start",
-    "build": "node scripts/generate-version.js && react-scripts build",
+    "build": "node scripts/generate-version.js && react-scripts build && node scripts/optimize-build.js && node scripts/post-build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
@@ -39,7 +39,15 @@
     "electron": "electron .",
     "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-pack": "npm run build && electron-builder",
-    "preelectron-pack": "npm run build"
+    "electron-pack-win": "npm run build && electron-builder --win",
+    "electron-pack-mac": "npm run build && electron-builder --mac",
+    "electron-pack-linux": "npm run build && electron-builder --linux",
+    "electron-pack-all": "npm run build && electron-builder --win --mac --linux",
+    "preelectron-pack": "npm run build",
+    "preelectron-pack-win": "npm run build",
+    "preelectron-pack-mac": "npm run build",
+    "preelectron-pack-linux": "npm run build",
+    "preelectron-pack-all": "npm run build"
   },
     "eslintConfig": {
         "extends": [
@@ -66,6 +74,7 @@
         "@typescript-eslint/parser": "^5.62.0",
         "concurrently": "^8.2.2",
         "css-loader": "^7.1.2",
+        "express": "^4.18.2",
         "electron": "^28.0.0",
         "electron-builder": "^24.6.4",
         "eslint": "^8.57.1",
@@ -77,27 +86,125 @@
         "style-loader": "^4.0.0",
         "wait-on": "^7.2.0"
     },
-    "main": "electron/main.js",
+    "main": "build/electron.js",
     "homepage": "./",
     "build": {
         "appId": "com.projectvoice.desktop",
         "productName": "ProjectVoice Desktop",
+        "compression": "maximum",
+        "removePackageScripts": true,
+        "asar": true,
         "directories": {
             "output": "dist-electron"
         },
         "files": [
             "build/**/*",
-            "electron/**/*",
-            "node_modules/**/*"
+            "!build/static/js/*.map",
+            "!build/static/css/*.map",
+            "!build/static/media/**/*.svg",
+            "!build/static/media/**/*.png",
+            "!build/static/media/**/*.jpg",
+            "!build/static/media/**/*.jpeg",
+            "!build/static/media/**/*.gif",
+            "!build/static/media/**/*.webp",
+            "!node_modules/**/*",
+            "!src/**/*",
+            "!public/**/*",
+            "!scripts/**/*",
+            "!electron/**/*",
+            "!*.md",
+            "!*.json",
+            "!*.js",
+            "!*.yml",
+            "!*.yaml"
+        ],
+        "asarUnpack": [
+            "build/static/media/**/*"
+        ],
+        "includeSubNodeModules": false,
+        "extraResources": [
+            {
+                "from": "build/static",
+                "to": "static"
+            }
         ],
         "mac": {
-            "category": "public.app-category.social-networking"
+            "category": "public.app-category.social-networking",
+            "target": [
+                {
+                    "target": "dmg",
+                    "arch": ["x64", "arm64"]
+                },
+                {
+                    "target": "zip",
+                    "arch": ["x64", "arm64"]
+                }
+            ],
+            "icon": "build/logo512.png",
+            "hardenedRuntime": true,
+            "gatekeeperAssess": false,
+            "entitlements": "build/entitlements.mac.plist",
+            "entitlementsInherit": "build/entitlements.mac.plist"
         },
         "win": {
-            "target": "nsis"
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": ["x64"]
+                },
+                {
+                    "target": "portable",
+                    "arch": ["x64"]
+                }
+            ],
+            "icon": "build/logo512.png",
+            "requestedExecutionLevel": "asInvoker",
+            "compression": "maximum"
         },
         "linux": {
-            "target": "AppImage"
+            "target": [
+                {
+                    "target": "AppImage",
+                    "arch": ["x64"]
+                },
+                {
+                    "target": "deb",
+                    "arch": ["x64"]
+                },
+                {
+                    "target": "rpm",
+                    "arch": ["x64"]
+                }
+            ],
+            "icon": "build/logo512.png",
+            "category": "Network"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "installerIcon": "build/favicon.ico",
+            "uninstallerIcon": "build/favicon.ico",
+            "installerHeaderIcon": "build/favicon.ico",
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "ProjectVoice Desktop"
+        },
+        "dmg": {
+            "title": "ProjectVoice Desktop",
+            "icon": "build/logo512.png",
+            "background": "build/logo512.png",
+            "contents": [
+                {
+                    "x": 130,
+                    "y": 220
+                },
+                {
+                    "x": 410,
+                    "y": 220,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
         }
     }
 }

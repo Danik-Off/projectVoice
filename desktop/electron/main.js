@@ -1,8 +1,83 @@
 const { app, BrowserWindow, Menu, shell } = require('electron');
 const path = require('path');
+const http = require('http');
+const fs = require('fs');
+const url = require('url');
 const isDev = process.env.NODE_ENV === 'development';
 
 let mainWindow;
+let server;
+
+// Функция для запуска легкого HTTP сервера в продакшн
+function startLocalServer() {
+  if (!isDev && !server) {
+    const buildPath = path.join(__dirname, '..');
+    
+    server = http.createServer((req, res) => {
+      const parsedUrl = url.parse(req.url);
+      let pathname = parsedUrl.pathname;
+      
+      // Если запрос к корню, возвращаем index.html
+      if (pathname === '/') {
+        pathname = '/index.html';
+      }
+      
+      // Если запрос к файлу, который не существует, возвращаем index.html для SPA
+      const filePath = path.join(buildPath, pathname);
+      
+      fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) {
+          // Файл не найден, возвращаем index.html для клиентской маршрутизации
+          const indexPath = path.join(buildPath, 'index.html');
+          fs.readFile(indexPath, (err, data) => {
+            if (err) {
+              res.writeHead(404);
+              res.end('File not found');
+            } else {
+              res.writeHead(200, { 'Content-Type': 'text/html' });
+              res.end(data);
+            }
+          });
+        } else {
+          // Файл найден, отдаем его
+          const ext = path.extname(filePath);
+          const contentType = getContentType(ext);
+          
+          fs.readFile(filePath, (err, data) => {
+            if (err) {
+              res.writeHead(500);
+              res.end('Server error');
+            } else {
+              res.writeHead(200, { 'Content-Type': contentType });
+              res.end(data);
+            }
+          });
+        }
+      });
+    });
+    
+    // Запускаем сервер на порту 3001
+    server.listen(3001, () => {
+      console.log('Local server started on port 3001');
+    });
+  }
+}
+
+// Функция для определения типа контента
+function getContentType(ext) {
+  const types = {
+    '.html': 'text/html',
+    '.js': 'application/javascript',
+    '.css': 'text/css',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+    '.ico': 'image/x-icon'
+  };
+  return types[ext] || 'application/octet-stream';
+}
 
 function createWindow() {
   // Создаем главное окно приложения
@@ -18,15 +93,20 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       webSecurity: true
     },
-    icon: path.join(__dirname, '../build/favicon.ico'),
+    icon: path.join(__dirname, '../favicon.ico'),
     titleBarStyle: 'default',
     show: false
   });
 
+  // Запускаем локальный сервер в продакшн режиме
+  if (!isDev) {
+    startLocalServer();
+  }
+
   // Загружаем приложение
   const startUrl = isDev 
-    ? 'http://localhost:3000' 
-    : `file://${path.join(__dirname, '../build/index.html')}`;
+    ? 'http://localhost:3000/auth' 
+    : 'http://localhost:3001/auth';
   
   mainWindow.loadURL(startUrl);
 
@@ -55,7 +135,9 @@ function createWindow() {
   mainWindow.webContents.on('will-navigate', (event, navigationUrl) => {
     const parsedUrl = new URL(navigationUrl);
     
-    if (parsedUrl.origin !== 'http://localhost:3000' && parsedUrl.origin !== 'file://') {
+    // Разрешаем навигацию только в пределах localhost:3000 и localhost:3001
+    if (parsedUrl.origin !== 'http://localhost:3000' && 
+        parsedUrl.origin !== 'http://localhost:3001') {
       event.preventDefault();
       shell.openExternal(navigationUrl);
     }
@@ -64,81 +146,8 @@ function createWindow() {
 
 // Создаем меню приложения
 function createMenu() {
-  const template = [
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'New Server',
-          accelerator: 'CmdOrCtrl+N',
-          click: () => {
-            mainWindow.webContents.send('menu-new-server');
-          }
-        },
-        {
-          label: 'Join Server',
-          accelerator: 'CmdOrCtrl+J',
-          click: () => {
-            mainWindow.webContents.send('menu-join-server');
-          }
-        },
-        { type: 'separator' },
-        {
-          label: 'Quit',
-          accelerator: process.platform === 'darwin' ? 'Cmd+Q' : 'Ctrl+Q',
-          click: () => {
-            app.quit();
-          }
-        }
-      ]
-    },
-    {
-      label: 'Edit',
-      submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' }
-      ]
-    },
-    {
-      label: 'View',
-      submenu: [
-        { role: 'reload' },
-        { role: 'forceReload' },
-        { role: 'toggleDevTools' },
-        { type: 'separator' },
-        { role: 'resetZoom' },
-        { role: 'zoomIn' },
-        { role: 'zoomOut' },
-        { type: 'separator' },
-        { role: 'togglefullscreen' }
-      ]
-    },
-    {
-      label: 'Window',
-      submenu: [
-        { role: 'minimize' },
-        { role: 'close' }
-      ]
-    },
-    {
-      label: 'Help',
-      submenu: [
-        {
-          label: 'About ProjectVoice',
-          click: () => {
-            mainWindow.webContents.send('menu-about');
-          }
-        }
-      ]
-    }
-  ];
-
-  const menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
+  // Устанавливаем пустое меню для скрытия строки меню
+  Menu.setApplicationMenu(null);
 }
 
 // События приложения
@@ -155,6 +164,10 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    // Закрываем сервер при закрытии приложения
+    if (server) {
+      server.close();
+    }
     app.quit();
   }
 });
