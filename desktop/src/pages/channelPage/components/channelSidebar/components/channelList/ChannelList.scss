@@ -1,0 +1,351 @@
+@import '../../../../../../styles/main.scss';
+
+.channel-list {
+    background: $primary-bg;
+    color: $text-primary;
+    padding: $spacing-md;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    transition: all $animation-duration $animation-timing;
+    
+    // Адаптация когда активны voice controls
+    .with-voice-controls & {
+        padding-bottom: $spacing-lg; // Дополнительный отступ снизу
+    }
+
+    // Кнопка создания канала
+    .button {
+        width: 100%;
+        padding: $spacing-xs $spacing-sm;
+        background: $button-primary-bg;
+        color: $primary-accent;
+        border: $separator-height solid $border-primary;
+        border-radius: $border-radius-small;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all $animation-duration $animation-timing;
+        margin-bottom: $spacing-sm;
+
+        &:hover {
+            background: $button-primary-hover;
+            transform: translateY(-1px);
+            box-shadow: $shadow-light;
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    // Заголовки секций
+    h2 {
+        font-size: 14px;
+        margin: $spacing-sm 0 $spacing-xs 0;
+        font-weight: 700;
+        color: $text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+        padding-left: $spacing-md;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: $spacing-xs;
+            height: $spacing-xs;
+            background: $primary-accent;
+            border-radius: $border-radius-round;
+            opacity: 0.7;
+        }
+
+        &:first-of-type::before {
+            background: $tertiary-accent;
+        }
+
+        &:last-of-type::before {
+            background: $warning-accent;
+        }
+    }
+
+    // Список каналов
+    .channel-list__items {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 $spacing-md 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    // Элемент канала
+    .channel-list__item {
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-small;
+        transition: all $animation-duration $animation-timing;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: $text-secondary;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: $spacing-xs;
+        min-height: 32px;
+
+        &::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: $text-secondary;
+            border-radius: $border-radius-round;
+            opacity: 0.5;
+            transition: all $animation-duration $animation-timing;
+        }
+
+        &:hover {
+            background: $hover-bg;
+            color: $text-primary;
+            transform: translateX(2px);
+
+            &::before {
+                background: $primary-accent;
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        &:active {
+            transform: translateX(1px);
+            background: $active-bg;
+        }
+
+        // Активный канал
+        &.active {
+            background: $button-primary-bg;
+            color: $primary-accent;
+            font-weight: 600;
+
+            &::before {
+                background: $primary-accent;
+                opacity: 1;
+                transform: scale(1.5);
+            }
+
+            &:hover {
+                background: $button-primary-hover;
+            }
+        }
+
+        // Голосовые каналы
+        &.voice-channel {
+            &::before {
+                background: $warning-accent;
+            }
+
+            &:hover::before {
+                background: $warning-accent;
+            }
+
+            &.active::before {
+                background: $warning-accent;
+            }
+        }
+
+        // Текстовые каналы
+        &.text-channel {
+            &::before {
+                background: $tertiary-accent;
+            }
+
+            &:hover::before {
+                background: $tertiary-accent;
+            }
+
+            &.active::before {
+                background: $tertiary-accent;
+            }
+        }
+
+        // Название канала
+        .channel-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+        }
+
+        // Индикатор подключения
+        .connection-indicator {
+            font-size: 12px;
+            opacity: 0.8;
+            animation: channelPulse 2s ease-in-out infinite;
+        }
+    }
+
+    // Пустое состояние
+    .channel-list__empty {
+        color: $text-muted;
+        font-size: 13px;
+        font-style: italic;
+        text-align: center;
+        padding: $spacing-md;
+        opacity: 0.7;
+        margin-bottom: $spacing-md;
+    }
+
+    // Контейнер спиннера
+    .spinner-conteiner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: $spacing-2xl;
+        color: $text-secondary;
+    }
+
+    // Кастомный скроллбар
+    &::-webkit-scrollbar {
+        width: $scrollbar-width;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $scrollbar-track;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $scrollbar-thumb;
+        border-radius: $border-radius-small;
+
+        &:hover {
+            background: $scrollbar-thumb-hover;
+        }
+    }
+}
+
+// Адаптивность для мобильных устройств
+@media (max-width: 768px) {
+    .channel-list {
+        padding: $spacing-sm;
+        gap: $spacing-xs;
+
+        .button {
+            padding: $spacing-xs;
+            font-size: 12px;
+            margin-bottom: $spacing-xs;
+        }
+
+        h2 {
+            font-size: 12px;
+            margin: $spacing-xs 0 2px 0;
+            padding-left: $spacing-sm;
+
+            &::before {
+                width: 3px;
+                height: 3px;
+            }
+        }
+
+        .channel-list__items {
+            margin: 0 0 $spacing-sm 0;
+            gap: 1px;
+        }
+
+        .channel-list__item {
+            padding: $spacing-xs;
+            font-size: 13px;
+            min-height: 28px;
+            gap: $spacing-xs;
+
+            &::before {
+                width: 3px;
+                height: 3px;
+            }
+        }
+
+        .channel-list__empty {
+            font-size: 12px;
+            padding: $spacing-sm;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .channel-list {
+        padding: $spacing-xs;
+
+        .button {
+            font-size: 11px;
+            padding: 6px;
+        }
+
+        h2 {
+            font-size: 11px;
+            padding-left: $spacing-xs;
+        }
+
+        .channel-list__item {
+            padding: 6px;
+            font-size: 12px;
+            min-height: 26px;
+        }
+
+        .channel-list__empty {
+            font-size: 11px;
+            padding: $spacing-xs;
+        }
+    }
+}
+
+// Анимации
+@keyframes channelPulse {
+    0%, 100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+// Состояние загрузки каналов
+.channel-list.loading {
+    .channel-list__item::before {
+        animation: channelPulse 1.5s ease-in-out infinite;
+    }
+}
+
+// Эффекты для активных голосовых каналов
+.channel-list__item.voice-channel.connected {
+    background: $voice-active;
+    color: $warning-accent;
+    
+    &::before {
+        background: $warning-accent;
+        animation: channelPulse 2s ease-in-out infinite;
+    }
+}
+
+// Эффекты для уведомлений
+.channel-list__item.has-notifications {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        right: $spacing-xs;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        background: $error-color;
+        border-radius: $border-radius-round;
+        animation: channelPulse 1s ease-in-out infinite;
+    }
+}

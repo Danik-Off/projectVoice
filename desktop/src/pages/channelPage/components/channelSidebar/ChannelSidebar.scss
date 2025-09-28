@@ -1,0 +1,65 @@
+.channel-sidebar {
+    width: 280px;
+    background: var(--background-secondary);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.channel-sidebar > div:first-child {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.no-server-message {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+    background: var(--background-tertiary);
+    margin: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+// Темная тема
+[data-theme="dark"] {
+    .channel-sidebar {
+        background: var(--background-secondary);
+        border-right-color: var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .no-server-message {
+        background: var(--background-tertiary);
+        border-color: var(--border-color);
+        color: var(--text-muted);
+    }
+}
+
+// Светлая тема
+[data-theme="light"] {
+    .channel-sidebar {
+        background: #f8f9fa;
+        border-right-color: #e9ecef;
+        color: var(--text-primary);
+    }
+
+    .no-server-message {
+        background: #ffffff;
+        border-color: #e9ecef;
+        color: var(--text-muted);
+    }
+}

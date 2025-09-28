@@ -1,0 +1,57 @@
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    font-size: 14px;
+
+    .volume-slider {
+        width: 120px; // Размер ползунка, как в Discord
+        height: 8px;  // Тонкий ползунок
+        background: #202225; // Темный фон ползунка
+        border-radius: 5px;
+        outline: none;
+        -webkit-appearance: none;
+        transition: background 0.2s ease-in-out;
+
+        &::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #7289da; // Синий цвет (цвет Discord)
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s ease-in-out;
+        }
+
+        &::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #7289da; // Синий цвет (цвет Discord)
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s ease-in-out;
+        }
+
+        &:focus {
+            background: #3a3d42; // Темнее фон при фокусе
+        }
+
+        &:hover::-webkit-slider-thumb {
+            background: #5a6eae; // Немного темнее при наведении
+        }
+
+        &:hover::-moz-range-thumb {
+            background: #5a6eae; // Немного темнее при наведении
+        }
+    }
+
+    .volume-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #b9bbbe; // Светло-серый цвет, как в интерфейсе Discord
+        min-width: 30px;
+        text-align: center;
+    }
+}

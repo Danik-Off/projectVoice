@@ -1,0 +1,225 @@
+// VoiceVerse - темная тема
+// Создаем CSS переменные для темной темы
+:root.theme-dark {
+    // Spacing
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 64px;
+    --spacing-4xl: 80px;
+    
+    // Border radius
+    --border-radius: 12px;
+    --border-radius-small: 8px;
+    --border-radius-medium: 12px;
+    --border-radius-large: 20px;
+    --border-radius-xl: 28px;
+    --border-radius-round: 50%;
+    
+    // Основные цвета фона
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2a2a2a;
+    --tertiary-bg: #333333;
+    --accent-bg: #404040;
+    
+    // Акцентные цвета
+    --primary-accent: #64b5f6;
+    --primary-accent-hover: #4a9ee6;
+    --secondary-accent: #e57373;
+    --secondary-accent-hover: #d32f2f;
+    --tertiary-accent: #81c784;
+    --success-accent: #81c784;
+    --warning-accent: #ffb74d;
+    
+    // Градиенты
+    --gradient-primary: linear-gradient(135deg, #5c6bc0 0%, #7986cb 100%);
+    --gradient-secondary: linear-gradient(135deg, #ba68c8 0%, #ce93d8 100%);
+    --gradient-accent: linear-gradient(135deg, #4fc3f7 0%, #81d4fa 100%);
+    --gradient-dark: linear-gradient(135deg, #424242 0%, #616161 100%);
+    
+    // Тени и свечения
+    --shadow-light: 0 2px 10px rgba(100, 181, 246, 0.08);
+    --shadow-medium: 0 4px 20px rgba(100, 181, 246, 0.12);
+    --shadow-heavy: 0 8px 40px rgba(100, 181, 246, 0.15);
+    --glow-primary: 0 0 20px rgba(100, 181, 246, 0.2);
+    --glow-secondary: 0 0 30px rgba(229, 115, 115, 0.2);
+    
+    // Цвета текста
+    --text-primary: #e0e0e0;
+    --text-secondary: rgba(224, 224, 224, 0.8);
+    --text-muted: rgba(224, 224, 224, 0.6);
+    --text-disabled: rgba(224, 224, 224, 0.4);
+    
+    // Цвета границ
+    --border-primary: rgba(100, 181, 246, 0.08);
+    --border-secondary: rgba(100, 181, 246, 0.15);
+    --border-accent: rgba(100, 181, 246, 0.2);
+    
+    // Цвета состояний
+    --hover-bg: rgba(100, 181, 246, 0.08);
+    --active-bg: rgba(100, 181, 246, 0.15);
+    --focus-bg: rgba(100, 181, 246, 0.12);
+    
+    // Цвета уведомлений
+    --info-color: #64b5f6;
+    --warning-color: #ffb74d;
+    --error-color: #e57373;
+    --error-color-hover: #d32f2f;
+    --success-color: #81c784;
+    
+    // Цвета для кнопок
+    --button-primary-bg: rgba(100, 181, 246, 0.08);
+    --button-primary-hover: rgba(100, 181, 246, 0.15);
+    --button-secondary-bg: rgba(186, 104, 200, 0.08);
+    --button-secondary-hover: rgba(186, 104, 200, 0.15);
+    
+    // Цвета для полей ввода
+    --input-bg: #333333;
+    --input-border: rgba(100, 181, 246, 0.08);
+    --input-focus-border: #64b5f6;
+    --input-focus-shadow: 0 4px 20px rgba(100, 181, 246, 0.12);
+    
+    // Цвета для модальных окон
+    --modal-overlay: rgba(0, 0, 0, 0.7);
+    --modal-bg: #2a2a2a;
+    --modal-border: rgba(100, 181, 246, 0.08);
+    
+    // Цвета для тултипов
+    --tooltip-bg: #333333;
+    --tooltip-text: #e0e0e0;
+    --tooltip-border: rgba(100, 181, 246, 0.08);
+    
+    // Цвета для уведомлений
+    --notification-success: rgba(129, 199, 132, 0.15);
+    --notification-warning: rgba(255, 183, 77, 0.15);
+    --notification-error: rgba(229, 115, 115, 0.15);
+    --notification-info: rgba(100, 181, 246, 0.15);
+    
+    // Цвета для голосового чата
+    --voice-active: rgba(100, 181, 246, 0.2);
+    --voice-muted: rgba(229, 115, 115, 0.15);
+    --voice-deafened: rgba(255, 183, 77, 0.15);
+    
+    // Цвета для серверов
+    --server-online: rgba(129, 199, 132, 0.4);
+    --server-offline: rgba(224, 224, 224, 0.3);
+    --server-separator: rgba(100, 181, 246, 0.2);
+    
+    // Цвета для аватаров
+    --avatar-glow: rgba(100, 181, 246, 0.15);
+    --avatar-status-online: #81c784;
+    --avatar-status-offline: rgba(224, 224, 224, 0.3);
+    
+    // Цвета для сообщений
+    --message-bg-hover: rgba(100, 181, 246, 0.03);
+    --message-reaction-bg: rgba(100, 181, 246, 0.08);
+    --message-reaction-hover: rgba(100, 181, 246, 0.15);
+    
+    // Цвета для скроллбаров
+    --scrollbar-track: rgba(100, 181, 246, 0.03);
+    --scrollbar-thumb: rgba(100, 181, 246, 0.2);
+    --scrollbar-thumb-hover: rgba(100, 181, 246, 0.3);
+    
+    // Цвета для анимаций
+    --ripple-color: rgba(100, 181, 246, 0.2);
+    --pulse-color: rgba(100, 181, 246, 0.15);
+    --shimmer-color: rgba(100, 181, 246, 0.03);
+}
+
+// Обратная совместимость с SCSS переменными
+$primary-bg: var(--primary-bg);
+$secondary-bg: var(--secondary-bg);
+$tertiary-bg: var(--tertiary-bg);
+$accent-bg: var(--accent-bg);
+
+$primary-accent: var(--primary-accent);
+$secondary-accent: var(--secondary-accent);
+$tertiary-accent: var(--tertiary-accent);
+$success-accent: var(--success-accent);
+$warning-accent: var(--warning-accent);
+
+$gradient-primary: var(--gradient-primary);
+$gradient-secondary: var(--gradient-secondary);
+$gradient-accent: var(--gradient-accent);
+$gradient-dark: var(--gradient-dark);
+
+$shadow-light: var(--shadow-light);
+$shadow-medium: var(--shadow-medium);
+$shadow-heavy: var(--shadow-heavy);
+$glow-primary: var(--glow-primary);
+$glow-secondary: var(--glow-secondary);
+
+$text-primary: var(--text-primary);
+$text-secondary: var(--text-secondary);
+$text-muted: var(--text-muted);
+$text-disabled: var(--text-disabled);
+
+$border-primary: var(--border-primary);
+$border-secondary: var(--border-secondary);
+$border-accent: var(--border-accent);
+
+$hover-bg: var(--hover-bg);
+$active-bg: var(--active-bg);
+$focus-bg: var(--focus-bg);
+
+$info-color: var(--info-color);
+$warning-color: var(--warning-color);
+$error-color: var(--error-color);
+$success-color: var(--success-color);
+
+$button-primary-bg: var(--button-primary-bg);
+$button-primary-hover: var(--button-primary-hover);
+$button-secondary-bg: var(--button-secondary-bg);
+$button-secondary-hover: var(--button-secondary-hover);
+
+$input-bg: var(--input-bg);
+$input-border: var(--input-border);
+$input-focus-border: var(--input-focus-border);
+$input-focus-shadow: var(--input-focus-shadow);
+
+$modal-overlay: var(--modal-overlay);
+$modal-bg: var(--modal-bg);
+$modal-border: var(--modal-border);
+
+$tooltip-bg: var(--tooltip-bg);
+$tooltip-text: var(--tooltip-text);
+$tooltip-border: var(--tooltip-border);
+
+$notification-success: var(--notification-success);
+$notification-warning: var(--notification-warning);
+$notification-error: var(--notification-error);
+$notification-info: var(--notification-info);
+
+$voice-active: var(--voice-active);
+$voice-muted: var(--voice-muted);
+$voice-deafened: var(--voice-deafened);
+
+$server-online: var(--server-online);
+$server-offline: var(--server-offline);
+$server-separator: var(--server-separator);
+
+$avatar-glow: var(--avatar-glow);
+$avatar-status-online: var(--avatar-status-online);
+$avatar-status-offline: var(--avatar-status-offline);
+
+$message-bg-hover: var(--message-bg-hover);
+$message-reaction-bg: var(--message-reaction-bg);
+$message-reaction-hover: var(--message-reaction-hover);
+
+$scrollbar-track: var(--scrollbar-track);
+$scrollbar-thumb: var(--scrollbar-thumb);
+$scrollbar-thumb-hover: var(--scrollbar-thumb-hover);
+
+$ripple-color: var(--ripple-color);
+$pulse-color: var(--pulse-color);
+$shimmer-color: var(--shimmer-color);
+
+// Дополнительные переменные для обратной совместимости
+$input-text: var(--text-primary);
+$placeholder-text: var(--text-disabled);
+$button-hover-bg: var(--button-primary-hover);
+$primary-text: var(--text-primary);
+$secondary-text: var(--text-secondary);

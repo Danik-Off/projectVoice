@@ -1,0 +1,338 @@
+// VoiceVerse - Утилитарные классы
+
+// Утилиты для отступов
+@each $size, $value in (
+    'xs': $spacing-xs,
+    'sm': $spacing-sm,
+    'md': $spacing-md,
+    'lg': $spacing-lg,
+    'xl': $spacing-xl,
+    '2xl': $spacing-2xl,
+    '3xl': $spacing-3xl
+) {
+    .p-#{$size} { padding: $value; }
+    .pt-#{$size} { padding-top: $value; }
+    .pr-#{$size} { padding-right: $value; }
+    .pb-#{$size} { padding-bottom: $value; }
+    .pl-#{$size} { padding-left: $value; }
+    .px-#{$size} { padding-left: $value; padding-right: $value; }
+    .py-#{$size} { padding-top: $value; padding-bottom: $value; }
+    
+    .m-#{$size} { margin: $value; }
+    .mt-#{$size} { margin-top: $value; }
+    .mr-#{$size} { margin-right: $value; }
+    .mb-#{$size} { margin-bottom: $value; }
+    .ml-#{$size} { margin-left: $value; }
+    .mx-#{$size} { margin-left: $value; margin-right: $value; }
+    .my-#{$size} { margin-top: $value; margin-bottom: $value; }
+}
+
+// Утилиты для размеров
+@each $size, $value in (
+    'xs': $spacing-xs,
+    'sm': $spacing-sm,
+    'md': $spacing-md,
+    'lg': $spacing-lg,
+    'xl': $spacing-xl
+) {
+    .w-#{$size} { width: $value; }
+    .h-#{$size} { height: $value; }
+    .min-w-#{$size} { min-width: $value; }
+    .min-h-#{$size} { min-height: $value; }
+    .max-w-#{$size} { max-width: $value; }
+    .max-h-#{$size} { max-height: $value; }
+}
+
+// Утилиты для цветов фона
+.bg-primary { background-color: var(--primary-bg); }
+.bg-secondary { background-color: var(--secondary-bg); }
+.bg-tertiary { background-color: var(--tertiary-bg); }
+.bg-accent { background-color: var(--accent-bg); }
+
+.bg-gradient-primary { background: var(--gradient-primary); }
+.bg-gradient-secondary { background: var(--gradient-secondary); }
+.bg-gradient-accent { background: var(--gradient-accent); }
+.bg-gradient-dark { background: var(--gradient-dark); }
+
+// Утилиты для цветов текста
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-disabled { color: var(--text-disabled); }
+
+.text-accent { color: var(--primary-accent); }
+.text-success { color: var(--success-accent); }
+.text-warning { color: var(--warning-accent); }
+.text-error { color: var(--error-color); }
+
+// Утилиты для границ
+.border-primary { border-color: var(--border-primary); }
+.border-secondary { border-color: var(--border-secondary); }
+.border-accent { border-color: var(--border-accent); }
+
+.border-1 { border-width: 1px; }
+.border-2 { border-width: 2px; }
+.border-4 { border-width: 4px; }
+
+.border-solid { border-style: solid; }
+.border-dashed { border-style: dashed; }
+.border-dotted { border-style: dotted; }
+
+// Утилиты для радиусов
+.rounded { border-radius: $border-radius; }
+.rounded-sm { border-radius: $border-radius-small; }
+.rounded-lg { border-radius: $border-radius-large; }
+.rounded-xl { border-radius: $border-radius-xl; }
+.rounded-full { border-radius: $border-radius-round; }
+
+// Утилиты для теней
+.shadow-light { box-shadow: var(--shadow-light); }
+.shadow-medium { box-shadow: var(--shadow-medium); }
+.shadow-heavy { box-shadow: var(--shadow-heavy); }
+.shadow-glow { box-shadow: var(--glow-primary); }
+
+// Утилиты для позиционирования
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+.top-0 { top: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0 { left: 0; }
+
+// Утилиты для отображения
+.block { display: block; }
+.inline-block { display: inline-block; }
+.inline { display: inline; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+.hidden { display: none; }
+
+// Утилиты для flexbox
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
+.items-end { align-items: flex-end; }
+.items-stretch { align-items: stretch; }
+
+.justify-start { justify-content: flex-start; }
+.justify-center { justify-content: center; }
+.justify-end { justify-content: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.justify-evenly { justify-content: space-evenly; }
+
+.flex-1 { flex: 1 1 0%; }
+.flex-auto { flex: 1 1 auto; }
+.flex-initial { flex: 0 1 auto; }
+.flex-none { flex: none; }
+
+// Утилиты для размеров
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.w-screen { width: 100vw; }
+.h-screen { height: 100vh; }
+
+.w-auto { width: auto; }
+.h-auto { height: auto; }
+
+// Утилиты для overflow
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-scroll { overflow: scroll; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-auto { overflow-y: auto; }
+
+// Утилиты для курсора
+.cursor-pointer { cursor: pointer; }
+.cursor-default { cursor: default; }
+.cursor-not-allowed { cursor: not-allowed; }
+.cursor-grab { cursor: grab; }
+.cursor-grabbing { cursor: grabbing; }
+
+// Утилиты для пользовательского выбора
+.select-none { user-select: none; }
+.select-text { user-select: text; }
+.select-all { user-select: all; }
+
+// Утилиты для pointer-events
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+// Утилиты для z-index
+.z-0 { z-index: 0; }
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+.z-auto { z-index: auto; }
+
+.z-dropdown { z-index: $z-index-dropdown; }
+.z-modal { z-index: $z-index-modal; }
+.z-tooltip { z-index: $z-index-tooltip; }
+.z-notification { z-index: $z-index-notification; }
+.z-voice-panel { z-index: $z-index-voice-panel; }
+
+// Утилиты для backdrop-filter
+.backdrop-blur-sm { backdrop-filter: blur(4px); }
+.backdrop-blur { backdrop-filter: blur(8px); }
+.backdrop-blur-md { backdrop-filter: blur(12px); }
+.backdrop-blur-lg { backdrop-filter: blur(16px); }
+.backdrop-blur-xl { backdrop-filter: blur(24px); }
+
+// Утилиты для transition
+.transition { transition: all $animation-duration $animation-timing; }
+.transition-fast { transition: all $animation-duration-fast $animation-timing; }
+.transition-slow { transition: all $animation-duration-slow $animation-timing; }
+
+.transition-colors { transition: color $animation-duration $animation-timing, background-color $animation-duration $animation-timing; }
+.transition-transform { transition: transform $animation-duration $animation-timing; }
+.transition-opacity { transition: opacity $animation-duration $animation-timing; }
+.transition-shadow { transition: box-shadow $animation-duration $animation-timing; }
+
+// Утилиты для transform
+.transform { transform: translateZ(0); }
+.scale-90 { transform: scale(0.9); }
+.scale-95 { transform: scale(0.95); }
+.scale-100 { transform: scale(1); }
+.scale-105 { transform: scale(1.05); }
+.scale-110 { transform: scale(1.1); }
+
+.rotate-0 { transform: rotate(0deg); }
+.rotate-90 { transform: rotate(90deg); }
+.rotate-180 { transform: rotate(180deg); }
+.rotate-270 { transform: rotate(270deg); }
+
+.translate-x-0 { transform: translateX(0); }
+.translate-x-1 { transform: translateX($spacing-xs); }
+.translate-x-2 { transform: translateX($spacing-sm); }
+.translate-x-4 { transform: translateX($spacing-md); }
+.translate-x-8 { transform: translateX($spacing-lg); }
+
+.translate-y-0 { transform: translateY(0); }
+.translate-y-1 { transform: translateY($spacing-xs); }
+.translate-y-2 { transform: translateY($spacing-sm); }
+.translate-y-4 { transform: translateY($spacing-md); }
+.translate-y-8 { transform: translateY($spacing-lg); }
+
+// Утилиты для hover эффектов
+.hover\:scale-105:hover { transform: scale($hover-scale); }
+.hover\:scale-110:hover { transform: scale(1.1); }
+.hover\:-translate-y-1:hover { transform: translateY(-$hover-lift); }
+.hover\:-translate-y-2:hover { transform: translateY(-$spacing-sm); }
+
+.hover\:bg-secondary:hover { background-color: var(--secondary-bg); }
+.hover\:bg-tertiary:hover { background-color: var(--tertiary-bg); }
+.hover\:bg-accent:hover { background-color: var(--accent-bg); }
+
+.hover\:text-accent:hover { color: var(--primary-accent); }
+.hover\:text-primary:hover { color: var(--text-primary); }
+
+.hover\:border-accent:hover { border-color: var(--border-accent); }
+.hover\:shadow-medium:hover { box-shadow: var(--shadow-medium); }
+.hover\:shadow-glow:hover { box-shadow: var(--glow-primary); }
+
+// Утилиты для focus эффектов
+.focus\:outline-none:focus { outline: none; }
+.focus\:ring:focus { box-shadow: 0 0 0 $focus-ring-width var(--primary-accent); }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px var(--primary-accent); }
+.focus\:ring-4:focus { box-shadow: 0 0 0 4px var(--primary-accent); }
+
+// Утилиты для active эффектов
+.active\:scale-95:active { transform: scale($active-scale); }
+.active\:translate-y-1:active { transform: translateY($active-translate); }
+
+// Утилиты для disabled состояний
+.disabled\:opacity-50:disabled { opacity: 0.5; }
+.disabled\:cursor-not-allowed:disabled { cursor: not-allowed; }
+.disabled\:pointer-events-none:disabled { pointer-events: none; }
+
+// Утилиты для анимаций
+.animate-on-hover { @extend .animate-on-hover; }
+.animate-on-click { @extend .animate-on-click; }
+
+// Утилиты для скроллбаров
+.scrollbar-thin {
+    &::-webkit-scrollbar {
+        width: $scrollbar-width;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: $border-radius-round;
+        
+        &:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+    }
+}
+
+// Утилиты для градиентов
+.gradient-text {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+// Утилиты для стеклянного эффекта
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Утилиты для фокуса
+.focus-visible\:ring:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 $focus-ring-width var(--primary-accent);
+}
+
+// Утилиты для группировки
+.group:hover .group-hover\:opacity-100 {
+    opacity: 1;
+}
+
+.group:hover .group-hover\:scale-105 {
+    transform: scale($hover-scale);
+}
+
+.group:hover .group-hover\:translate-y-0 {
+    transform: translateY(0);
+}
+
+// Утилиты для responsive
+@each $breakpoint, $value in (
+    'sm': $breakpoint-mobile,
+    'md': $breakpoint-tablet,
+    'lg': $breakpoint-desktop,
+    'xl': $breakpoint-large
+) {
+    @media (min-width: $value) {
+        .#{$breakpoint}\:block { display: block; }
+        .#{$breakpoint}\:hidden { display: none; }
+        .#{$breakpoint}\:flex { display: flex; }
+        .#{$breakpoint}\:grid { display: grid; }
+        
+        .#{$breakpoint}\:flex-row { flex-direction: row; }
+        .#{$breakpoint}\:flex-col { flex-direction: column; }
+        
+        .#{$breakpoint}\:items-center { align-items: center; }
+        .#{$breakpoint}\:justify-center { justify-content: center; }
+        
+        .#{$breakpoint}\:w-full { width: 100%; }
+        .#{$breakpoint}\:h-full { height: 100%; }
+    }
+}

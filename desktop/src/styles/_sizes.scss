@@ -1,0 +1,147 @@
+// VoiceVerse - Система размеров и отступов
+// Базовые размеры для использования в компонентах
+
+// Основные отступы (spacing system)
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+$spacing-3xl: 64px;
+$spacing-4xl: 80px;
+
+// Радиусы скругления
+$border-radius: 12px;
+$border-radius-small: 8px;
+$border-radius-medium: 12px;
+$border-radius-large: 20px;
+$border-radius-xl: 28px;
+$border-radius-round: 50%;
+
+// Размеры панелей
+$sidebar-width: 280px;
+$servers-panel-width: 80px;
+$members-panel-width: 280px;
+$voice-panel-height: 80px;
+
+// Размеры компонентов
+$avatar-size: 40px;
+$avatar-size-large: 48px;
+$avatar-size-small: 32px;
+$avatar-size-mini: 24px;
+
+$button-height: 44px;
+$button-height-small: 36px;
+$button-height-large: 52px;
+$button-width: 120px;
+$button-width-small: 80px;
+$button-width-large: 160px;
+
+$input-height: 44px;
+$input-height-small: 36px;
+$input-height-large: 52px;
+
+// Размеры иконок
+$icon-size: 18px;
+$icon-size-small: 16px;
+$icon-size-large: 24px;
+$icon-size-xl: 32px;
+
+// Размеры серверов
+$server-size: 48px;
+$server-icon-size: 24px;
+$server-badge-size: 20px;
+
+// Размеры каналов
+$channel-height: 40px;
+$channel-indicator-size: 4px;
+$channel-status-size: 20px;
+
+// Размеры сообщений
+$message-padding: $spacing-md;
+$message-avatar-size: 48px;
+$message-reaction-size: 32px;
+
+// Размеры заголовков
+$header-height: 60px;
+$server-header-height: 80px;
+$chat-header-height: 60px;
+$members-header-height: 60px;
+
+// Размеры разделителей
+$separator-height: 1px;
+$separator-dot-size: 4px;
+$separator-line-height: 1px;
+
+// Размеры скроллбаров
+$scrollbar-width: 8px;
+$scrollbar-track-width: 8px;
+
+// Размеры модальных окон
+$modal-width: 500px;
+$modal-width-large: 800px;
+$modal-width-small: 400px;
+$modal-padding: $spacing-lg;
+
+// Размеры тултипов
+$tooltip-padding: $spacing-sm $spacing-md;
+$tooltip-max-width: 200px;
+
+// Размеры уведомлений
+$notification-width: 350px;
+$notification-height: 80px;
+$notification-padding: $spacing-md;
+
+// Размеры для голосового чата
+$voice-control-size: 44px;
+$voice-participant-size: 32px;
+$voice-wave-width: 2px;
+$voice-wave-height: 12px;
+
+// Размеры для анимаций
+$ripple-size: 100px;
+$pulse-size: 100%;
+$shimmer-width: 100%;
+
+// Размеры для эффектов
+$glow-size: 20px;
+$shadow-blur: 10px;
+$shadow-spread: 0px;
+
+// Размеры для адаптивности
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1200px;
+$breakpoint-large: 1440px;
+
+// Размеры для сетки
+$grid-gap: 1px;
+$grid-columns: 4;
+$grid-rows: 1;
+
+// Размеры для фокусных состояний
+$focus-ring-width: 2px;
+$focus-ring-offset: 2px;
+
+// Размеры для hover эффектов
+$hover-lift: 2px;
+$hover-scale: 1.05;
+$hover-translate: 4px;
+
+// Размеры для активных состояний
+$active-scale: 0.98;
+$active-translate: 1px;
+
+// Размеры для анимаций
+$animation-duration: 0.3s;
+$animation-duration-fast: 0.15s;
+$animation-duration-slow: 0.5s;
+$animation-timing: ease;
+
+// Размеры для z-index
+$z-index-dropdown: 1000;
+$z-index-modal: 2000;
+$z-index-tooltip: 3000;
+$z-index-notification: 4000;
+$z-index-voice-panel: 1000;

@@ -1,0 +1,24 @@
+.content {
+    flex: 1; /* Fills the remaining space */
+    background-color: #36393f; /* Dark main content background */
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Padding inside the main area */
+    overflow-y: auto; /* Scroll if content overflows */
+}
+
+.message-list {
+    max-height: 100%; /* Max height for the message area */
+    overflow-y: auto; /* Enable scrolling */
+}
+
+.message {
+    margin: 5px 0; /* Spacing between messages */
+    padding: 8px; /* Padding around message */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #40444b; /* Message background */
+}
+
+.message strong {
+    color: #7289da; /* Usernames in a distinct color */
+}

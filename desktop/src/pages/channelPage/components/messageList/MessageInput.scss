@@ -1,0 +1,290 @@
+@import '../../../../styles/main.scss';
+
+.message-input-container {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-color);
+    background: var(--background-primary);
+    backdrop-filter: blur(10px);
+    bottom: 0;
+    z-index: 5;
+    flex-shrink: 0;
+
+}
+
+.message-input-wrapper {
+    background: var(--background-secondary);
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:focus-within {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.15);
+        transform: translateY(-1px);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+}
+
+.input-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    padding: 16px 20px;
+}
+
+.message-textarea {
+    flex: 1;
+    min-height: 24px;
+    max-height: 120px;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 14px;
+    }
+
+    &:focus {
+        background: rgba(255, 255, 255, 0.02);
+    }
+}
+
+.input-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.message-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    color: var(--text-muted);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+        transform: scale(1.1);
+
+        &::before {
+            opacity: 0.1;
+        }
+    }
+
+    &.emoji-btn:hover {
+        background: rgba(255, 193, 7, 0.2);
+        color: #ffc107;
+    }
+
+    &.attachment-btn:hover {
+        background: rgba(114, 137, 218, 0.2);
+        color: #7289da;
+    }
+}
+
+.send-btn {
+    background: linear-gradient(135deg, #7289da, #5865f2);
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.3s ease;
+    }
+
+    &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #5865f2, #4752c4);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 16px rgba(114, 137, 218, 0.4);
+
+        &::before {
+            left: 100%;
+        }
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+        transform: none;
+    }
+
+    &.active {
+        background: linear-gradient(135deg, #43b581, #3ca374);
+        box-shadow: 0 4px 12px rgba(67, 181, 129, 0.3);
+
+        &:hover {
+            background: linear-gradient(135deg, #3ca374, #2d7d46);
+            box-shadow: 0 6px 16px rgba(67, 181, 129, 0.4);
+        }
+    }
+
+    svg {
+        transition: transform 0.2s ease;
+        width: 20px;
+        height: 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover svg {
+        transform: scale(1.1);
+    }
+}
+
+.input-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.character-count {
+    font-weight: 500;
+    
+    &.warning {
+        color: #f39c12;
+    }
+    
+    &.error {
+        color: #e74c3c;
+    }
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-style: italic;
+    animation: pulse 1.5s ease-in-out infinite;
+
+    &::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        animation: typing 1.4s ease-in-out infinite;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-4px);
+    }
+}
+
+// Темная тема
+[data-theme="dark"] {
+    .message-input-wrapper {
+        background: var(--background-secondary);
+        border-color: var(--border-color);
+    }
+
+    .input-footer {
+        background: rgba(255, 255, 255, 0.02);
+    }
+}
+
+// Светлая тема
+[data-theme="light"] {
+    .message-input-wrapper {
+        background: #f8f9fa;
+        border-color: #e9ecef;
+    }
+
+    .input-footer {
+        background: rgba(0, 0, 0, 0.02);
+    }
+} 

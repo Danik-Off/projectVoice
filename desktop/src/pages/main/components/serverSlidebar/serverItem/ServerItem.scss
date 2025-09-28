@@ -1,0 +1,347 @@
+@import '../../../../../styles/main';
+
+// Стили для серверов в списке (переопределяют базовые стили .server)
+.server {
+    // Базовые стили уже определены в ServerSidebar.scss
+    
+    // Стили для изображений серверов
+    .server-icon {
+        width: 100%;
+        height: 100%;
+        border-radius: $border-radius;
+        object-fit: cover;
+        transition: all $animation-duration $animation-timing;
+        position: relative;
+        z-index: 2;
+    }
+
+    // Стили для текстовых иконок (первая буква названия)
+    &:not(:has(img)) .server-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        color: inherit;
+        font-size: $icon-size;
+        font-weight: 700;
+        border-radius: $border-radius;
+        transition: all $animation-duration $animation-timing;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 2;
+        letter-spacing: 0.5px;
+    }
+
+    // Заблокированный сервер
+    &.blocked {
+        background: $error-color;
+        color: white;
+        opacity: 0.8;
+        position: relative;
+        border-color: $error-color;
+
+        &::before {
+            content: '🚫';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 12px;
+            z-index: 4;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: $border-radius-round;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid $error-color;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        &:hover {
+            transform: scale($hover-scale);
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(229, 115, 115, 0.3);
+        }
+
+        .server-icon {
+            filter: grayscale(0.5) brightness(0.7);
+        }
+
+        &:hover .server-icon {
+            filter: grayscale(0.3) brightness(0.9);
+        }
+
+        // Пульсация для заблокированных серверов
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(229, 115, 115, 0.2) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: pulse 2s ease-in-out infinite;
+            z-index: 0;
+        }
+    }
+
+    // Сервер с уведомлениями
+    &.has-notifications {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background: $secondary-accent;
+            border-radius: $border-radius-round;
+            border: 2px solid $secondary-bg;
+            animation: pulse 1.5s ease-in-out infinite;
+            z-index: 3;
+        }
+    }
+
+    // Сервер с ошибкой подключения
+    &.connection-error {
+        background: $warning-color;
+        color: white;
+        border-color: $warning-color;
+
+        &::before {
+            content: '⚠️';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 12px;
+            z-index: 4;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: $border-radius-round;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid $warning-color;
+        }
+
+        &:hover {
+            background: $warning-color;
+            transform: scale($hover-scale);
+            box-shadow: 0 0 20px rgba(255, 183, 77, 0.3);
+        }
+    }
+
+    // Сервер в режиме обслуживания
+    &.maintenance {
+        background: $tertiary-accent;
+        color: white;
+        border-color: $tertiary-accent;
+
+        &::before {
+            content: '🔧';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 12px;
+            z-index: 4;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: $border-radius-round;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid $tertiary-accent;
+            animation: rotate 2s linear infinite;
+        }
+
+        &:hover {
+            background: $tertiary-accent;
+            transform: scale($hover-scale);
+            box-shadow: 0 0 20px rgba(129, 199, 132, 0.3);
+        }
+    }
+
+    // Анимация появления
+    animation: fadeInUp 0.5s ease-out;
+}
+
+// Индикаторы состояния сервера
+.server-status-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: $border-radius-round;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    z-index: 4;
+    border: 2px solid $secondary-bg;
+    animation: fadeIn 0.3s ease-out;
+
+    &.blocked {
+        background: rgba(0, 0, 0, 0.8);
+        border-color: $error-color;
+        animation: shake 0.5s ease-in-out;
+    }
+
+    &.error {
+        background: rgba(0, 0, 0, 0.8);
+        border-color: $warning-color;
+        animation: pulse 0.5s ease-in-out;
+    }
+
+    &.maintenance {
+        background: rgba(0, 0, 0, 0.8);
+        border-color: $tertiary-accent;
+        animation: rotate 2s linear infinite;
+    }
+}
+
+// Счетчик уведомлений
+.notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    background: $secondary-accent;
+    color: white;
+    border-radius: $border-radius-round;
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    border: 2px solid $secondary-bg;
+    animation: bounce 0.6s ease-in-out;
+    box-shadow: $shadow-light;
+
+    // Анимация для больших чисел
+    &:empty {
+        display: none;
+    }
+}
+
+// Анимация появления сервера
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+// Анимация для заблокированных серверов
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-2px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(2px);
+    }
+}
+
+// Hover эффекты для разных состояний серверов
+.server:hover {
+    &.blocked {
+        animation: shake 0.5s ease-in-out;
+    }
+
+    &.connection-error {
+        animation: pulse 0.5s ease-in-out;
+    }
+
+    &.maintenance {
+        animation: rotate 0.5s ease-in-out;
+    }
+}
+
+// Адаптивность для ServerItem
+@media (max-width: $breakpoint-mobile) {
+    .server {
+        &.blocked::before,
+        &.connection-error::before,
+        &.maintenance::before {
+            width: 16px;
+            height: 16px;
+            font-size: 10px;
+            top: -3px;
+            right: -3px;
+        }
+
+        &.has-notifications::after {
+            width: 10px;
+            height: 10px;
+        }
+    }
+
+    .server-status-indicator {
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        top: -3px;
+        right: -3px;
+    }
+
+    .notification-badge {
+        min-width: 16px;
+        height: 16px;
+        font-size: 9px;
+        padding: 0 4px;
+    }
+}
+
+// Темная тема (по умолчанию)
+.theme-dark .server {
+    &.blocked {
+        background: $error-color;
+        border-color: $error-color;
+    }
+
+    &.connection-error {
+        background: $warning-color;
+        border-color: $warning-color;
+    }
+
+    &.maintenance {
+        background: $tertiary-accent;
+        border-color: $tertiary-accent;
+    }
+}
+
+// Светлая тема
+.theme-light .server {
+    &.blocked {
+        background: #dc3545;
+        border-color: #dc3545;
+    }
+
+    &.connection-error {
+        background: #ffc107;
+        border-color: #ffc107;
+    }
+
+    &.maintenance {
+        background: #28a745;
+        border-color: #28a745;
+    }
+}

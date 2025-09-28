@@ -1,0 +1,59 @@
+// Импорт основных стилей
+@import 'sizes';
+@import 'colors';
+@import 'typography';
+@import 'utilities';
+@import 'animations';
+@import 'basic';
+@import 'theme/_light';
+@import 'theme/_dark';
+
+// VoiceVerse - Основные стили с поддержкой тем
+// CSS переменные устанавливаются в файлах тем и применяются через ThemeStore
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+// Фоновые эффекты
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(100, 181, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(229, 115, 115, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(129, 199, 132, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+// Дополнительные CSS переменные для обратной совместимости
+:root {
+    --background-color: var(--primary-bg);
+    --text-color: var(--text-primary);
+    --border-color: var(--border-primary);
+    --card-bg: var(--secondary-bg);
+    --card-border: var(--border-primary);
+    --shadow-color: var(--shadow-light);
+    --button-bg: var(--button-primary-bg);
+    --button-hover-bg: var(--button-primary-hover);
+    --button-text: var(--text-primary);
+    --input-text: var(--text-primary);
+    --accent-color: var(--primary-accent);
+    --message-bg: var(--tertiary-bg);
+    --message-text: var(--text-primary);
+    --placeholder-text: var(--text-disabled);
+    --sidebar-bg: var(--secondary-bg);
+}
+

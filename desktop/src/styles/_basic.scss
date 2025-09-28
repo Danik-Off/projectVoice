@@ -1,0 +1,43 @@
+// VoiceVerse - Базовые стили для элементов форм
+
+.input[type='text'] {
+    width: 100%;
+    padding: $spacing-md;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: $border-radius;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+
+    &::placeholder {
+        color: var(--text-disabled);
+    }
+}
+
+.textArea {
+    width: 100%;
+    padding: $spacing-md;
+    border: none;
+    border-radius: $border-radius;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+
+    &::placeholder {
+        color: var(--text-disabled);
+    }
+}
+
+.button {
+    background-color: var(--primary-accent);
+    color: #ffffff;
+    border: none;
+    padding: $spacing-md;
+    border-radius: $border-radius-small;
+    cursor: pointer;
+    margin-top: $spacing-md;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: var(--button-primary-hover);
+    }
+}

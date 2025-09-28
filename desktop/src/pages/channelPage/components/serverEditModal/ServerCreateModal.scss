@@ -1,0 +1,156 @@
+@import '../../../../../styles/main.scss'; // Импортируем глобальные стили, если они есть
+
+/* Основной фон модального окна */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Темный полупрозрачный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+
+    .modal {
+        background: var(--background-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        animation: modalSlideIn 0.3s ease-out;
+
+        /* Заголовок модального окна */
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            label {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--text-primary);
+            }
+
+            input, textarea {
+                padding: 12px 16px;
+                background: var(--background-tertiary);
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                color: var(--text-primary);
+                font-size: 14px;
+                transition: all 0.2s ease;
+
+                &:focus {
+                    outline: none;
+                    border-color: var(--accent-color);
+                    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.1);
+                }
+
+                &::placeholder {
+                    color: var(--text-muted);
+                }
+            }
+
+            .description {
+                height: 100px;
+                resize: none !important;
+                font-family: inherit;
+            }
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+
+            .button {
+                flex: 1;
+                padding: 12px 24px;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &.primary {
+                    background: var(--accent-color);
+                    color: white;
+
+                    &:hover {
+                        background: #4752c4;
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+                    }
+
+                    &:active {
+                        transform: translateY(0);
+                    }
+                }
+
+                &.secondary {
+                    background: var(--background-tertiary);
+                    color: var(--text-primary);
+                    border: 1px solid var(--border-color);
+
+                    &:hover {
+                        background: var(--background-primary);
+                        border-color: var(--accent-color);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+// Темная тема
+[data-theme="dark"] {
+    .modal-overlay .modal {
+        background: var(--background-secondary);
+        border-color: var(--border-color);
+        color: var(--text-primary);
+    }
+}
+
+// Светлая тема
+[data-theme="light"] {
+    .modal-overlay .modal {
+        background: #ffffff;
+        border-color: #e9ecef;
+        color: var(--text-primary);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+}

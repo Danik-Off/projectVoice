@@ -1,0 +1,251 @@
+// ClickableAvatar - Стили для кликабельного аватара
+// Использует CSS переменные для поддержки тем
+
+.clickable-avatar {
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    background: var(--tertiary-bg, #333333);
+    
+    &:hover {
+        transform: scale(1.05);
+        border-color: var(--primary-accent, #64b5f6);
+        box-shadow: 0 8px 24px rgba(100, 181, 246, 0.3);
+    }
+    
+    &:active {
+        transform: scale(0.98);
+    }
+    
+    // Размеры аватаров
+    &.avatar-small {
+        width: 32px;
+        height: 32px;
+        border-width: 1px;
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            bottom: 2px;
+            right: 2px;
+            border-width: 1px;
+        }
+        
+        .avatar-placeholder {
+            font-size: 14px;
+        }
+    }
+    
+    &.avatar-medium {
+        width: 40px;
+        height: 40px;
+        border-width: 2px;
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            bottom: 3px;
+            right: 3px;
+            border-width: 2px;
+        }
+        
+        .avatar-placeholder {
+            font-size: 18px;
+        }
+    }
+    
+    &.avatar-large {
+        width: 48px;
+        height: 48px;
+        border-width: 2px;
+        
+        .status-indicator {
+            width: 14px;
+            height: 14px;
+            bottom: 4px;
+            right: 4px;
+            border-width: 2px;
+        }
+        
+        .avatar-placeholder {
+            font-size: 22px;
+        }
+    }
+    
+    // Изображение аватара
+    .avatar-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.3s ease;
+    }
+    
+    // Плейсхолдер для аватара
+    .avatar-placeholder {
+        width: 100%;
+        height: 100%;
+        background: var(--gradient-primary, linear-gradient(135deg, #5c6bc0 0%, #7986cb 100%));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: white;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+    
+    // Индикатор статуса
+    .status-indicator {
+        position: absolute;
+        border-radius: 50%;
+        border: 2px solid var(--modal-bg, #2a2a2a);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    // Эффекты при наведении
+    &:hover {
+        .avatar-image {
+            filter: brightness(1.1);
+        }
+        
+        .avatar-placeholder {
+            background: var(--gradient-accent, linear-gradient(135deg, #4fc3f7 0%, #81d4fa 100%));
+        }
+        
+        .status-indicator {
+            transform: scale(1.2);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+    }
+    
+    // Анимация появления
+    animation: avatarAppear 0.3s ease-out;
+}
+
+@keyframes avatarAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+// Состояния загрузки
+.clickable-avatar.loading {
+    cursor: wait;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: loadingShimmer 1.5s infinite;
+    }
+}
+
+@keyframes loadingShimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+// Состояния ошибки
+.clickable-avatar.error {
+    border-color: var(--error-color, #e57373);
+    
+    .avatar-placeholder {
+        background: var(--error-color, #e57373);
+    }
+}
+
+// Состояния блокировки
+.clickable-avatar.blocked {
+    opacity: 0.6;
+    filter: grayscale(0.5);
+    
+    &::after {
+        content: '🚫';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 16px;
+        z-index: 2;
+    }
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+    .clickable-avatar {
+        &.avatar-large {
+            width: 44px;
+            height: 44px;
+            
+            .avatar-placeholder {
+                font-size: 20px;
+            }
+        }
+        
+        &.avatar-medium {
+            width: 36px;
+            height: 36px;
+            
+            .avatar-placeholder {
+                font-size: 16px;
+            }
+        }
+        
+        &.avatar-small {
+            width: 28px;
+            height: 28px;
+            
+            .avatar-placeholder {
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .clickable-avatar {
+        &.avatar-large {
+            width: 40px;
+            height: 40px;
+            
+            .avatar-placeholder {
+                font-size: 18px;
+            }
+        }
+        
+        &.avatar-medium {
+            width: 32px;
+            height: 32px;
+            
+            .avatar-placeholder {
+                font-size: 14px;
+            }
+        }
+        
+        &.avatar-small {
+            width: 24px;
+            height: 24px;
+            
+            .avatar-placeholder {
+                font-size: 10px;
+            }
+        }
+    }
+}

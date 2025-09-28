@@ -1,0 +1,58 @@
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+    
+    &:hover {
+        background: var(--hover-bg);
+        box-shadow: 0 4px 12px var(--shadow-color);
+    }
+    
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--accent-color);
+    }
+    
+    .theme-toggle-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+        
+        svg {
+            transition: all 0.3s ease;
+        }
+    }
+    
+    &:hover .theme-toggle-icon {
+        transform: scale(1.1);
+    }
+    
+    &:active .theme-toggle-icon {
+        transform: scale(0.95);
+    }
+}
+
+// Анимация для иконки
+.theme-toggle-icon svg {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+} 

@@ -1,0 +1,103 @@
+{
+    "name": "projectvoice-frontend",
+    "version": "0.0.1",
+    "description": "Frontend для ProjectVoice - голосового приложения с WebRTC",
+    "author": "Ovchinnikov Danila",
+    "private": true,
+    "dependencies": {
+        "@emotion/react": "^11.13.3",
+        "@emotion/styled": "^11.13.0",
+        "@testing-library/jest-dom": "^5.17.0",
+        "@testing-library/react": "^13.4.0",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/jest": "^27.5.2",
+        "@types/node": "^16.18.113",
+        "i18next": "^23.16.4",
+        "i18next-browser-languagedetector": "^8.0.0",
+        "localforage": "^1.10.0",
+        "match-sorter": "^6.3.4",
+        "mobx": "^6.13.5",
+        "mobx-react": "^9.1.1",
+        "projectsocial": "file:..",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-i18next": "^15.1.1",
+        "react-router-dom": "^6.27.0",
+        "react-scripts": "5.0.1",
+        "socket.io-client": "^4.8.1",
+        "sort-by": "^1.2.0",
+        "typescript": "^4.9.5",
+        "web-vitals": "^2.1.4"
+    },
+      "scripts": {
+    "start": "node scripts/generate-version.js && react-scripts start",
+    "build": "node scripts/generate-version.js && react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "generate-version": "node scripts/generate-version.js",
+    "electron": "electron .",
+    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "npm run build && electron-builder",
+    "preelectron-pack": "npm run build"
+  },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@types/react": "^18.3.11",
+        "@types/react-dom": "^18.3.1",
+        "@typescript-eslint/eslint-plugin": "^5.62.0",
+        "@typescript-eslint/parser": "^5.62.0",
+        "concurrently": "^8.2.2",
+        "css-loader": "^7.1.2",
+        "electron": "^28.0.0",
+        "electron-builder": "^24.6.4",
+        "eslint": "^8.57.1",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "eslint-plugin-react": "^7.37.2",
+        "sass": "^1.80.6",
+        "sass-loader": "^16.0.3",
+        "style-loader": "^4.0.0",
+        "wait-on": "^7.2.0"
+    },
+    "main": "electron/main.js",
+    "homepage": "./",
+    "build": {
+        "appId": "com.projectvoice.desktop",
+        "productName": "ProjectVoice Desktop",
+        "directories": {
+            "output": "dist-electron"
+        },
+        "files": [
+            "build/**/*",
+            "electron/**/*",
+            "node_modules/**/*"
+        ],
+        "mac": {
+            "category": "public.app-category.social-networking"
+        },
+        "win": {
+            "target": "nsis"
+        },
+        "linux": {
+            "target": "AppImage"
+        }
+    }
+}

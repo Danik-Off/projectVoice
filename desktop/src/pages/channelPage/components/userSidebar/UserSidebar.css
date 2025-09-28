@@ -1,0 +1,19 @@
+.user-sidebar {
+    width: 300px; /* Width for the user sidebar */
+    background-color: #2f3136; /* Dark sidebar background */
+    padding: 10px; /* Padding for the sidebar */
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info {
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    background-color: #40444b; /* User info background */
+}
+
+.user-info p {
+    margin: 0; /* Remove default margin */
+    font-size: 14px; /* Font size for user info */
+    color: #b9bbbe; /* Light gray text */
+}

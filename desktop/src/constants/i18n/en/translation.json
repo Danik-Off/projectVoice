@@ -1,0 +1,544 @@
+{
+    "common": {
+        "toggleTheme": "Toggle theme"
+    },
+    "createServerModal": {
+        "title": "Create Server",
+        "titlePlaceholder": "Enter server name...",
+        "descriptionPlaceholder": "Enter server description...",
+        "avatarLabel": "Upload Avatar",
+        "privacyLabel": "Privacy Settings",
+        "publicOption": "Public",
+        "privateOption": "Private",
+        "btnCreate": "Create",
+        "btnCancel": "Cancel"
+    },
+    "authPage": {
+        "welcomeBack": "Welcome back!",
+        "createAccount": "Create an account",
+        "loginSubtitle": "Sign in to your account to continue",
+        "registerSubtitle": "Create a new account to get started",
+        "needAccount": "Need an account?",
+        "alreadyHaveAccount": "Already have an account?",
+        "signUp": "Sign Up",
+        "login": "Login",
+        "username": "username",
+        "email": "email",
+        "password": "password",
+        "confirmPassword": "confirm password",
+        "passwordsMismatch": "Passwords do not match",
+        "passwordTooShort": "Password must be at least 6 characters",
+        "btnLogin": "Login",
+        "loginButton": {
+            "loading": "Signing in..."
+        },
+        "registerButton": {
+            "loading": "Creating account..."
+        },
+        "passwordStrength": {
+            "weak": "Weak password",
+            "medium": "Medium strength password",
+            "strong": "Strong password"
+        }
+    },
+    "settingsPage": {
+        "title": "Settings",
+        "back": "Back",
+        "tabs": {
+            "profile": "Profile",
+            "general": "General",
+            "appearance": "Appearance",
+            "audio": "Audio",
+            "notifications": "Notifications",
+            "privacy": "Privacy",
+            "about": "About"
+        },
+        "profile": {
+            "title": "Profile Settings",
+            "description": "Manage your account information and security settings",
+            "basicInfo": {
+                "title": "Basic Information",
+                "description": "Update your profile details",
+                "username": "Username",
+                "usernamePlaceholder": "Enter your username",
+                "email": "Email",
+                "emailPlaceholder": "Enter your email",
+                "role": "Role",
+                "changeAvatar": "Change Avatar",
+                "edit": "Edit",
+                "save": "Save",
+                "cancel": "Cancel"
+            },
+            "security": {
+                "title": "Security",
+                "description": "Manage your account security",
+                "password": "Password",
+                "changePassword": "Change Password",
+                "currentPassword": "Current Password",
+                "currentPasswordPlaceholder": "Enter current password",
+                "newPassword": "New Password",
+                "newPasswordPlaceholder": "Enter new password",
+                "confirmPassword": "Confirm Password",
+                "confirmPasswordPlaceholder": "Confirm new password",
+                "savePassword": "Save Password",
+                "cancel": "Cancel",
+                "logout": "Logout",
+                "logoutConfirmTitle": "Confirm Logout",
+                "logoutConfirmMessage": "Are you sure you want to logout? You will need to log in again to access your account.",
+                "confirmLogout": "Yes, Logout"
+            }
+        },
+        "validation": {
+            "usernameRequired": "Username is required",
+            "usernameMinLength": "Username must be at least 3 characters",
+            "usernameMaxLength": "Username must be no more than 20 characters",
+            "usernameInvalid": "Username can only contain letters, numbers and underscores",
+            "emailRequired": "Email is required",
+            "emailInvalid": "Please enter a valid email address",
+            "currentPasswordRequired": "Current password is required",
+            "newPasswordRequired": "New password is required",
+            "passwordRequired": "Password is required",
+            "passwordMinLength": "Password must be at least 6 characters",
+            "passwordMaxLength": "Password must be no more than 50 characters",
+            "confirmPasswordRequired": "Please confirm your new password",
+            "passwordsDoNotMatch": "Passwords do not match"
+        },
+        "messages": {
+            "profileUpdated": "Profile updated successfully!",
+            "passwordChanged": "Password changed successfully!",
+            "updateError": "Failed to update profile. Please try again.",
+            "passwordChangeError": "Failed to change password. Please check your current password and try again.",
+            "noChanges": "No changes to save",
+            "avatarFeatureComing": "Avatar upload feature coming soon!",
+            "registrationSuccess": "Registration successful! Welcome to ProjectVoice!",
+            "registrationError": "Registration failed. Please try again.",
+            "loginError": "Login failed. Please check your credentials and try again."
+        },
+        "appearance": {
+            "title": "Appearance",
+            "description": "Customize theme and interface colors",
+            "theme": {
+                "title": "Theme",
+                "description": "Choose between light and dark theme",
+                "currentTheme": "Current theme",
+                "light": "Light",
+                "dark": "Dark",
+                "autoDescription": "Switch between light and dark themes",
+                "systemTheme": "System theme",
+                "followSystem": "Follow system",
+                "systemDescription": "Automatically match your system theme",
+                "autoSync": "Auto sync"
+            },
+            "accent": {
+                "title": "Accent Color",
+                "description": "Choose the main interface color",
+                "colorScheme": "Color scheme",
+                "active": "Active",
+                "select": "Select",
+                "instantApply": "Changes apply instantly",
+                "colors": {
+                    "blue": "Blue",
+                    "green": "Green",
+                    "purple": "Purple",
+                    "orange": "Orange",
+                    "red": "Red",
+                    "pink": "Pink"
+                }
+            },
+            "scale": {
+                "title": "Interface Size",
+                "description": "Adjust element scale",
+                "scale": "Scale",
+                "small": "Small",
+                "medium": "Medium",
+                "large": "Large",
+                "recommendation": "Medium size is recommended for most screens"
+            }
+        },
+        "general": {
+            "title": "General Settings",
+            "description": "Basic application parameters",
+            "language": {
+                "title": "Interface Language",
+                "subtitle": "Choose your preferred language",
+                "label": "Language",
+                "description": "Changes take effect immediately",
+                "english": "English",
+                "russian": "Russian"
+            }
+        },
+        "language": {
+            "title": "Language",
+            "label": "Interface Language",
+            "description": "Choose your preferred language for the application interface",
+            "english": "English",
+            "russian": "Russian"
+        },
+        "storage": {
+            "title": "Storage",
+            "cache": "Application Cache",
+            "cacheDescription": "Clear cache to free up space on your device",
+            "clearCache": "Clear Cache"
+        },
+        "audio": {
+            "title": "Audio Settings",
+            "description": "Configure microphone and speakers for optimal voice communication",
+            "tabs": {
+                "devices": "Devices",
+                "quality": "Quality"
+            },
+            "microphone": "Microphone",
+            "speakers": "Speakers",
+            "defaultMic": "Default Microphone",
+            "speaker": "Speaker:",
+            "defaultSpeaker": "Default Speaker",
+            "mute": "Mute:",
+            "testAudio": "Test Audio",
+            "volume": "Volume"
+        },
+        "notifications": {
+            "title": "Notifications",
+            "description": "Configure alerts and notifications",
+            "general": {
+                "title": "General Notifications",
+                "subtitle": "Basic notification settings",
+                "enable": "Enable Notifications",
+                "enableDescription": "Allow the app to show notifications",
+                "sound": "Sound Notifications",
+                "soundDescription": "Play sound when receiving notifications"
+            },
+            "chat": {
+                "title": "Chat Notifications",
+                "subtitle": "Settings for messages and chats",
+                "newMessages": "New Messages",
+                "newMessagesDescription": "Notifications for new chat messages",
+                "mentions": "Mentions",
+                "mentionsDescription": "Notifications when you are mentioned in messages",
+                "voiceCalls": "Voice Calls",
+                "voiceCallsDescription": "Notifications for incoming voice calls"
+            },
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+        },
+        "privacy": {
+            "title": "Privacy",
+            "description": "Privacy and security settings",
+            "onlineStatus": {
+                "title": "Online Status",
+                "subtitle": "Who can see your status",
+                "visibility": "Status Visibility",
+                "visibilityDescription": "Determines who can see your online status",
+                "showActivity": "Show Activity",
+                "showActivityDescription": "Show which channel you are in",
+                "options": {
+                    "everyone": "All users",
+                    "friends": "Friends only",
+                    "none": "Hide status"
+                }
+            },
+            "security": {
+                "title": "Security",
+                "subtitle": "Account security settings",
+                "twoFactor": "Two-Factor Authentication",
+                "twoFactorDescription": "Additional layer of protection for your account",
+                "loginNotifications": "Login Notifications",
+                "loginNotificationsDescription": "Receive notifications about new account logins"
+            },
+            "online": "Online",
+            "idle": "Idle",
+            "dnd": "Do Not Disturb",
+            "invisible": "Invisible",
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+        },
+        "about": {
+            "title": "About",
+            "description": "Information about ProjectVoice",
+            "appInfo": {
+                "title": "ProjectVoice",
+                "subtitle": "Simple alternative for voice communication",
+                "infoTitle": "Application Information",
+                "version": "Version:",
+                "build": "Build:",
+                "developer": "Developer:",
+                "license": "License:"
+            },
+            "descriptionSection": {
+                "title": "Description",
+                "subtitle": "What is ProjectVoice",
+                "content": "ProjectVoice is a simple but effective alternative for voice communication based on peer-to-peer WebRTC. Created for those who want to communicate with friends and colleagues without dependence on external services.",
+                "note": "The application is in early development stage"
+            },
+            "links": {
+                "title": "Links",
+                "subtitle": "Useful resources",
+                "documentation": "Documentation",
+                "guide": "📚 Guide",
+                "bugReport": "🐛 Bug Reports",
+                "guideDescription": "Help with usage and feedback",
+                "community": "Community",
+                "telegram": "💬 Telegram",
+                "vk": "📱 VK",
+                "github": "🐙 GitHub",
+                "communityDescription": "Join the developer community"
+            },
+            "technical": {
+                "title": "Technical Information",
+                "subtitle": "Implementation details",
+                "technologies": "Technologies",
+                "frontend": "Frontend:",
+                "backend": "Backend:",
+                "webrtc": "WebRTC:",
+                "database": "Database:"
+            }
+        }
+    },
+    "channelsPage": {
+        "channelList": {
+            "textTitle": "Text Channels",
+            "voiceTitle": "Voice Channels",
+            "createBtn": "Create Channel",
+            "cancelBtn": "Cancel",
+            "noTextChannels": "No text channels",
+            "noVoiceChannels": "No voice channels"
+        }
+    },
+    "serverSettings": {
+        "title": "Server Settings",
+        "backToServer": "← Back to Server",
+        "overview": "Overview",
+        "members": "Members",
+        "roles": "Roles",
+        "channels": "Channels",
+        "dangerZone": "Danger Zone",
+        "overviewTab": {
+            "title": "Server Overview",
+            "serverName": "Server Name:",
+            "description": "Description:",
+            "noDescription": "No description",
+            "membersCount": "Members Count:",
+            "channelsCount": "Channels Count:",
+            "editServer": "Edit Server",
+            "save": "Save",
+            "cancel": "Cancel"
+        },
+        "membersTab": {
+            "title": "Member Management",
+            "membersCount": "Members Count:",
+            "membersData": "Members Data:"
+        },
+        "rolesTab": {
+            "title": "Server Roles",
+            "owner": {
+                "title": "👑 Owner",
+                "description": "Full control over the server, including server deletion"
+            },
+            "admin": {
+                "title": "⚡ Administrator",
+                "description": "Manage members, channels and server settings"
+            },
+            "moderator": {
+                "title": "🛡️ Moderator",
+                "description": "Manage members and moderate channels"
+            },
+            "member": {
+                "title": "👤 Member",
+                "description": "Regular server member"
+            }
+        },
+        "channelsTab": {
+            "title": "Server Channels",
+            "noChannels": "No channels found"
+        },
+        "dangerTab": {
+            "title": "Danger Zone",
+            "deleteServer": {
+                "title": "Delete Server",
+                "description": "This action cannot be undone. All server data will be permanently deleted.",
+                "button": "Delete Server",
+                "confirmMessage": "Are you sure you want to delete this server? This action cannot be undone."
+            }
+        },
+        "authRequired": {
+            "title": "Authentication Required",
+            "message": "You need to log in to access server settings.",
+            "loginButton": "Log In"
+        },
+        "loading": "Loading server settings...",
+        "loadingUser": "Loading user data...",
+        "serverNotFound": "Server not found"
+    },
+    "notifications": {
+        "serverDeleted": "Server deleted",
+        "serverDeleteError": "Error deleting server",
+        "serverUpdateError": "Error updating server settings",
+        "serverLoadError": "Error loading server data",
+        "roleChangeError": "Error changing member role",
+        "memberRemoveError": "Error removing member",
+        "serverCreateError": "Error creating server",
+        "serverCreateSuccess": "Server created successfully",
+        "serversLoadError": "Error loading servers list",
+        "serverDataLoadError": "Error loading server data",
+        "inviteLoadError": "Error loading invite data",
+        "inviteAcceptError": "Error accepting invite",
+        "inviteAcceptSuccess": "Invite accepted successfully",
+        "loginRequired": "You need to log in to accept the invite",
+        "voiceConnectError": "Error connecting to voice channel",
+        "voiceDisconnectError": "Error disconnecting from voice channel",
+        "channelCreateError": "Error creating channel",
+        "channelCreateSuccess": "Channel created successfully"
+    },
+    "voiceControls": {
+        "connectedTo": "Connected to",
+        "participants": "Participants",
+        "micOn": "Microphone on",
+        "micOff": "Microphone off",
+        "deafenOn": "Sound off",
+        "deafenOff": "Sound on",
+        "disconnect": "Disconnect",
+        "volume": "Volume",
+        "speaking": "speaking"
+    },
+    "invitePage": {
+        "title": "Server Invitation",
+        "loading": "Loading invite data...",
+        "error": "Error loading invite",
+        "serverName": "Server Name:",
+        "invitedBy": "Invited by:",
+        "joinServer": "Join Server",
+        "loginRequired": "You need to log in to accept the invite",
+        "loginButton": "Log In",
+        "backToHome": "← Back to Home"
+    },
+    "serverMembers": {
+        "title": "Server Members",
+        "noMembers": "No members found",
+        "removeMember": "Remove Member",
+        "removeConfirm": "Are you sure you want to remove this member from the server?",
+        "changeRole": "Change Role",
+        "roles": {
+            "owner": "Owner",
+            "admin": "Administrator",
+            "moderator": "Moderator",
+            "member": "Member"
+        }
+    },
+    "createChannelForm": {
+        "title": "Create Channel",
+        "channelName": "Channel Name:",
+        "channelType": "Channel Type:",
+        "description": "Description (optional):",
+        "text": "Text",
+        "voice": "Voice",
+        "create": "Create Channel",
+        "cancel": "Cancel"
+    },
+    "welcome": {
+        "subtitle": "Modern platform for voice communication",
+        "features": {
+            "voice": {
+                "title": "Voice Channels",
+                "description": "High-quality voice communication with WebRTC support"
+            },
+            "community": {
+                "title": "Community",
+                "description": "Create servers and join communities"
+            },
+            "privacy": {
+                "title": "Privacy",
+                "description": "Your data is protected and remains confidential"
+            }
+        },
+        "message": "Join our community, share ideas and enjoy the freedom of voice communication. Let's create great connections together!"
+    },
+    "userProfile": {
+        "title": "User Profile",
+        "tabs": {
+            "overview": "Overview",
+            "activity": "Activity",
+            "servers": "Servers",
+            "friends": "Friends"
+        },
+        "status": {
+            "online": "Online",
+            "idle": "Idle",
+            "dnd": "Do Not Disturb",
+            "invisible": "Invisible",
+            "offline": "Offline"
+        },
+        "roles": {
+            "admin": "Administrator",
+            "moderator": "Moderator",
+            "member": "Member"
+        },
+        "about": {
+            "title": "About",
+            "onlineMessage": "This user is currently online and available for communication.",
+            "offlineMessage": "This user is currently offline or invisible."
+        },
+        "accountInfo": {
+            "title": "Account Information",
+            "email": "Email",
+            "memberSince": "Member Since",
+            "accountStatus": "Account Status",
+            "active": "Active",
+            "inactive": "Inactive",
+            "unknown": "Unknown"
+        },
+        "blockedAccount": {
+            "title": "Blocked Account",
+            "message": "This account has been blocked by administration.",
+            "reason": "Reason",
+            "blockedAt": "Blocked At",
+            "blockedBy": "Blocked By"
+        },
+        "activity": {
+            "title": "User Activity",
+            "subtitle": "Recent activity and statistics",
+            "stats": {
+                "title": "Activity Statistics",
+                "description": "Detailed statistics about user activity will be available soon."
+            },
+            "gaming": {
+                "title": "Gaming Activity",
+                "description": "Information about games and gaming sessions will be displayed here."
+            },
+            "music": {
+                "title": "Music Activity",
+                "description": "Currently playing music and listening history will be shown here."
+            }
+        },
+        "servers": {
+            "title": "Joined Servers",
+            "subtitle": "Servers where this user is a member",
+            "home": {
+                "title": "Home Server",
+                "description": "Personal server and main community hub."
+            },
+            "community": {
+                "title": "Community Servers",
+                "description": "Various community and interest-based servers."
+            },
+            "gaming": {
+                "title": "Gaming Servers",
+                "description": "Servers dedicated to specific games and gaming communities."
+            }
+        },
+        "friends": {
+            "title": "Friends & Connections",
+            "subtitle": "Friends list and mutual connections",
+            "stats": {
+                "friends": "Friends",
+                "mutual": "Mutual",
+                "servers": "Servers"
+            },
+            "placeholder": "Friends list will be available in future updates."
+        },
+        "actions": {
+            "sendMessage": "Send Message",
+            "addFriend": "Add Friend",
+            "blockUser": "Block User",
+            "editProfile": "Edit Profile"
+        }
+    }
+}

@@ -1,0 +1,51 @@
+// SettingsNavigation.scss
+// Стили для навигации по вкладкам настроек
+
+.settings-sidebar {
+    width: 250px;
+    padding-right: 2rem;
+    
+    .settings-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            width: 100%;
+            
+            &:hover {
+                background: var(--primary-bg);
+                border-color: var(--accent-color);
+                transform: translateX(4px);
+            }
+            
+            &.active {
+                background: var(--accent-color);
+                color: white;
+                border-color: var(--accent-color);
+                box-shadow: 0 0 10px rgba(100, 181, 246, 0.3);
+            }
+            
+            .tab-icon {
+                font-size: 1.25rem;
+                min-width: 1.5rem;
+                text-align: center;
+            }
+            
+            .tab-label {
+                font-weight: 500;
+            }
+        }
+    }
+}

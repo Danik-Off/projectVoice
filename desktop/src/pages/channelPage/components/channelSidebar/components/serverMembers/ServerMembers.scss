@@ -1,0 +1,249 @@
+@import '../../../../../../styles/main.scss';
+
+.server-members {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-radius: 16px;
+    margin: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+
+    .members-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin: 0 0 1.5rem 0;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: linear-gradient(135deg, var(--text-color) 0%, var(--accent-color) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .role-section {
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 0.5s ease-out;
+
+        .role-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+            &:hover {
+                background: linear-gradient(135deg, rgba(114, 137, 218, 0.1) 0%, rgba(88, 101, 242, 0.1) 100%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                border-color: rgba(114, 137, 218, 0.3);
+            }
+
+            .role-icon {
+                font-size: 1.25rem;
+                color: var(--accent-color);
+                filter: drop-shadow(0 2px 4px rgba(114, 137, 218, 0.3));
+            }
+
+            .role-name {
+                font-weight: 600;
+                color: var(--text-color);
+                text-transform: capitalize;
+                flex: 1;
+                font-size: 1rem;
+            }
+
+            .role-count {
+                font-size: 0.8rem;
+                color: var(--text-muted);
+                background: linear-gradient(135deg, rgba(114, 137, 218, 0.1) 0%, rgba(88, 101, 242, 0.1) 100%);
+                padding: 0.25rem 0.75rem;
+                border-radius: 8px;
+                border: 1px solid rgba(114, 137, 218, 0.2);
+                font-weight: 600;
+            }
+
+            .expand-icon {
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                transition: transform 0.3s ease;
+            }
+
+            &.expanded .expand-icon {
+                transform: rotate(180deg);
+            }
+        }
+
+        .members-list {
+            margin-left: 1.5rem;
+            margin-top: 1rem;
+            animation: slideInDown 0.4s ease-out;
+
+            .member-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1rem;
+                border-radius: 12px;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(255, 255, 255, 0.02) 100%);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                margin-bottom: 0.75rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+                &:hover {
+                    background: linear-gradient(135deg, rgba(114, 137, 218, 0.05) 0%, rgba(88, 101, 242, 0.05) 100%);
+                    transform: translateX(5px);
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    border-color: rgba(114, 137, 218, 0.2);
+                }
+
+                .member-info {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    flex: 1;
+
+                    .member-avatar {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, var(--button-bg) 0%, var(--accent-color) 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: 700;
+                        color: white;
+                        overflow: hidden;
+                        box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
+                        border: 2px solid rgba(255, 255, 255, 0.1);
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            transform: scale(1.1);
+                            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
+                        }
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+
+                    .member-name {
+                        font-size: 0.95rem;
+                        color: var(--text-color);
+                        font-weight: 600;
+                        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    }
+                }
+
+                .member-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+
+                    .role-select {
+                        padding: 0.5rem 1rem;
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        border-radius: 8px;
+                        background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(255, 255, 255, 0.05) 100%);
+                        color: var(--text-color);
+                        font-size: 0.85rem;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                        font-weight: 500;
+
+                        &:focus {
+                            outline: none;
+                            border-color: var(--accent-color);
+                            box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.1);
+                            transform: translateY(-1px);
+                        }
+
+                        &:hover {
+                            background: linear-gradient(135deg, rgba(114, 137, 218, 0.1) 0%, rgba(88, 101, 242, 0.1) 100%);
+                            border-color: var(--accent-color);
+                        }
+
+                        option {
+                            background: var(--bg-primary);
+                            color: var(--text-color);
+                        }
+                    }
+
+                    .remove-member-btn {
+                        background: linear-gradient(135deg, rgba(240, 71, 71, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+                        border: 1px solid rgba(240, 71, 71, 0.3);
+                        color: var(--error-color);
+                        cursor: pointer;
+                        padding: 0.5rem;
+                        border-radius: 8px;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        font-size: 0.9rem;
+                        box-shadow: 0 2px 8px rgba(240, 71, 71, 0.1);
+                        position: relative;
+                        overflow: hidden;
+
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: -100%;
+                            width: 100%;
+                            height: 100%;
+                            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+                            transition: left 0.5s ease;
+                        }
+
+                        &:hover {
+                            background: linear-gradient(135deg, var(--error-color) 0%, #dc2626 100%);
+                            color: white;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 15px rgba(240, 71, 71, 0.3);
+
+                            &::before {
+                                left: 100%;
+                            }
+                        }
+
+                        &:active {
+                            transform: translateY(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Анимации
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 

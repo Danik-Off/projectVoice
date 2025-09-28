@@ -1,0 +1,156 @@
+@import '../../../../styles/main';
+
+.servers {
+    width: $servers-panel-width;
+    background: $secondary-bg;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-sm;
+    border-right: 1px solid $border-primary;
+    padding: $spacing-md 0;
+    justify-content: flex-start;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: $border-primary transparent;
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
+
+    &::-webkit-scrollbar {
+        width: $scrollbar-width;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $scrollbar-track;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $scrollbar-thumb;
+        border-radius: $border-radius-round;
+
+        &:hover {
+            background: $scrollbar-thumb-hover;
+        }
+    }
+
+    // Фоновый эффект
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(100, 181, 246, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(229, 115, 115, 0.03) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
+.server {
+    width: $server-size;
+    height: $server-size;
+    border-radius: $border-radius-round;
+    background: $tertiary-bg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all $animation-duration $animation-timing;
+    position: relative;
+    font-size: $server-icon-size;
+    color: $text-muted;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    z-index: 1;
+
+    &:hover {
+        background: $gradient-accent;
+        color: white;
+        transform: translateY(-$hover-lift) scale($hover-scale);
+        box-shadow: $shadow-medium;
+        border-color: $border-accent;
+    }
+
+    &.active {
+        background: $gradient-accent;
+        color: white;
+        border-color: $primary-accent;
+    }
+
+    &.settings {
+        background: $tertiary-bg;
+        border: 2px solid $border-primary;
+        position: relative;
+        margin-top: auto; // Прижимаем к низу
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -$spacing-sm;
+            left: 50%;
+            transform: translateX(-50%);
+            width: $spacing-xl;
+            height: $separator-height;
+            background: $border-primary;
+            border-radius: $border-radius-small;
+        }
+
+        &:hover {
+            background: $accent-bg;
+            color: $text-primary;
+            transform: translateY(-$hover-lift) scale($hover-scale);
+            border-color: $primary-accent;
+            box-shadow: $shadow-medium;
+        }
+    }
+
+    &.admin {
+        background: $gradient-primary;
+        color: white;
+        font-size: $icon-size;
+        border: 2px solid rgba(186, 104, 200, 0.3);
+        margin-top: $spacing-sm; // Отступ от настроек
+
+        &:hover {
+            background: $gradient-primary;
+            color: white;
+            transform: translateY(-$hover-lift) scale($hover-scale);
+            border-color: rgba(186, 104, 200, 0.6);
+            box-shadow: 0 0 20px rgba(186, 104, 200, 0.3);
+        }
+    }
+
+    .server-icon {
+        font-size: $server-icon-size;
+        z-index: 2;
+        position: relative;
+    }
+}
+
+.server-separator {
+    width: $spacing-xl;
+    height: $separator-height;
+    background: $border-primary;
+    border-radius: $border-radius-small;
+    margin: $spacing-xs 0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    // Убрали мерцающие точки
+}
+
+// Анимации для серверов
+@keyframes serverPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
