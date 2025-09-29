@@ -168,8 +168,10 @@ class WebRTCClient {
             this.peerConnections.forEach((peerConnection) => {
                 const newAudioTrack = audioSettingsStore.stream.getAudioTracks()[0];
                 const sender = peerConnection.getSenders().find((s) => s.track?.kind === 'audio');
-                if (sender) {
+                if (sender && newAudioTrack) {
                     sender.replaceTrack(newAudioTrack);
+                    // Синхронизируем состояние mute
+                    newAudioTrack.enabled = !audioSettingsStore.isMicrophoneMuted;
                 }
             });
         } else {
@@ -185,7 +187,7 @@ class WebRTCClient {
             audioSettingsStore.stream.getTracks().forEach((track) => {
                 //Если существет локальный стрим и пир для подключения то рассылаем стрим
                 peerConnection && peerConnection.addTrack(track, audioSettingsStore.stream);
-                track.enabled = !this.isMuteMicro;
+                track.enabled = !audioSettingsStore.isMicrophoneMuted;
             });
         } else {
             console.log('🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:', this.localStream);

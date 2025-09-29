@@ -7,6 +7,7 @@ import { authStore } from '../../../../../../store/authStore';
 import notificationStore from '../../../../../../store/NotificationStore';
 import { useUserProfile } from '../../../../../../components/UserProfileProvider';
 import ClickableAvatar from '../../../../../../components/ClickableAvatar';
+import audioSettingsStore from '../../../../../../store/AudioSettingsStore';
 
 const VoiceControls: React.FC = observer(() => {
     const { t } = useTranslation();
@@ -21,21 +22,21 @@ const VoiceControls: React.FC = observer(() => {
     const participants = voiceRoomStore.participants;
 
     const handleMicToggle = (): void => {
-        setIsMicOn(!isMicOn);
-        isMicOn ? voiceRoomStore.muteMicrophone() : voiceRoomStore.unmuteMicrophone();
+        audioSettingsStore.toggleMicrophoneMute();
+        setIsMicOn(!audioSettingsStore.isMicrophoneMuted);
         notificationStore.addNotification(
-            isMicOn ? t('voiceControls.micOff') : t('voiceControls.micOn'), 
+            audioSettingsStore.isMicrophoneMuted ? t('voiceControls.micOff') : t('voiceControls.micOn'), 
             'info'
         );
     };
 
     const handleDeafenToggle = (): void => {
-        setIsDeafened(!isDeafened);
+        audioSettingsStore.toggleSpeakerMute();
+        setIsDeafened(audioSettingsStore.isSpeakerMuted);
         notificationStore.addNotification(
-            isDeafened ? t('voiceControls.deafenOff') : t('voiceControls.deafenOn'), 
+            audioSettingsStore.isSpeakerMuted ? t('voiceControls.deafenOn') : t('voiceControls.deafenOff'), 
             'info'
         );
-        // TODO: Реализовать заглушение звука
     };
 
     const handleDisconnect = (): void => {

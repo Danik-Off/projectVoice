@@ -16,6 +16,8 @@ class AudioSettingsStore {
     public channelCount = 1; // Количество каналов в звуковом потоке. 1 — моно, 2 — стерео.
     public latency = 300; // Задержка в миллисекундах. Указывает на желаемую задержку в обработке звука (например, в реальном времени). Чем ниже значение, тем меньше задержка, но может быть большее использование процессора.
     public volume = 50; // Уровень громкости, где 1.0 — максимальная громкость, а 0 — выключенная.
+    public isMicrophoneMuted = false; // Состояние отключения микрофона
+    public isSpeakerMuted = false; // Состояние отключения колонок
 
     private _stream: MediaStream = new MediaStream();
     private audioContext = new AudioContext();
@@ -85,6 +87,40 @@ class AudioSettingsStore {
     public setVolume(newVolume: number): void {
         this.volume = newVolume;
         this.gainNode.gain.value = this.volume / 50;
+    }
+
+    public toggleMicrophoneMute(): void {
+        this.isMicrophoneMuted = !this.isMicrophoneMuted;
+        if (this.isMicrophoneMuted) {
+            // Отключаем микрофон
+            this._stream.getAudioTracks().forEach(track => {
+                track.enabled = false;
+            });
+            // Также отключаем в обработанном потоке
+            this.stream.getAudioTracks().forEach(track => {
+                track.enabled = false;
+            });
+        } else {
+            // Включаем микрофон
+            this._stream.getAudioTracks().forEach(track => {
+                track.enabled = true;
+            });
+            // Также включаем в обработанном потоке
+            this.stream.getAudioTracks().forEach(track => {
+                track.enabled = true;
+            });
+        }
+    }
+
+    public toggleSpeakerMute(): void {
+        this.isSpeakerMuted = !this.isSpeakerMuted;
+        if (this.isSpeakerMuted) {
+            // Отключаем звук колонок
+            this.gainNode.gain.value = 0;
+        } else {
+            // Включаем звук колонок
+            this.gainNode.gain.value = this.volume / 50;
+        }
     }
 
     // Получение списка аудиоустройств
