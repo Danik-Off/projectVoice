@@ -25,7 +25,7 @@ class VoiceRoomStore {
     public state = '';
 
     private socketClient: SocketClient = new SocketClient();
-    private webRTCClient: WebRTCClient = new WebRTCClient();
+    public webRTCClient: WebRTCClient = new WebRTCClient();
 
     public constructor() {
         makeAutoObservable(this);

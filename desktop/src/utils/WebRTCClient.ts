@@ -2,6 +2,7 @@ import { reaction } from 'mobx';
 import { iceServers } from '../configs/iceServers';
 import { Signal } from '../types/WebRTCClient.types';
 import audioSettingsStore from '../store/AudioSettingsStore';
+import participantVolumeStore from '../store/ParticipantVolumeStore';
 class WebRTCClient {
     public sendSignal: null | ((signal: Signal) => void) = null;
 
@@ -10,6 +11,9 @@ class WebRTCClient {
     private readonly remoteStreams: Map<string, MediaStream> = new Map();
     private readonly peerConnections: Map<string, RTCPeerConnection> = new Map();
     private readonly remoteAudioElements: Map<string, HTMLAudioElement> = new Map();
+    private readonly audioContexts: Map<string, AudioContext> = new Map();
+    private readonly gainNodes: Map<string, GainNode> = new Map();
+    private readonly audioSources: Map<string, MediaStreamAudioSourceNode> = new Map();
 
     private localStream: MediaStream | null = null;
 
@@ -55,8 +59,10 @@ class WebRTCClient {
         };
 
         newPeerConnection.ontrack = (event) => {
-            console.log('ontrack', id);
-            this.addRemoteStream(event.track, id);
+            console.log('ontrack', id, event.track.kind);
+            if (event.track.kind === 'audio') {
+                this.addRemoteStream(event.track, id);
+            }
         };
 
         this.peerConnections.set(id, newPeerConnection);
@@ -153,17 +159,82 @@ class WebRTCClient {
             remoteStream = new MediaStream();
             this.remoteStreams.set(id, remoteStream);
             console.log('Удалённый поток добавлен для пользователя:', id);
+            
+            // Создаем аудио контекст для этого участника
+            const audioContext = new AudioContext();
+            const gainNode = audioContext.createGain();
+            
+            // Устанавливаем начальную громкость
+            const initialVolume = participantVolumeStore.getParticipantVolume(id);
+            gainNode.gain.value = initialVolume / 100;
+            
+            this.audioContexts.set(id, audioContext);
+            this.gainNodes.set(id, gainNode);
+            
             const audioElement = document.createElement('audio');
             audioElement.srcObject = remoteStream;
             audioElement.autoplay = true;
             audioElement.muted = audioSettingsStore.isSpeakerMuted; // Синхронизируем с состоянием mute
+            
+            // Добавляем обработчик для события loadedmetadata
+            audioElement.addEventListener('loadedmetadata', () => {
+                console.log('Аудио метаданные загружены для участника:', id);
+                // Повторно пытаемся настроить аудио обработку после загрузки метаданных
+                const currentStream = this.remoteStreams.get(id);
+                if (currentStream && currentStream.getAudioTracks().length > 0) {
+                    this.setupAudioProcessing(id, currentStream);
+                }
+            });
+            
             document.body.appendChild(audioElement);
             this.remoteAudioElements.set(id, audioElement); // Сохраняем ссылку
         } else {
             console.log('remoteStream не существует ');
         }
 
+        // Добавляем трек в поток
         remoteStream.addTrack(track);
+        
+        // Проверяем, есть ли аудио треки в потоке, и только тогда создаем источник
+        if (remoteStream.getAudioTracks().length > 0 && !this.audioContexts.get(id)?.state.includes('closed')) {
+            this.setupAudioProcessing(id, remoteStream);
+        }
+    }
+
+    // Настройка аудио обработки для участника
+    private setupAudioProcessing(id: string, remoteStream: MediaStream): void {
+        const audioContext = this.audioContexts.get(id);
+        const gainNode = this.gainNodes.get(id);
+        
+        if (!audioContext || !gainNode) {
+            console.error('AudioContext или GainNode не найдены для участника:', id);
+            return;
+        }
+
+        // Проверяем, не создан ли уже источник для этого участника
+        if (this.audioSources.has(id)) {
+            console.log('Аудио источник уже существует для участника:', id);
+            return;
+        }
+
+        try {
+            // Проверяем, что поток содержит аудио треки
+            if (remoteStream.getAudioTracks().length === 0) {
+                console.warn('Поток не содержит аудио треков для участника:', id);
+                return;
+            }
+
+            // Создаем источник только если его еще нет и контекст активен
+            if (!audioContext.state.includes('closed')) {
+                const source = audioContext.createMediaStreamSource(remoteStream);
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                this.audioSources.set(id, source);
+                console.log('Аудио обработка настроена для участника:', id);
+            }
+        } catch (error) {
+            console.error('Ошибка при настройке аудио обработки для участника:', id, error);
+        }
     }
 
     private resendlocalStream() {
@@ -207,6 +278,20 @@ class WebRTCClient {
         });
     }
 
+    // Управление громкостью конкретного участника
+    public setParticipantVolume(socketId: string, volume: number): void {
+        const gainNode = this.gainNodes.get(socketId);
+        if (gainNode) {
+            gainNode.gain.value = volume / 100;
+            participantVolumeStore.setParticipantVolume(socketId, volume);
+        }
+    }
+
+    // Получить громкость участника
+    public getParticipantVolume(socketId: string): number {
+        return participantVolumeStore.getParticipantVolume(socketId);
+    }
+
     // отключение
 
     // если пользователь отключился
@@ -230,6 +315,18 @@ class WebRTCClient {
             audioElement.remove();
             this.remoteAudioElements.delete(id);
         }
+
+        // Очищаем аудио контекст и gain node
+        const audioContext = this.audioContexts.get(id);
+        if (audioContext) {
+            audioContext.close();
+            this.audioContexts.delete(id);
+        }
+        this.gainNodes.delete(id);
+        this.audioSources.delete(id);
+
+        // Удаляем из store громкости
+        participantVolumeStore.removeParticipant(id);
     }
     // когда мы сами отключаемся
     public disconect() {
@@ -254,6 +351,17 @@ class WebRTCClient {
             audioElement.remove();
         });
         this.remoteAudioElements.clear();
+
+        // Закрываем все аудио контексты
+        this.audioContexts.forEach((audioContext) => {
+            audioContext.close();
+        });
+        this.audioContexts.clear();
+        this.gainNodes.clear();
+        this.audioSources.clear();
+
+        // Очищаем store громкости
+        participantVolumeStore.resetAllVolumes();
     }
 }
 

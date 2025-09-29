@@ -8,6 +8,7 @@ import notificationStore from '../../../../../../store/NotificationStore';
 import { useUserProfile } from '../../../../../../components/UserProfileProvider';
 import ClickableAvatar from '../../../../../../components/ClickableAvatar';
 import audioSettingsStore from '../../../../../../store/AudioSettingsStore';
+import participantVolumeStore from '../../../../../../store/ParticipantVolumeStore';
 
 const VoiceControls: React.FC = observer(() => {
     const { t } = useTranslation();
@@ -45,7 +46,14 @@ const VoiceControls: React.FC = observer(() => {
     };
 
     const handleExpand = (): void => {
+        console.log('handleExpand called, current isExpanded:', isExpanded);
         setIsExpanded(!isExpanded);
+        console.log('New isExpanded will be:', !isExpanded);
+    };
+
+    const handleParticipantVolumeChange = (socketId: string, volume: number): void => {
+        // Обновляем громкость через WebRTCClient
+        voiceRoomStore.webRTCClient?.setParticipantVolume(socketId, volume);
     };
 
     // Если не подключен к голосовому каналу, не показываем контролы
@@ -172,8 +180,24 @@ const VoiceControls: React.FC = observer(() => {
                                             {participant.isSpeaking && `(${t('voiceControls.speaking')})`}
                                         </span>
                                     </div>
-                                    <div className="voice-controls__participant-mic">
-                                        {participant.micToggle ? '🎤' : '🔇'}
+                                    <div className="voice-controls__participant-controls">
+                                        <div className="voice-controls__participant-mic">
+                                            {participant.micToggle ? '🎤' : '🔇'}
+                                        </div>
+                                        <div className="voice-controls__participant-volume">
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max="100"
+                                                value={participantVolumeStore.getParticipantVolume(participant.socketId)}
+                                                onChange={(e) => handleParticipantVolumeChange(participant.socketId, Number(e.target.value))}
+                                                className="voice-controls__volume-slider"
+                                                title={`Громкость ${participant.userData?.username || 'участника'}`}
+                                            />
+                                            <span className="voice-controls__volume-value">
+                                                {participantVolumeStore.getParticipantVolume(participant.socketId)}%
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
