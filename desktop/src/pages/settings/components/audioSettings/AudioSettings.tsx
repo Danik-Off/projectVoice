@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SpeakerSettings from './SpeakerSettings';
 import MicrophoneSettings from './MicrophoneSettings';
+import audioSettingsStore from '../../../../store/AudioSettingsStore';
 
 const AudioSettings: React.FC = () => {
     const { t } = useTranslation();
@@ -56,7 +57,30 @@ const AudioSettings: React.FC = () => {
                                     <span>Качество звука</span>
                                 </label>
                                 <div className="setting-control">
-                                    <select className="settings-select" defaultValue="high">
+                                    <select 
+                                        className="settings-select" 
+                                        defaultValue="high"
+                                        onChange={(e) => {
+                                            // Применяем предустановки качества
+                                            switch (e.target.value) {
+                                                case 'low':
+                                                    audioSettingsStore.setSampleRate(8000);
+                                                    audioSettingsStore.setSampleSize(16);
+                                                    audioSettingsStore.setChannelCount('mono');
+                                                    break;
+                                                case 'medium':
+                                                    audioSettingsStore.setSampleRate(22050);
+                                                    audioSettingsStore.setSampleSize(16);
+                                                    audioSettingsStore.setChannelCount('stereo');
+                                                    break;
+                                                case 'high':
+                                                    audioSettingsStore.setSampleRate(44100);
+                                                    audioSettingsStore.setSampleSize(16);
+                                                    audioSettingsStore.setChannelCount('stereo');
+                                                    break;
+                                            }
+                                        }}
+                                    >
                                         <option value="low">Низкое</option>
                                         <option value="medium">Среднее</option>
                                         <option value="high">Высокое</option>

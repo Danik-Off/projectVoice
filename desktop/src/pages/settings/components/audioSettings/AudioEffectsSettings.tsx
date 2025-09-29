@@ -125,6 +125,10 @@ const AudioEffectsSettings: React.FC = observer(() => {
                                         max="1000"
                                         defaultValue="300"
                                         className="frequency-slider"
+                                        onChange={(e) => {
+                                            // TODO: Добавить поддержку высокочастотного фильтра в AudioSettingsStore
+                                            console.log('Highpass filter frequency:', e.target.value);
+                                        }}
                                     />
                                     <span className="frequency-value">300 Гц</span>
                                 </div>
@@ -147,6 +151,10 @@ const AudioEffectsSettings: React.FC = observer(() => {
                                         max="8000"
                                         defaultValue="3400"
                                         className="frequency-slider"
+                                        onChange={(e) => {
+                                            // TODO: Добавить поддержку низкочастотного фильтра в AudioSettingsStore
+                                            console.log('Lowpass filter frequency:', e.target.value);
+                                        }}
                                     />
                                     <span className="frequency-value">3400 Гц</span>
                                 </div>

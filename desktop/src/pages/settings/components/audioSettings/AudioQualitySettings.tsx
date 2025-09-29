@@ -146,7 +146,14 @@ const AudioQualitySettings: React.FC = observer(() => {
                                 <span>Буфер аудио</span>
                             </label>
                             <div className="setting-control">
-                                <select defaultValue="256" className="quality-select">
+                                <select 
+                                    defaultValue="256" 
+                                    className="quality-select"
+                                    onChange={(e) => {
+                                        // TODO: Добавить поддержку буфера аудио в AudioSettingsStore
+                                        console.log('Audio buffer size:', e.target.value);
+                                    }}
+                                >
                                     <option value="128">128 сэмплов - Минимальная задержка</option>
                                     <option value="256">256 сэмплов - Рекомендуется</option>
                                     <option value="512">512 сэмплов - Стабильность</option>
@@ -164,7 +171,14 @@ const AudioQualitySettings: React.FC = observer(() => {
                                 <span>Приоритет потока</span>
                             </label>
                             <div className="setting-control">
-                                <select defaultValue="normal" className="quality-select">
+                                <select 
+                                    defaultValue="normal" 
+                                    className="quality-select"
+                                    onChange={(e) => {
+                                        // TODO: Добавить поддержку приоритета потока в AudioSettingsStore
+                                        console.log('Stream priority:', e.target.value);
+                                    }}
+                                >
                                     <option value="low">Низкий - Экономия ресурсов</option>
                                     <option value="normal">Обычный - Рекомендуется</option>
                                     <option value="high">Высокий - Максимальное качество</option>
