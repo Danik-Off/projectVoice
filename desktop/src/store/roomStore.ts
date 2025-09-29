@@ -38,16 +38,16 @@ class VoiceRoomStore {
         // Инициализируем медиа для VAD
         console.log('VoiceRoomStore: Initializing audio settings...');
         audioSettingsStore.initMedia();
-        
-        // Инициализируем WebRTC после аудио
-        console.log('VoiceRoomStore: Initializing WebRTC...');
-        this.webRTCClient.initializeMedia();
     }
 
     public connectToRoom(roomId: number, channelName?: string): void {
         // eslint-disable-next-line max-len
         const token = getCookie('token'); //TODO отказаться от токена здесь и отправлять его при завпросе на подключение к серверу
         this.socketClient.socketEmit('join-room', roomId, token);
+        
+        // Инициализируем WebRTC и VAS при подключении к голосовому каналу
+        console.log('VoiceRoomStore: Initializing WebRTC and VAS for voice call...');
+        this.webRTCClient.initializeMedia();
         
         runInAction(() => {
             this.currentVoiceChannel = { id: roomId, name: channelName || `Voice Channel ${roomId}` };
@@ -57,6 +57,10 @@ class VoiceRoomStore {
     public disconnectToRoom(): void {
         this.socketClient.socketEmit('leave-room');
         this.webRTCClient.disconect();
+        
+        // Очищаем VAS при отключении от голосового канала
+        console.log('VoiceRoomStore: Cleaning up VAS after voice call...');
+        voiceActivityService.cleanup();
         
         runInAction(() => {
             this.currentVoiceChannel = null;

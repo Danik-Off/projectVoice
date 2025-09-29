@@ -16,7 +16,8 @@ class VoiceActivityService {
     private volumes: Map<string, number> = new Map();
     
     public config = {
-        threshold: 10, // Порог громкости для определения речи
+        localThreshold: 1300, // Порог громкости для локального пользователя
+        remoteThreshold: 1000, // Порог громкости для удаленных пользователей
         smoothingFactor: 0.8 // Сглаживание
     };
 
@@ -121,7 +122,9 @@ class VoiceActivityService {
             const volume = this.calculateVolume(dataArray);
             const smoothedVolume = this.smoothVolume(userId, volume);
             
-            const isCurrentlyActive = smoothedVolume > this.config.threshold;
+            // Используем разные пороги для локального и удаленных пользователей
+            const threshold = userId === 'local' ? this.config.localThreshold : this.config.remoteThreshold;
+            const isCurrentlyActive = smoothedVolume > threshold;
             const wasActive = this.isActive.get(userId) || false;
             
             this.volumes.set(userId, smoothedVolume);

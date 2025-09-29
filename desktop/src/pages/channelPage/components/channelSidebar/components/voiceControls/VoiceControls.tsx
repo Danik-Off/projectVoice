@@ -9,7 +9,6 @@ import { useUserProfile } from '../../../../../../components/UserProfileProvider
 import ClickableAvatar from '../../../../../../components/ClickableAvatar';
 import audioSettingsStore from '../../../../../../store/AudioSettingsStore';
 import participantVolumeStore from '../../../../../../store/ParticipantVolumeStore';
-import VADSettings from '../../../../../../components/VADSettings/VADSettings';
 
 const VoiceControls: React.FC = observer(() => {
     const { t } = useTranslation();
@@ -17,7 +16,6 @@ const VoiceControls: React.FC = observer(() => {
     const [isDeafened, setIsDeafened] = useState<boolean>(false);
     const [showVolumeSlider, setShowVolumeSlider] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [showVADSettings, setShowVADSettings] = useState<boolean>(false);
     const { openProfile } = useUserProfile();
 
     const currentUser = authStore.user;
@@ -132,13 +130,6 @@ const VoiceControls: React.FC = observer(() => {
                             ⚙️
                         </button>
                         
-                        <button 
-                            className="voice-controls__button voice-controls__button--vad-settings"
-                            onClick={() => setShowVADSettings(true)}
-                            title="Настройки VAD"
-                        >
-                            🎯
-                        </button>
                         
                         <button 
                             className="voice-controls__button voice-controls__button--expand"
@@ -244,11 +235,6 @@ const VoiceControls: React.FC = observer(() => {
                 </div>
             )}
             
-            {/* VAD Settings Modal */}
-            <VADSettings 
-                isOpen={showVADSettings} 
-                onClose={() => setShowVADSettings(false)} 
-            />
         </div>
     );
 });
