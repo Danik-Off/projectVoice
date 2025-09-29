@@ -59,19 +59,7 @@ class AuthStore {
             }
         } catch (error) {
             this.loading = false;
-            if (error instanceof Error) {
-                // Обрабатываем как экземпляр Error
-                console.error('Login failed', error.message);
-                try {
-                    const errorAnswer = JSON.parse(error.message);
-                    notificationStore.addNotification(errorAnswer.error, 'error');
-                } catch {
-                    notificationStore.addNotification(error.message, 'error');
-                }
-            } else {
-                console.error('Login failed with unknown error', error);
-                notificationStore.addNotification('неизвестная ошибка', 'error');
-            }
+            console.error('Login failed', error);
             throw error; // Пробрасываем ошибку для обработки в компоненте
         }
     }
