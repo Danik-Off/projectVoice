@@ -125,6 +125,18 @@
         font-size: 11px;
         color: var(--text-muted);
         font-weight: 500;
+        
+        &--speaking {
+            color: #00ff00;
+            font-weight: bold;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    }
+    
+    &__volume-level {
+        font-size: 10px;
+        color: #00ff00;
+        margin-left: 4px;
     }
 
     // Контролы
@@ -312,6 +324,41 @@
         margin: 4px 12px;
         border-radius: 8px;
         background: var(--secondary-bg);
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: var(--hover-bg);
+        }
+    }
+    
+    &__participant-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    &__participant-name {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    &__participant-status {
+        font-size: 11px;
+        color: var(--text-muted);
+        font-weight: 500;
+        
+        &--speaking {
+            color: #00ff00;
+            font-weight: bold;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    }
+    
+    &__participant-avatar {
+        flex-shrink: 0;
     }
 
     // Стили для контролов участников
@@ -438,6 +485,19 @@
     .voice-controls {
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
         border-top-color: #e9ecef;
+    }
+}
+
+// Анимация пульсации для говорящих пользователей
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
     }
 }
 

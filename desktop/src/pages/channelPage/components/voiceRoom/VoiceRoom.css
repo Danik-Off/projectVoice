@@ -41,6 +41,17 @@
 .user-box.speaking {
     background-color: #5865f2; /* Цвет для говорящих пользователей */
     transform: scale(1.05); /* Лёгкая анимация при разговоре */
+    box-shadow: 0 0 20px rgba(88, 101, 242, 0.5); /* Свечение для говорящих */
+}
+
+.user-box.local-user {
+    border: 2px solid #7289da; /* Отдельная рамка для локального пользователя */
+    margin-bottom: 20px;
+}
+
+.user-box.local-user.speaking {
+    border-color: #5865f2;
+    box-shadow: 0 0 25px rgba(88, 101, 242, 0.7);
 }
 
 .user-avatar {
@@ -68,4 +79,11 @@
 .user-status {
     font-size: 14px;
     opacity: 0.8;
+}
+
+.volume-indicator {
+    font-size: 12px;
+    margin-top: 5px;
+    color: #00ff00; /* Зеленый цвет для индикатора громкости */
+    font-weight: bold;
 }

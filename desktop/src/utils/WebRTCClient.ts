@@ -3,6 +3,7 @@ import { iceServers } from '../configs/iceServers';
 import { Signal } from '../types/WebRTCClient.types';
 import audioSettingsStore from '../store/AudioSettingsStore';
 import participantVolumeStore from '../store/ParticipantVolumeStore';
+import vadService from '../services/VoiceActivityDetectionService';
 class WebRTCClient {
     public sendSignal: null | ((signal: Signal) => void) = null;
 
@@ -21,11 +22,15 @@ class WebRTCClient {
 
     //управление Медиа
     public async initializeMedia() {
+        // Инициализируем VAD сервис
+        vadService.initialize();
+        
         reaction(
             () => audioSettingsStore.stream,
             (val) => {
                 console.log('🚀 ~ WebRTCClient ~ initializeMedia ~ val:', val);
                 this.resendlocalStream();
+                this.setupLocalVAD();
             },
         );
     }
@@ -233,6 +238,9 @@ class WebRTCClient {
                 gainNode.connect(audioContext.destination);
                 this.audioSources.set(id, source);
                 console.log('Аудио обработка настроена для участника:', id);
+                
+                // Настраиваем VAD для удаленного участника
+                this.setupRemoteVAD(id, remoteStream);
             }
         } catch (error) {
             console.error('Ошибка при настройке аудио обработки для участника:', id, error);
@@ -333,6 +341,9 @@ class WebRTCClient {
         this.gainNodes.delete(id);
         this.audioSources.delete(id);
 
+        // Останавливаем VAD для этого участника
+        vadService.stopMonitoring(id);
+
         // Удаляем из store громкости
         participantVolumeStore.removeParticipant(id);
     }
@@ -367,6 +378,34 @@ class WebRTCClient {
 
         // Очищаем store громкости
         participantVolumeStore.resetAllVolumes();
+        
+        // Очищаем VAD сервис
+        vadService.cleanup();
+    }
+
+    // Настройка VAD для локального потока (после gain)
+    private setupLocalVAD(): void {
+        if (audioSettingsStore.stream) {
+            // Используем обработанный поток после gain и фильтров
+            vadService.startMonitoring('local', audioSettingsStore.stream);
+            console.log('VAD настроен для локального потока');
+        }
+    }
+
+    // Настройка VAD для удаленного участника
+    private setupRemoteVAD(userId: string, remoteStream: MediaStream): void {
+        vadService.startMonitoring(userId, remoteStream);
+        console.log(`VAD настроен для удаленного участника: ${userId}`);
+    }
+
+    // Получить состояние активности речи пользователя
+    public getUserVoiceActivity(userId: string): boolean {
+        return vadService.getUserActivity(userId);
+    }
+
+    // Получить уровень громкости пользователя
+    public getUserVolumeLevel(userId: string): number {
+        return vadService.getUserVolume(userId);
     }
 }
 

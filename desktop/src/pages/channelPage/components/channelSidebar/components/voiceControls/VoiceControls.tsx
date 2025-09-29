@@ -9,6 +9,7 @@ import { useUserProfile } from '../../../../../../components/UserProfileProvider
 import ClickableAvatar from '../../../../../../components/ClickableAvatar';
 import audioSettingsStore from '../../../../../../store/AudioSettingsStore';
 import participantVolumeStore from '../../../../../../store/ParticipantVolumeStore';
+import VADSettings from '../../../../../../components/VADSettings/VADSettings';
 
 const VoiceControls: React.FC = observer(() => {
     const { t } = useTranslation();
@@ -16,11 +17,14 @@ const VoiceControls: React.FC = observer(() => {
     const [isDeafened, setIsDeafened] = useState<boolean>(false);
     const [showVolumeSlider, setShowVolumeSlider] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [showVADSettings, setShowVADSettings] = useState<boolean>(false);
     const { openProfile } = useUserProfile();
 
     const currentUser = authStore.user;
     const currentVoiceChannel = voiceRoomStore.currentVoiceChannel;
     const participants = voiceRoomStore.participants;
+    const isLocalSpeaking = voiceRoomStore.getLocalSpeakingState();
+    const localVolumeLevel = voiceRoomStore.getLocalVolumeLevel();
     
     // Фильтруем участников, исключая текущего пользователя
     const otherParticipants = participants.filter(participant => 
@@ -92,8 +96,13 @@ const VoiceControls: React.FC = observer(() => {
                         )}
                         <div className="voice-controls__user-details">
                             <span className="voice-controls__username">{currentUser?.username || 'User'}</span>
-                            <span className="voice-controls__status">
-                                {isMicOn ? t('voiceControls.speaking') : t('voiceControls.micOff')}
+                            <span className={`voice-controls__status ${isLocalSpeaking ? 'voice-controls__status--speaking' : ''}`}>
+                                {isLocalSpeaking ? '🎤 Говорит' : (isMicOn ? t('voiceControls.micOn') : t('voiceControls.micOff'))}
+                                {isLocalSpeaking && (
+                                    <span className="voice-controls__volume-level">
+                                        ({localVolumeLevel.toFixed(0)}%)
+                                    </span>
+                                )}
                             </span>
                         </div>
                     </div>
@@ -121,6 +130,14 @@ const VoiceControls: React.FC = observer(() => {
                             title={t('voiceControls.volume')}
                         >
                             ⚙️
+                        </button>
+                        
+                        <button 
+                            className="voice-controls__button voice-controls__button--vad-settings"
+                            onClick={() => setShowVADSettings(true)}
+                            title="Настройки VAD"
+                        >
+                            🎯
                         </button>
                         
                         <button 
@@ -181,8 +198,8 @@ const VoiceControls: React.FC = observer(() => {
                                         <span className="voice-controls__participant-name">
                                             {participant.userData?.username || 'Unknown User'}
                                         </span>
-                                        <span className="voice-controls__participant-status">
-                                            {participant.isSpeaking && `(${t('voiceControls.speaking')})`}
+                                        <span className={`voice-controls__participant-status ${participant.isSpeaking ? 'voice-controls__participant-status--speaking' : ''}`}>
+                                            {participant.isSpeaking ? `🎤 Говорит (${voiceRoomStore.getParticipantVolumeLevel(participant.socketId).toFixed(0)}%)` : (participant.micToggle ? '🔇 Молчит' : '🔇 Выключен')}
                                         </span>
                                     </div>
                                     <div className="voice-controls__participant-controls">
@@ -226,6 +243,12 @@ const VoiceControls: React.FC = observer(() => {
                     )}
                 </div>
             )}
+            
+            {/* VAD Settings Modal */}
+            <VADSettings 
+                isOpen={showVADSettings} 
+                onClose={() => setShowVADSettings(false)} 
+            />
         </div>
     );
 });

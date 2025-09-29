@@ -4,6 +4,7 @@ import { getCookie } from '../utils/cookie';
 import WebRTCClient from '../utils/WebRTCClient';
 import audioSettingsStore from './AudioSettingsStore';
 import notificationStore from './NotificationStore';
+import vadService, { VoiceActivityEvent } from '../services/VoiceActivityDetectionService';
 
 interface UserData {
     id: number;
@@ -33,6 +34,7 @@ class VoiceRoomStore {
         this.setupServerResponseListeners();
         this.setupWebRTCSenders();
         this.webRTCClient.initializeMedia();
+        this.setupVADListeners();
     }
 
     public connectToRoom(roomId: number, channelName?: string): void {
@@ -51,6 +53,10 @@ class VoiceRoomStore {
         
         runInAction(() => {
             this.currentVoiceChannel = null;
+            // Сбрасываем состояние активности речи для всех участников
+            this.participants.forEach(participant => {
+                participant.isSpeaking = false;
+            });
         });
     }
     public muteMicrophone() {
@@ -113,6 +119,42 @@ class VoiceRoomStore {
         this.webRTCClient.changeState = (id, event) => {
             console.log(`Изменен статус ${id}`, event);
         };
+    }
+
+    private setupVADListeners(): void {
+        vadService.addCallback((event: VoiceActivityEvent) => {
+            runInAction(() => {
+                const participant = this.participants.find(p => p.socketId === event.userId);
+                if (participant) {
+                    participant.isSpeaking = event.isActive;
+                    console.log(`VAD: ${participant.userData?.username || event.userId} ${event.isActive ? 'говорит' : 'молчит'} (${event.volume.toFixed(1)}%)`);
+                } else if (event.userId === 'local') {
+                    // Обрабатываем локального пользователя
+                    console.log(`VAD: Локальный пользователь ${event.isActive ? 'говорит' : 'молчит'} (${event.volume.toFixed(1)}%)`);
+                }
+            });
+        });
+    }
+
+    // Получить состояние активности речи для участника
+    public getParticipantSpeakingState(socketId: string): boolean {
+        const participant = this.participants.find(p => p.socketId === socketId);
+        return participant?.isSpeaking || false;
+    }
+
+    // Получить состояние активности речи для локального пользователя
+    public getLocalSpeakingState(): boolean {
+        return vadService.getUserActivity('local');
+    }
+
+    // Получить уровень громкости участника
+    public getParticipantVolumeLevel(socketId: string): number {
+        return vadService.getUserVolume(socketId);
+    }
+
+    // Получить уровень громкости локального пользователя
+    public getLocalVolumeLevel(): number {
+        return vadService.getUserVolume('local');
     }
 }
 const voiceRoomStore = new VoiceRoomStore();
