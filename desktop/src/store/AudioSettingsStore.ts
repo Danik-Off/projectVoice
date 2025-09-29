@@ -61,7 +61,7 @@ class AudioSettingsStore {
 
     public setLatency(latency: number) {
         this.latency = latency;
-        this.updateMediaStream();
+        // Задержка не требует пересоздания потока
     }
 
     public setChannelCount(channelCount: 'stereo' | 'mono') {
@@ -73,6 +73,10 @@ class AudioSettingsStore {
         const device = this.speakerDevices.find((device) => device.deviceId === deviceId);
         if (device) {
             this.selectedSpeaker = device;
+            // Применяем выбранное устройство к удаленным аудиоэлементам
+            import('./roomStore').then(({ default: roomStore }) => {
+                (roomStore as any).webRTCClient?.setRemoteAudioMuted(this.isSpeakerMuted);
+            });
         }
     }
 
@@ -86,7 +90,10 @@ class AudioSettingsStore {
 
     public setVolume(newVolume: number): void {
         this.volume = newVolume;
-        this.gainNode.gain.value = this.volume / 50;
+        if (this.gainNode) {
+            this.gainNode.gain.value = this.volume / 50;
+        }
+        // Не пересоздаем поток для изменения громкости
     }
 
     public toggleMicrophoneMute(): void {
@@ -152,7 +159,7 @@ class AudioSettingsStore {
                 audio: {
                     echoCancellation: this.echoCancellation,
                     noiseSuppression: this.noiseSuppression,
-                    autoGainControl: false,
+                    autoGainControl: this.autoGainControl,
                     sampleRate: this.sampleRate,
                     sampleSize: this.sampleSize,
                     channelCount: this.channelCount,
@@ -170,7 +177,7 @@ class AudioSettingsStore {
 
         // Создаем GainNode для регулировки громкости
         this.gainNode = this.audioContext.createGain();
-        this.gainNode.gain.value = 1; // Начальное значение громкости
+        this.gainNode.gain.value = this.volume / 50; // Используем текущее значение громкости
 
         // Подключаем источник к GainNode
         this.audioSource.connect(this.gainNode);
