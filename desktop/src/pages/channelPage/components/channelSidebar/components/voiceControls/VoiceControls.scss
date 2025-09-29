@@ -216,17 +216,19 @@
     // Расширенная панель
     &__expanded-panel {
         position: absolute;
-        bottom: 100%;
+        bottom: calc(100% + 8px);
         left: 0;
         right: 0;
         display: none;
         background: var(--background-primary);
-        border-bottom: 1px solid var(--border-color);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         backdrop-filter: blur(10px);
         max-height: 300px;
         overflow-y: auto;
         animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1001;
 
         &::-webkit-scrollbar {
             width: 4px;

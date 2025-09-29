@@ -21,6 +21,11 @@ const VoiceControls: React.FC = observer(() => {
     const currentUser = authStore.user;
     const currentVoiceChannel = voiceRoomStore.currentVoiceChannel;
     const participants = voiceRoomStore.participants;
+    
+    // Фильтруем участников, исключая текущего пользователя
+    const otherParticipants = participants.filter(participant => 
+        participant.userData?.id !== currentUser?.id
+    );
 
     const handleMicToggle = (): void => {
         audioSettingsStore.toggleMicrophoneMute();
@@ -141,9 +146,9 @@ const VoiceControls: React.FC = observer(() => {
             {isExpanded && (
                 <div className="voice-controls__expanded-panel">
                     <div className="voice-controls__participants-section">
-                        <h4 className="voice-controls__section-title">Участники ({participants.length})</h4>
+                        <h4 className="voice-controls__section-title">Участники ({otherParticipants.length})</h4>
                         <div className="voice-controls__participants-list">
-                            {participants.map((participant) => (
+                            {otherParticipants.map((participant) => (
                                 <div key={participant.socketId} className="voice-controls__participant">
                                     {participant.userData && (
                                         <ClickableAvatar

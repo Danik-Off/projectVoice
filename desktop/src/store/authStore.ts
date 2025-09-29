@@ -87,7 +87,7 @@ class AuthStore {
     public async register(username: string, email: string, password: string, redirect?: string | null): Promise<void> {
         try {
             this.loading = true;
-            const data = await authService.register(username, email, password);
+            const data = await authService.register( email,username, password);
             
             // После успешной регистрации получаем информацию о пользователе
             const userData = await authService.getMe();
