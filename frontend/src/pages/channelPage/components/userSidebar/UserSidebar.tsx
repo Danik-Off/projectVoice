@@ -7,6 +7,7 @@ import serverStore from '../../../../store/serverStore';
 const UserSidebar = observer(() => {
     // Загрузка пользователей, если список пуст
     useEffect(() => {}, []);
+    console.log(serverStore);
     return (
         <aside className="user-sidebar">
             <h3>Пользователи</h3>

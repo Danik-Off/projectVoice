@@ -14,6 +14,7 @@ class SocketClient {
 
     public connect() {
         if (this.socket && this.socket.connected) {
+            console.log('Соединение уже установлено');
             return;
         }
 
@@ -24,7 +25,7 @@ class SocketClient {
         });
 
         this.socket.on('connect', () => {
-            console.warn('Соединение с Socket.IO установлено');
+            console.log('Соединение с Socket.IO установлено');
         });
     }
 

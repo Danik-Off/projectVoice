@@ -25,19 +25,26 @@ const ServerSettings: React.FC = observer(() => {
     const currentUser = authStore.user;
     const server = serverStore.currentServer;
 
-
+    // Отладочная информация для пользователя
+    console.log('ServerSettings - currentUser:', currentUser);
+    console.log('ServerSettings - authStore.isAuthenticated:', authStore.isAuthenticated);
+    console.log('ServerSettings - authStore.token:', authStore.getToken());
 
     const loadServerData = useCallback(async () => {
         if (!serverId) return;
         
+        console.log('Loading server data for serverId:', serverId);
         setLoading(true);
         try {
             // Загружаем данные сервера
+            console.log('Fetching server by ID:', parseInt(serverId));
             await serverStore.fetchServerById(parseInt(serverId));
+            console.log('Server data loaded:', serverStore.currentServer);
 
             // Загружаем участников сервера
+            console.log('Fetching server members for serverId:', parseInt(serverId));
             const membersData = await serverMembersService.getServerMembers(parseInt(serverId));
-
+            console.log('Members data loaded:', membersData);
             setMembers(membersData);
             
         } catch (error) {
@@ -57,6 +64,7 @@ const ServerSettings: React.FC = observer(() => {
     // Загружаем данные пользователя при монтировании компонента
     useEffect(() => {
         if (!currentUser && authStore.isAuthenticated) {
+            console.log('Loading user data...');
             authStore.loadUserData();
         }
     }, [currentUser]);
@@ -190,6 +198,12 @@ const ServerSettings: React.FC = observer(() => {
     const currentUserMember = members.find(member => member.userId === currentUserId);
     const currentUserRole = currentUserMember?.role || (isOwner ? 'owner' : 'member');
     const canManageServer = ['owner', 'admin'].includes(currentUserRole);
+
+    console.log('ServerSettings - currentUserId:', currentUserId);
+    console.log('ServerSettings - server.ownerId:', server?.ownerId);
+    console.log('ServerSettings - isOwner:', isOwner);
+    console.log('ServerSettings - currentUserRole:', currentUserRole);
+    console.log('ServerSettings - canManageServer:', canManageServer);
 
     if (!canManageServer) {
         return (

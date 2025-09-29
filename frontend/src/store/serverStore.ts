@@ -78,6 +78,7 @@ class ServerStore {
         
         try {
             const newServer: Server = await serverService.create(serverData);
+            console.log('🚀 ~ ServerStore ~ createServer ~ newServer:', newServer);
             runInAction(() => {
                 this.servers.push(newServer);
             });
@@ -128,6 +129,7 @@ class ServerStore {
                     this.currentServer = null;
                 }
             });
+            console.log('Сервер удален из store, обновленный список:', this.servers);
         } catch (error) {
             runInAction(() => {
                 this.error = (error as Error).message;

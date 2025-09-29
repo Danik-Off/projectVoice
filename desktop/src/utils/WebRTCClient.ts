@@ -237,6 +237,7 @@ class WebRTCClient {
                 source.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 this.audioSources.set(id, source);
+                console.log('Аудио обработка настроена для участника:', id);
                 
                 // Настраиваем VAD для удаленного участника
                 this.setupRemoteVAD(id, remoteStream);
@@ -257,18 +258,24 @@ class WebRTCClient {
                     newAudioTrack.enabled = !audioSettingsStore.isMicrophoneMuted;
                 }
             });
-        } 
+        } else {
+            console.log('🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:', this.localStream);
+            console.error('чего то нет ');
+        }
     }
 
     private addLocalStream(id: string): void {
         const peerConnection = this.peerConnections.get(id);
-      
+        console.log('add-local-stream', peerConnection);
         if (audioSettingsStore.stream) {
             audioSettingsStore.stream.getTracks().forEach((track) => {
                 //Если существет локальный стрим и пир для подключения то рассылаем стрим
                 peerConnection && peerConnection.addTrack(track, audioSettingsStore.stream);
                 track.enabled = !audioSettingsStore.isMicrophoneMuted;
             });
+        } else {
+            console.log('🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:', this.localStream);
+            console.error('чего то нет ');
         }
     }
 
@@ -309,6 +316,7 @@ class WebRTCClient {
         if (peerConnection) {
             peerConnection.close();
             this.peerConnections.delete(id);
+            console.log(`Соединение с пользователем ${id} закрыто`);
         }
 
         const remoteStream = this.remoteStreams.get(id);
@@ -380,12 +388,14 @@ class WebRTCClient {
         if (audioSettingsStore.stream) {
             // Используем обработанный поток после gain и фильтров
             vadService.startMonitoring('local', audioSettingsStore.stream);
+            console.log('VAD настроен для локального потока');
         }
     }
 
     // Настройка VAD для удаленного участника
     private setupRemoteVAD(userId: string, remoteStream: MediaStream): void {
         vadService.startMonitoring(userId, remoteStream);
+        console.log(`VAD настроен для удаленного участника: ${userId}`);
     }
 
     // Получить состояние активности речи пользователя

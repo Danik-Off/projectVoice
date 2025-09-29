@@ -35,17 +35,24 @@ const InvitePage: React.FC = observer(() => {
 
     const isAuthenticated = authStore.isAuthenticated;
 
+    console.log('InvitePage rendered with token:', token);
+
     const fetchInviteData = useCallback(async () => {
+        console.log('Fetching invite data for token:', token);
+        console.log('API URL:', `${API_URL}/invite/invite/${token}`);
+        
         try {
             const response = await fetch(`${API_URL}/invite/invite/${token}`);
+            console.log('Response status:', response.status);
             
             if (!response.ok) {
                 const errorData = await response.json();
+                console.log('Error data:', errorData);
                 throw new Error(errorData.error || t('invitePage.error'));
             }
 
             const data = await response.json();
-
+            console.log('Invite data received:', data);
             setInviteData(data.invite);
             setServerData(data.server);
         } catch (err) {

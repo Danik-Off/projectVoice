@@ -17,21 +17,6 @@ module.exports = (io) => {
 
         //TODO отказаться здесь от токена ?
         async function handleJoinRoomRequest(roomId, token) {
-            // Проверяем, есть ли уже пользователь с таким токеном в комнате
-            const existingUser = getRoomParticipants(roomId).find(user => user.token === token);
-            
-            if (existingUser) {
-                console.log(`Переподключение пользователя: отключаем старое соединение ${existingUser.socketId}`);
-                // Отключаем старое соединение
-                const oldSocket = io.sockets.sockets.get(existingUser.socketId);
-                if (oldSocket) {
-                    oldSocket.emit('force-disconnect', 'Переподключение с нового устройства');
-                    oldSocket.disconnect();
-                }
-                // Удаляем старую запись
-                removeUserFromRoom(roomId, existingUser.socketId);
-            }
-
             await addUserToRoom(roomId, { token, micToggle: true, socketId: socket.id });
 
             socket.join(roomId);
@@ -47,12 +32,10 @@ module.exports = (io) => {
 
             // Сообщаем всем остальным в комнате, что новый пользователь присоединился
             const currentUser = getUserBySocketId(socket.id);
-            if (currentUser) {
-                socket.to(roomId).emit('user-connected', { 
-                    socketId: socket.id,
-                    userData: currentUser.userData
-                });
-            }
+            socket.to(roomId).emit('user-connected', { 
+                socketId: socket.id,
+                userData: currentUser?.userData || { username: 'Unknown User' }
+            });
 
             socket.on('disconnect', handleDisconnect);
             socket.on('leave-room', handleDisconnect);
