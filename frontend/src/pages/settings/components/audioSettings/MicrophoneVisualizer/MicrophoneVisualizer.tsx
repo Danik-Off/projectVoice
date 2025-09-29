@@ -9,7 +9,6 @@ const MicrophoneVisualizer: React.FC = () => {
     const analyserRef = useRef<AnalyserNode | null>(null);
     const animationFrameRef = useRef<number | null>(null);
     const [isActive, setIsActive] = useState(false);
-    const [volume, setVolume] = useState(0);
 
     useEffect(() => {
         const setupMicrophone = async () => {

@@ -18,7 +18,7 @@ class WebRTCClient {
     public async initializeMedia() {
         reaction(
             () => audioSettingsStore.stream,
-            (val) => {
+            (val: any) => {
                 console.log('🚀 ~ WebRTCClient ~ initializeMedia ~ val:', val);
                 this.resendlocalStream();
             },

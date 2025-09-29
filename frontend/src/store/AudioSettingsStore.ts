@@ -87,84 +87,7 @@ class AudioSettingsStore {
         this.gainNode.gain.value = this.volume / 50;
     }
 
-    // Получение списка аудиоустройств
-    private fetchAudioDevices = async () => {
-        try {
-            const devices = await navigator.mediaDevices.enumerateDevices();
 
-            runInAction(() => {
-                this.microphoneDevices = devices.filter((device) => device.kind === 'audioinput');
-                this.speakerDevices = devices.filter((device) => device.kind === 'audiooutput');
-                this.selectedMicrophone = this.microphoneDevices[0];
-                this.selectedSpeaker = this.speakerDevices[0];
-            });
-        } catch (error) {
-            console.error('Error fetching audio devices:', error);
-        }
-    };
-
-    private async updateMediaStream() {
-        await this.ensureAudioContextIsRunning();
-        runInAction(async () => {
-            this._stream = await navigator.mediaDevices.getUserMedia({
-                audio: {
-                    echoCancellation: this.echoCancellation,
-                    noiseSuppression: this.noiseSuppression,
-                    autoGainControl: false,
-                    sampleRate: this.sampleRate,
-                    sampleSize: this.sampleSize,
-                    channelCount: this.channelCount,
-                    deviceId: this.selectedMicrophone?.deviceId,
-                    groupId: this.selectedMicrophone?.groupId,
-                } as MediaTrackConstraints,
-                video: false,
-            });
-            this.prepareMediaStream();
-        });
-    }
-    private prepareMediaStream() {
-        // Создаем источник из потока микрофона
-        this.audioSource = this.audioContext.createMediaStreamSource(this._stream);
-
-        // Создаем GainNode для регулировки громкости
-        this.gainNode = this.audioContext.createGain();
-        this.gainNode.gain.value = 1; // Начальное значение громкости
-
-        // Подключаем источник к GainNode
-        this.audioSource.connect(this.gainNode);
-
-        // Создаем destination, в который будут включены фильтры
-        const destination = this.audioContext.createMediaStreamDestination();
-
-        // Создаем фильтры для улучшения голоса и подключаем их к GainNode
-        const { highpassFilter, lowpassFilter } = this.createVoiceEnhancementFilters();
-        this.gainNode.connect(highpassFilter);
-        highpassFilter.connect(lowpassFilter);
-        lowpassFilter.connect(destination); // Подключаем выходной поток фильтров к destination
-
-        // Сохраняем новый поток
-        this.stream = destination.stream;
-    }
-
-    private async ensureAudioContextIsRunning() {
-        if (this.audioContext.state === 'suspended') {
-            await this.audioContext.resume();
-        }
-    }
-
-    private createVoiceEnhancementFilters() {
-        // Создаем высокочастотный фильтр для удаления низкочастотных шумов
-        const highpassFilter = this.audioContext.createBiquadFilter();
-        highpassFilter.type = 'highpass';
-        highpassFilter.frequency.value = 300; // Срезаем частоты ниже 300 Гц
-
-        // Создаем низкочастотный фильтр для удаления высокочастотных шумов
-        const lowpassFilter = this.audioContext.createBiquadFilter();
-        lowpassFilter.type = 'lowpass';
-        lowpassFilter.frequency.value = 3400; // Срезаем частоты выше 3400 Гц
-
-        return { highpassFilter, lowpassFilter };
-    }
 
     public testSpeakers(): void {
         if (!this.selectedSpeaker) {
@@ -235,6 +158,84 @@ class AudioSettingsStore {
         // Запуск проверки
         checkMicrophone();
     }
+        // Получение списка аудиоустройств
+        private fetchAudioDevices = async () => {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+    
+                runInAction(() => {
+                    this.microphoneDevices = devices.filter((device) => device.kind === 'audioinput');
+                    this.speakerDevices = devices.filter((device) => device.kind === 'audiooutput');
+                    this.selectedMicrophone = this.microphoneDevices[0];
+                    this.selectedSpeaker = this.speakerDevices[0];
+                });
+            } catch (error) {
+                console.error('Error fetching audio devices:', error);
+            }
+        };
+    
+        private async updateMediaStream() {
+            await this.ensureAudioContextIsRunning();
+            runInAction(async () => {
+                this._stream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        echoCancellation: this.echoCancellation,
+                        noiseSuppression: this.noiseSuppression,
+                        autoGainControl: false,
+                        sampleRate: this.sampleRate,
+                        sampleSize: this.sampleSize,
+                        channelCount: this.channelCount,
+                        deviceId: this.selectedMicrophone?.deviceId,
+                        groupId: this.selectedMicrophone?.groupId,
+                    } as MediaTrackConstraints,
+                    video: false,
+                });
+                this.prepareMediaStream();
+            });
+        }
+        private prepareMediaStream() {
+            // Создаем источник из потока микрофона
+            this.audioSource = this.audioContext.createMediaStreamSource(this._stream);
+    
+            // Создаем GainNode для регулировки громкости
+            this.gainNode = this.audioContext.createGain();
+            this.gainNode.gain.value = 1; // Начальное значение громкости
+    
+            // Подключаем источник к GainNode
+            this.audioSource.connect(this.gainNode);
+    
+            // Создаем destination, в который будут включены фильтры
+            const destination = this.audioContext.createMediaStreamDestination();
+    
+            // Создаем фильтры для улучшения голоса и подключаем их к GainNode
+            const { highpassFilter, lowpassFilter } = this.createVoiceEnhancementFilters();
+            this.gainNode.connect(highpassFilter);
+            highpassFilter.connect(lowpassFilter);
+            lowpassFilter.connect(destination); // Подключаем выходной поток фильтров к destination
+    
+            // Сохраняем новый поток
+            this.stream = destination.stream;
+        }
+    
+        private async ensureAudioContextIsRunning() {
+            if (this.audioContext.state === 'suspended') {
+                await this.audioContext.resume();
+            }
+        }
+    
+        private createVoiceEnhancementFilters() {
+            // Создаем высокочастотный фильтр для удаления низкочастотных шумов
+            const highpassFilter = this.audioContext.createBiquadFilter();
+            highpassFilter.type = 'highpass';
+            highpassFilter.frequency.value = 300; // Срезаем частоты ниже 300 Гц
+    
+            // Создаем низкочастотный фильтр для удаления высокочастотных шумов
+            const lowpassFilter = this.audioContext.createBiquadFilter();
+            lowpassFilter.type = 'lowpass';
+            lowpassFilter.frequency.value = 3400; // Срезаем частоты выше 3400 Гц
+    
+            return { highpassFilter, lowpassFilter };
+        }
 }
 
 const audioSettingsStore = new AudioSettingsStore();
