@@ -121,6 +121,12 @@ class AudioSettingsStore {
             // Включаем звук колонок
             this.gainNode.gain.value = this.volume / 50;
         }
+        
+        // Управляем удаленными аудиоэлементами через roomStore
+        import('./roomStore').then(({ default: roomStore }) => {
+            // Используем экземпляр WebRTCClient из roomStore
+            (roomStore as any).webRTCClient?.setRemoteAudioMuted(this.isSpeakerMuted);
+        });
     }
 
     // Получение списка аудиоустройств

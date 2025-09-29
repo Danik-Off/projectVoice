@@ -9,6 +9,7 @@ class WebRTCClient {
 
     private readonly remoteStreams: Map<string, MediaStream> = new Map();
     private readonly peerConnections: Map<string, RTCPeerConnection> = new Map();
+    private readonly remoteAudioElements: Map<string, HTMLAudioElement> = new Map();
 
     private localStream: MediaStream | null = null;
 
@@ -155,7 +156,9 @@ class WebRTCClient {
             const audioElement = document.createElement('audio');
             audioElement.srcObject = remoteStream;
             audioElement.autoplay = true;
+            audioElement.muted = audioSettingsStore.isSpeakerMuted; // Синхронизируем с состоянием mute
             document.body.appendChild(audioElement);
+            this.remoteAudioElements.set(id, audioElement); // Сохраняем ссылку
         } else {
             console.log('remoteStream не существует ');
         }
@@ -197,6 +200,13 @@ class WebRTCClient {
 
     private setState(): void {}
 
+    // Управление состоянием mute для всех удаленных аудиоэлементов
+    public setRemoteAudioMuted(muted: boolean): void {
+        this.remoteAudioElements.forEach((audioElement) => {
+            audioElement.muted = muted;
+        });
+    }
+
     // отключение
 
     // если пользователь отключился
@@ -212,6 +222,13 @@ class WebRTCClient {
         if (remoteStream) {
             remoteStream.getTracks().forEach((track) => track.stop());
             this.remoteStreams.delete(id);
+        }
+
+        // Удаляем аудиоэлемент
+        const audioElement = this.remoteAudioElements.get(id);
+        if (audioElement) {
+            audioElement.remove();
+            this.remoteAudioElements.delete(id);
         }
     }
     // когда мы сами отключаемся
@@ -231,6 +248,12 @@ class WebRTCClient {
             stream.getTracks().forEach((track) => track.stop());
         });
         this.remoteStreams.clear();
+
+        // Удаляем все аудиоэлементы
+        this.remoteAudioElements.forEach((audioElement) => {
+            audioElement.remove();
+        });
+        this.remoteAudioElements.clear();
     }
 }
 
