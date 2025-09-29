@@ -36,6 +36,10 @@ class SocketClient {
     public socketEmit(ev: string, ...args: any) {
         this.socket && this.socket.emit(ev, ...args);
     }
+
+    public getSocketId(): string | undefined {
+        return this.socket?.id;
+    }
 }
 
 export default SocketClient;

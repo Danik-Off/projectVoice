@@ -73,19 +73,26 @@ class VoiceRoomStore {
         this.socketClient.socketOn('created', (room) => {
             console.log(`Вы подключены `, room);
             runInAction(() => {
-                this.participants = room.participants;
+                // Исключаем локального пользователя из списка участников
+                // так как он отображается отдельно в UI
+                this.participants = room.participants.filter((participant: Participant) => 
+                    participant.socketId !== this.socketClient.getSocketId()
+                );
             });
         });
         this.socketClient.socketOn('user-connected', (user: { socketId: string; userData: UserData }) => {
             console.log(`Пользователь ${user.userData?.username || user.socketId} подключен`);
             this.webRTCClient.createOffer(user.socketId);
             runInAction(() => {
-                this.participants.push({
-                    socketId: user.socketId,
-                    micToggle: true,
-                    userData: user.userData,
-                    isSpeaking: false
-                });
+                // Проверяем, что это не локальный пользователь
+                if (user.socketId !== this.socketClient.getSocketId()) {
+                    this.participants.push({
+                        socketId: user.socketId,
+                        micToggle: true,
+                        userData: user.userData,
+                        isSpeaking: false
+                    });
+                }
             });
             notificationStore.addNotification(`${user.userData?.username || 'Пользователь'} присоединился к голосовому каналу`, 'info');
         });
