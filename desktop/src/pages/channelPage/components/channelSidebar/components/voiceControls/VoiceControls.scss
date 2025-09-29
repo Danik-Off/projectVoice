@@ -139,7 +139,7 @@
         height: 44px;
         border: none;
         border-radius: 10px;
-        background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background-tertiary) 100%);
+        background: linear-gradient(135deg, var(--background-secondary) 0%, var(white) 100%);
         color: var(--text-primary);
         cursor: pointer;
         font-size: 16px;
@@ -217,10 +217,10 @@
     &__expanded-panel {
         position: absolute;
         bottom: calc(100% + 8px);
-        left: 0;
+        width: 400px;
         right: 0;
         display: none;
-        background: var(--background-primary);
+        background: var(--background-secondary);
         border: 1px solid var(--border-color);
         border-radius: 8px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -239,7 +239,7 @@
         }
 
         &::-webkit-scrollbar-thumb {
-            background: var(--background-tertiary);
+            background: var(white);
             border-radius: 2px;
 
             &:hover {
@@ -249,7 +249,7 @@
     }
 
     &__participants-section {
-        padding: 16px 24px;
+        padding: 16px 12px;
         border-bottom: 1px solid var(--border-color);
     }
 
@@ -283,72 +283,35 @@
 
     &__participants-list {
         padding: 8px 0;
+        max-height: 200px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(white);
+            border-radius: 2px;
+
+            &:hover {
+                background: var(--border-color);
+            }
+        }
     }
 
     &__participant {
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 8px 24px;
-        transition: all 0.2s ease;
-
-        &:hover {
-            background: var(--background-secondary);
-        }
-
-        .participant-avatar {
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .participant-info {
-            flex: 1;
-            min-width: 0;
-
-            .participant-name {
-                font-size: 14px;
-                font-weight: 500;
-                color: var(--text-primary);
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .participant-status {
-                font-size: 11px;
-                color: var(--text-muted);
-            }
-        }
-
-        .participant-controls {
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
-            align-items: center;
-
-            .control-icon {
-                width: 16px;
-                height: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--text-muted);
-                font-size: 12px;
-
-                &.speaking {
-                    color: #43b581;
-                    animation: pulse 1s ease-in-out infinite;
-                }
-
-                &.muted {
-                    color: #e74c3c;
-                }
-
-                &.deafened {
-                    color: #f39c12;
-                }
-            }
-        }
+        padding: 12px 20px;
+        margin: 4px 12px;
+        border-radius: 8px;
+        background: var(--secondary-bg);
     }
 
     // Стили для контролов участников
@@ -379,7 +342,7 @@
         -webkit-appearance: none;
         appearance: none;
         height: 4px;
-        background: var(--background-tertiary);
+        background: var(white);
         border-radius: 2px;
         outline: none;
         flex: 1;

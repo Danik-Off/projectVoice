@@ -171,10 +171,12 @@ class WebRTCClient {
             this.audioContexts.set(id, audioContext);
             this.gainNodes.set(id, gainNode);
             
+            // Создаем аудио элемент, но не добавляем его в DOM
+            // Используем только для получения потока
             const audioElement = document.createElement('audio');
             audioElement.srcObject = remoteStream;
             audioElement.autoplay = true;
-            audioElement.muted = audioSettingsStore.isSpeakerMuted; // Синхронизируем с состоянием mute
+            audioElement.muted = true; // Всегда muted, используем только Web Audio API
             
             // Добавляем обработчик для события loadedmetadata
             audioElement.addEventListener('loadedmetadata', () => {
@@ -186,7 +188,7 @@ class WebRTCClient {
                 }
             });
             
-            document.body.appendChild(audioElement);
+            // Не добавляем в DOM, используем только для Web Audio API
             this.remoteAudioElements.set(id, audioElement); // Сохраняем ссылку
         } else {
             console.log('remoteStream не существует ');
@@ -273,8 +275,14 @@ class WebRTCClient {
 
     // Управление состоянием mute для всех удаленных аудиоэлементов
     public setRemoteAudioMuted(muted: boolean): void {
-        this.remoteAudioElements.forEach((audioElement) => {
-            audioElement.muted = muted;
+        this.gainNodes.forEach((gainNode, socketId) => {
+            if (muted) {
+                gainNode.gain.value = 0;
+            } else {
+                // Восстанавливаем громкость из store
+                const volume = participantVolumeStore.getParticipantVolume(socketId);
+                gainNode.gain.value = volume / 100;
+            }
         });
     }
 
@@ -312,7 +320,7 @@ class WebRTCClient {
         // Удаляем аудиоэлемент
         const audioElement = this.remoteAudioElements.get(id);
         if (audioElement) {
-            audioElement.remove();
+            // Не нужно удалять из DOM, так как мы его не добавляли
             this.remoteAudioElements.delete(id);
         }
 
@@ -346,10 +354,7 @@ class WebRTCClient {
         });
         this.remoteStreams.clear();
 
-        // Удаляем все аудиоэлементы
-        this.remoteAudioElements.forEach((audioElement) => {
-            audioElement.remove();
-        });
+        // Очищаем все аудиоэлементы
         this.remoteAudioElements.clear();
 
         // Закрываем все аудио контексты
