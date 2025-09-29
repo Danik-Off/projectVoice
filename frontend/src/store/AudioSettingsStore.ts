@@ -116,8 +116,6 @@ class AudioSettingsStore {
 
         // Останавливаем осциллятор через 1 секунду
         oscillator.stop(audioContext.currentTime + 1);
-
-        console.log('Тестирование динамиков...');
     }
 
     public testMicrophone(): void {
@@ -143,14 +141,6 @@ class AudioSettingsStore {
         // Функция для анализа звука
         const checkMicrophone = () => {
             analyser.getFloatFrequencyData(buffer);
-
-            // Проверка, если есть значительная активность на микрофоне
-            if (buffer.some((value) => value > -50)) {
-                // Примерная пороговая величина
-                console.log('Микрофон работает, есть звук');
-            } else {
-                console.log('Микрофон не регистрирует звук');
-            }
 
             requestAnimationFrame(checkMicrophone);
         };

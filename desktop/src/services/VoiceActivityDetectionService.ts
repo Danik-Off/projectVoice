@@ -24,7 +24,7 @@ class VoiceActivityDetectionService {
     private volumeHistory: Map<string, number[]> = new Map();
     
     private config: VADConfig = {
-        threshold: 30, // Порог 30%
+        threshold: 10, // Порог 10% (снижен для лучшей чувствительности)
         silenceTimeout: 1000, // 1 секунда тишины
         minSpeechDuration: 200, // Минимально 200мс речи
         smoothingFactor: 0.7 // Сглаживание 70%
@@ -139,7 +139,7 @@ class VoiceActivityDetectionService {
 
         const animate = () => {
             // Получаем данные о частотах
-            analyser.getByteFrequencyData(dataArray);
+            analyser.getByteFrequencyData(dataArray as any);
             
             // Вычисляем средний уровень громкости
             const average = this.calculateAverageVolume(dataArray);
@@ -166,7 +166,13 @@ class VoiceActivityDetectionService {
         for (let i = 0; i < dataArray.length; i++) {
             sum += dataArray[i];
         }
-        return (sum / dataArray.length) * 100; // Конвертируем в проценты
+        const average = sum / dataArray.length;
+        // Конвертируем в проценты и добавляем отладочную информацию
+        const percentage = (average / 255) * 100;
+        if (percentage > 5) { // Логируем только если есть звук
+            console.log(`VAD: Volume level: ${percentage.toFixed(1)}%`);
+        }
+        return percentage;
     }
 
     private applySmoothing(userId: string, currentVolume: number): number {

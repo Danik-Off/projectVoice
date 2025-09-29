@@ -23,17 +23,27 @@ const addUserToRoom = async (roomId, user) => {
         rooms[roomId] = [];
     }
 
-    // Проверка на дублирование пользователя в комнате
-    const existingUser = rooms[roomId].find((u) => u.socketId === user.socketId);
-    if (!existingUser) {
-        // Получаем данные пользователя из базы данных
-        const userData = await getUserDataFromToken(user.token);
-        const userWithData = {
-            ...user,
-            userData: userData || { username: 'Unknown User' }
-        };
-        rooms[roomId].push(userWithData);
+    // Получаем данные пользователя из базы данных
+    const userData = await getUserDataFromToken(user.token);
+    if (!userData) {
+        console.log(`Не удалось получить данные пользователя для токена`);
+        return;
     }
+
+    // Проверка на дублирование пользователя в комнате по userId
+    const existingUserById = rooms[roomId].find((u) => u.userData?.id === userData.id);
+    if (existingUserById) {
+        console.log(`Пользователь с ID ${userData.id} уже существует в комнате ${roomId}, удаляем старую запись`);
+        // Удаляем старую запись
+        rooms[roomId] = rooms[roomId].filter((u) => u.userData?.id !== userData.id);
+    }
+
+    const userWithData = {
+        ...user,
+        userData: userData
+    };
+    rooms[roomId].push(userWithData);
+    console.log(`Пользователь ${userData.username} добавлен в комнату ${roomId}`);
 };
 
 // Удалить пользователя из комнаты

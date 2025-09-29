@@ -80,12 +80,16 @@ class VoiceRoomStore {
             console.log(`Пользователь ${user.userData?.username || user.socketId} подключен`);
             this.webRTCClient.createOffer(user.socketId);
             runInAction(() => {
-                this.participants.push({
-                    socketId: user.socketId,
-                    micToggle: true,
-                    userData: user.userData,
-                    isSpeaking: false
-                });
+                // Проверяем, не существует ли уже участник с таким socketId
+                const existingParticipant = this.participants.find(p => p.socketId === user.socketId);
+                if (!existingParticipant) {
+                    this.participants.push({
+                        socketId: user.socketId,
+                        micToggle: true,
+                        userData: user.userData,
+                        isSpeaking: false
+                    });
+                }
             });
             notificationStore.addNotification(`${user.userData?.username || 'Пользователь'} присоединился к голосовому каналу`, 'info');
         });
@@ -110,6 +114,11 @@ class VoiceRoomStore {
         });
         this.socketClient.socketOn('disconnect', () => {
             console.log('Соединение с Socket.IO закрыто');
+        });
+        this.socketClient.socketOn('force-disconnect', (reason: string) => {
+            console.log('Принудительное отключение:', reason);
+            notificationStore.addNotification('Переподключение с нового устройства', 'info');
+            this.disconnectToRoom();
         });
     }
     private setupWebRTCSenders() {

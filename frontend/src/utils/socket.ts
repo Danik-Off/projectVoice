@@ -49,7 +49,6 @@ class SocketClient {
             this.localStream.getAudioTracks().forEach((track) => {
                 track.enabled = false; // Mute the audio track
             });
-            console.log('Микрофон отключен');
             this.socket?.emit('mute');
             this.isMuteMicro = true;
         }
@@ -60,7 +59,6 @@ class SocketClient {
             this.localStream.getAudioTracks().forEach((track) => {
                 track.enabled = true; // Unmute the audio track
             });
-            console.log('Микрофон включен');
             this.socket?.emit('unmute');
             this.isMuteMicro = false;
         }
@@ -68,7 +66,6 @@ class SocketClient {
 
     public connect(channelId: number) {
         if (this.socket && this.socket.connected) {
-            console.log('Соединение уже установлено');
             return;
         }
 
@@ -81,37 +78,32 @@ class SocketClient {
         });
 
         this.socket.on('connect', () => {
-            console.log('Соединение с Socket.IO установлено');
             this.socket?.emit('join-room', channelId, this.token);
         });
 
         this.socket.on('created', async (user: { socketId: string }) => {
-            console.log(`Пользователь ${user.socketId} подключен`);
             await this.initializeMedia(); // Initialize media
         });
 
         this.socket.on('user-connected', async (user: { socketId: string }) => {
-            console.log(`Пользователь ${user.socketId} подключен`);
             await this.initializeMedia(); // Initialize media
             this.createOffer(user.socketId); // Initiate connection with the new user
         });
 
         this.socket.on('user-disconnected', (socketId: string) => {
-            console.log(`Пользователь ${socketId} отключен`);
             this.disconnectPeer(socketId); // Close connection with the disconnected user
         });
 
-        this.socket.on('signal', (data) => {
-            console.log(data);
+        this.socket.on('signal', (data: any) => {
             this.handleSignal(data);
         });
 
-        this.socket.on('connect_error', (error) => {
+        this.socket.on('connect_error', (error: any) => {
             console.error('Ошибка Socket.IO подключения:', error);
         });
 
         this.socket.on('disconnect', () => {
-            console.log('Соединение с Socket.IO закрыто');
+            console.warn('Соединение с Socket.IO закрыто');
         });
     }
 
@@ -163,10 +155,6 @@ class SocketClient {
         peerConnection.ontrack = (event) => {
             if (!this.remoteStreams[targetUserId]) {
                 this.remoteStreams[targetUserId] = new MediaStream();
-                console.log(
-                    'Удалённый поток добавлен для пользователя:',
-                    targetUserId
-                );
                 const audioElement = document.createElement('audio');
                 audioElement.srcObject = this.remoteStreams[targetUserId];
                 audioElement.autoplay = true;
@@ -231,7 +219,6 @@ class SocketClient {
             );
             await this.createAnswer(from); // Reply to the user who sent the offer
         } else if (type === 'answer') {
-            console.log('🚀 ~ SocketClient ~ handleSignal ~ data:', data);
             await this.peerConnections[from].setRemoteDescription(
                 new RTCSessionDescription({ type, sdp })
             );
@@ -246,7 +233,6 @@ class SocketClient {
         if (this.peerConnections[socketId]) {
             this.peerConnections[socketId].close(); // Close the connection
             delete this.peerConnections[socketId]; // Remove from storage
-            console.log(`Соединение с пользователем ${socketId} закрыто`);
         }
         if (this.remoteStreams[socketId]) {
             this.remoteStreams[socketId]
@@ -259,7 +245,6 @@ class SocketClient {
     public disconnect() {
         if (this.socket) {
             this.socket.disconnect();
-            console.log('Socket.IO соединение закрыто');
         }
         Object.values(this.peerConnections).forEach((peerConnection) =>
             peerConnection.close()

@@ -61,17 +61,15 @@ class VoiceRoomStore {
     }
 
     private setupServerResponseListeners() {
-        this.socketClient.socketOn('connect', () => {
-            console.log('Соединение с Socket.IO установлено');
-        });
+        // this.socketClient.socketOn('connect', () => {
+        //     console.log('Соединение с Socket.IO установлено');
+        // });
         this.socketClient.socketOn('created', (room) => {
-            console.log(`Вы подключены `, room);
             runInAction(() => {
                 this.participants = room.participants;
             });
         });
         this.socketClient.socketOn('user-connected', (user: { socketId: string; userData: UserData }) => {
-            console.log(`Пользователь ${user.userData?.username || user.socketId} подключен`);
             this.webRTCClient.createOffer(user.socketId);
             runInAction(() => {
                 this.participants.push({
@@ -84,7 +82,6 @@ class VoiceRoomStore {
             notificationStore.addNotification(`${user.userData?.username || 'Пользователь'} присоединился к голосовому каналу`, 'info');
         });
         this.socketClient.socketOn('user-disconnected', (socketId: string) => {
-            console.log(`Пользователь отключен: ${socketId}`);
             const disconnectedUser = this.participants.find(user => user.socketId === socketId);
             this.webRTCClient.disconnectPeer(socketId);
             runInAction(() => {
@@ -95,7 +92,6 @@ class VoiceRoomStore {
             }
         });
         this.socketClient.socketOn('signal', (data) => {
-            console.log(`Сигнал`, data);
             this.webRTCClient.handleSignal(data);
         });
         this.socketClient.socketOn('connect_error', (error) => {
@@ -103,7 +99,7 @@ class VoiceRoomStore {
             notificationStore.addNotification('notifications.voiceConnectError', 'error');
         });
         this.socketClient.socketOn('disconnect', () => {
-            console.log('Соединение с Socket.IO закрыто');
+            console.warn('Соединение с Socket.IO закрыто');
         });
     }
     private setupWebRTCSenders() {
@@ -111,7 +107,7 @@ class VoiceRoomStore {
             this.socketClient.socketEmit('signal', signal);
         };
         this.webRTCClient.changeState = (id, event) => {
-            console.log(`Изменен статус ${id}`, event);
+            console.warn(`Изменен статус ${id}`, event);
         };
     }
 }

@@ -19,7 +19,6 @@ class WebRTCClient {
         reaction(
             () => audioSettingsStore.stream,
             (val: any) => {
-                console.log('🚀 ~ WebRTCClient ~ initializeMedia ~ val:', val);
                 this.resendlocalStream();
             },
         );
@@ -27,13 +26,11 @@ class WebRTCClient {
 
     //Логика подключения
     public createPeerConnection(id: string) {
-        console.log('создание peerConnection c id', id);
         const newPeerConnection = new RTCPeerConnection({
             iceServers: iceServers,
         });
 
         newPeerConnection.onicecandidate = (event) => {
-            console.log(event);
             if (!event.candidate) {
                 console.error('candidate не существует');
                 return;
@@ -54,7 +51,6 @@ class WebRTCClient {
         };
 
         newPeerConnection.ontrack = (event) => {
-            console.log('ontrack', id);
             this.addRemoteStream(event.track, id);
         };
 
@@ -64,7 +60,6 @@ class WebRTCClient {
     }
 
     public async createOffer(id: string) {
-        console.log('создание офера');
         const peerConnection = this.createPeerConnection(id);
         try {
             const offer = await peerConnection.createOffer();
@@ -92,7 +87,6 @@ class WebRTCClient {
     }
 
     public async createAnswer(id: string) {
-        console.log('создание  ответа');
         const peerConnection = this.peerConnections.get(id);
         if (!peerConnection) {
             console.error('peerConnection не существует при создании ответа');
@@ -124,7 +118,6 @@ class WebRTCClient {
 
     public async handleSignal(data: any) {
         const { from, type, sdp, candidate } = data;
-        console.log('обработка сигнала:', type);
         let peerConnection = this.peerConnections.get(from) || false;
         if (!peerConnection) {
             peerConnection = await this.createPeerConnection(from);
@@ -146,19 +139,16 @@ class WebRTCClient {
 
     //логика работы с потоками
     private addRemoteStream(track: any, id: string): void {
-        console.log('попытка добавить поток', id);
+     
         let remoteStream = this.remoteStreams.get(id);
         if (!remoteStream) {
             remoteStream = new MediaStream();
             this.remoteStreams.set(id, remoteStream);
-            console.log('Удалённый поток добавлен для пользователя:', id);
             const audioElement = document.createElement('audio');
             audioElement.srcObject = remoteStream;
             audioElement.autoplay = true;
             document.body.appendChild(audioElement);
-        } else {
-            console.log('remoteStream не существует ');
-        }
+        } 
 
         remoteStream.addTrack(track);
     }
@@ -172,24 +162,17 @@ class WebRTCClient {
                     sender.replaceTrack(newAudioTrack);
                 }
             });
-        } else {
-            console.log('🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:', this.localStream);
-            console.error('чего то нет ');
-        }
+        } 
     }
 
     private addLocalStream(id: string): void {
         const peerConnection = this.peerConnections.get(id);
-        console.log('add-local-stream', peerConnection);
         if (audioSettingsStore.stream) {
             audioSettingsStore.stream.getTracks().forEach((track) => {
                 //Если существет локальный стрим и пир для подключения то рассылаем стрим
                 peerConnection && peerConnection.addTrack(track, audioSettingsStore.stream);
                 track.enabled = !this.isMuteMicro;
             });
-        } else {
-            console.log('🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:', this.localStream);
-            console.error('чего то нет ');
         }
     }
 
@@ -203,7 +186,6 @@ class WebRTCClient {
         if (peerConnection) {
             peerConnection.close();
             this.peerConnections.delete(id);
-            console.log(`Соединение с пользователем ${id} закрыто`);
         }
 
         const remoteStream = this.remoteStreams.get(id);

@@ -42,7 +42,6 @@ export const serverService = {
         const response = await apiClient(`/servers/${id}`, {
             method: 'DELETE',
         });
-        console.log('ServerService delete response:', response);
         return response || { success: true }; // Возвращаем объект успеха если ответ null
     },
 };

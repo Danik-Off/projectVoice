@@ -79,13 +79,10 @@ class AuthStore {
     public async loadUserData(): Promise<void> {
         try {
             if (!this.token) {
-                console.log('No token available for loadUserData');
                 return;
             }
             
-            console.log('Loading user data with token:', this.token);
             const userData = await authService.getMe();
-            console.log('User data loaded:', userData);
             this.user = userData;
             this.isAuthenticated = true;
         } catch (error) {

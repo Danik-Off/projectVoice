@@ -55,12 +55,6 @@ const ServerSidebar: React.FC<ServerSidebarProps> = observer(({ onOpenModal }) =
         serverStore.fetchServers();
     }, []);
 
-    // Добавляем логирование для отладки
-    console.log('ServerSidebar - servers count:', serverStore.servers.length);
-    console.log('ServerSidebar - servers:', serverStore.servers);
-    console.log('ServerSidebar - current path:', location.pathname);
-    console.log('ServerSidebar - isOnHomePage:', isOnHomePage);
-    console.log('ServerSidebar - home button active:', !isOnHomePage);
 
     return (
         <aside className="servers">
