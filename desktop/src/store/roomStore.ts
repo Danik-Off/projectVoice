@@ -4,7 +4,7 @@ import { getCookie } from '../utils/cookie';
 import WebRTCClient from '../utils/WebRTCClient';
 import audioSettingsStore from './AudioSettingsStore';
 import notificationStore from './NotificationStore';
-import vadService, { VoiceActivityEvent } from '../services/VoiceActivityDetectionService';
+import voiceActivityService, { VoiceActivityEvent } from '../services/VoiceActivityService';
 
 interface UserData {
     id: number;
@@ -33,8 +33,15 @@ class VoiceRoomStore {
         this.socketClient.connect();
         this.setupServerResponseListeners();
         this.setupWebRTCSenders();
+        this.setupVoiceActivityListeners();
+        
+        // Инициализируем медиа для VAD
+        console.log('VoiceRoomStore: Initializing audio settings...');
+        audioSettingsStore.initMedia();
+        
+        // Инициализируем WebRTC после аудио
+        console.log('VoiceRoomStore: Initializing WebRTC...');
         this.webRTCClient.initializeMedia();
-        this.setupVADListeners();
     }
 
     public connectToRoom(roomId: number, channelName?: string): void {
@@ -128,16 +135,16 @@ class VoiceRoomStore {
         };
     }
 
-    private setupVADListeners(): void {
-        vadService.addCallback((event: VoiceActivityEvent) => {
+    private setupVoiceActivityListeners(): void {
+        voiceActivityService.addCallback((event: VoiceActivityEvent) => {
             runInAction(() => {
                 const participant = this.participants.find(p => p.socketId === event.userId);
                 if (participant) {
                     participant.isSpeaking = event.isActive;
-                    console.log(`VAD: ${participant.userData?.username || event.userId} ${event.isActive ? 'говорит' : 'молчит'} (${event.volume.toFixed(1)}%)`);
+                    console.log(`VoiceActivity: ${participant.userData?.username || event.userId} ${event.isActive ? 'говорит' : 'молчит'} (${event.volume.toFixed(1)}%)`);
                 } else if (event.userId === 'local') {
                     // Обрабатываем локального пользователя
-                    console.log(`VAD: Локальный пользователь ${event.isActive ? 'говорит' : 'молчит'} (${event.volume.toFixed(1)}%)`);
+                    console.log(`VoiceActivity: Локальный пользователь ${event.isActive ? 'говорит' : 'молчит'} (${event.volume.toFixed(1)}%)`);
                 }
             });
         });
@@ -151,17 +158,17 @@ class VoiceRoomStore {
 
     // Получить состояние активности речи для локального пользователя
     public getLocalSpeakingState(): boolean {
-        return vadService.getUserActivity('local');
+        return voiceActivityService.getUserActivity('local');
     }
 
     // Получить уровень громкости участника
     public getParticipantVolumeLevel(socketId: string): number {
-        return vadService.getUserVolume(socketId);
+        return voiceActivityService.getUserVolume(socketId);
     }
 
     // Получить уровень громкости локального пользователя
     public getLocalVolumeLevel(): number {
-        return vadService.getUserVolume('local');
+        return voiceActivityService.getUserVolume('local');
     }
 }
 const voiceRoomStore = new VoiceRoomStore();

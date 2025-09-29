@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import vadService from '../../services/VoiceActivityDetectionService';
+import voiceActivityService from '../../services/VoiceActivityService';
 import './VADSettings.scss';
 
 interface VADSettingsProps {
@@ -9,30 +9,21 @@ interface VADSettingsProps {
 }
 
 const VADSettings: React.FC<VADSettingsProps> = observer(({ isOpen, onClose }) => {
-    const [config, setConfig] = useState(vadService.getConfig());
+    const [config, setConfig] = useState({
+        threshold: 10,
+        smoothingFactor: 0.8
+    });
 
     const handleThresholdChange = (value: number) => {
         const newConfig = { ...config, threshold: value };
         setConfig(newConfig);
-        vadService.setConfig(newConfig);
-    };
-
-    const handleSilenceTimeoutChange = (value: number) => {
-        const newConfig = { ...config, silenceTimeout: value };
-        setConfig(newConfig);
-        vadService.setConfig(newConfig);
-    };
-
-    const handleMinSpeechDurationChange = (value: number) => {
-        const newConfig = { ...config, minSpeechDuration: value };
-        setConfig(newConfig);
-        vadService.setConfig(newConfig);
+        (voiceActivityService as any).config.threshold = value;
     };
 
     const handleSmoothingFactorChange = (value: number) => {
         const newConfig = { ...config, smoothingFactor: value / 100 };
         setConfig(newConfig);
-        vadService.setConfig(newConfig);
+        (voiceActivityService as any).config.smoothingFactor = value / 100;
     };
 
     if (!isOpen) return null;
@@ -41,7 +32,7 @@ const VADSettings: React.FC<VADSettingsProps> = observer(({ isOpen, onClose }) =
         <div className="vad-settings-overlay" onClick={onClose}>
             <div className="vad-settings-modal" onClick={(e) => e.stopPropagation()}>
                 <div className="vad-settings-header">
-                    <h3>Настройки VAD (Voice Activity Detection)</h3>
+                    <h3>Настройки Voice Activity</h3>
                     <button className="vad-settings-close" onClick={onClose}>
                         ✕
                     </button>
@@ -55,52 +46,14 @@ const VADSettings: React.FC<VADSettingsProps> = observer(({ isOpen, onClose }) =
                         <input
                             id="threshold"
                             type="range"
-                            min="10"
-                            max="5000"
+                            min="5"
+                            max="50"
                             value={config.threshold}
                             onChange={(e) => handleThresholdChange(Number(e.target.value))}
                             className="vad-slider"
                         />
                         <div className="vad-setting-description">
                             Минимальный уровень громкости для определения речи
-                        </div>
-                    </div>
-
-                    <div className="vad-setting-group">
-                        <label htmlFor="silence-timeout">
-                            Таймаут тишины: {config.silenceTimeout}мс
-                        </label>
-                        <input
-                            id="silence-timeout"
-                            type="range"
-                            min="500"
-                            max="3000"
-                            step="100"
-                            value={config.silenceTimeout}
-                            onChange={(e) => handleSilenceTimeoutChange(Number(e.target.value))}
-                            className="vad-slider"
-                        />
-                        <div className="vad-setting-description">
-                            Время до прекращения активности после тишины
-                        </div>
-                    </div>
-
-                    <div className="vad-setting-group">
-                        <label htmlFor="min-speech-duration">
-                            Минимальная длительность речи: {config.minSpeechDuration}мс
-                        </label>
-                        <input
-                            id="min-speech-duration"
-                            type="range"
-                            min="100"
-                            max="1000"
-                            step="50"
-                            value={config.minSpeechDuration}
-                            onChange={(e) => handleMinSpeechDurationChange(Number(e.target.value))}
-                            className="vad-slider"
-                        />
-                        <div className="vad-setting-description">
-                            Минимальное время речи для активации
                         </div>
                     </div>
 
@@ -126,13 +79,12 @@ const VADSettings: React.FC<VADSettingsProps> = observer(({ isOpen, onClose }) =
                 <div className="vad-settings-footer">
                     <button className="vad-settings-reset" onClick={() => {
                         const defaultConfig = {
-                            threshold: 30,
-                            silenceTimeout: 1000,
-                            minSpeechDuration: 200,
-                            smoothingFactor: 0.7
+                            threshold: 10,
+                            smoothingFactor: 0.8
                         };
                         setConfig(defaultConfig);
-                        vadService.setConfig(defaultConfig);
+                        (voiceActivityService as any).config.threshold = 10;
+                        (voiceActivityService as any).config.smoothingFactor = 0.8;
                     }}>
                         Сбросить
                     </button>

@@ -153,46 +153,65 @@ class AudioSettingsStore {
     };
 
     private async updateMediaStream() {
-        await this.ensureAudioContextIsRunning();
-        runInAction(async () => {
-            this._stream = await navigator.mediaDevices.getUserMedia({
-                audio: {
-                    echoCancellation: this.echoCancellation,
-                    noiseSuppression: this.noiseSuppression,
-                    autoGainControl: this.autoGainControl,
-                    sampleRate: this.sampleRate,
-                    sampleSize: this.sampleSize,
-                    channelCount: this.channelCount,
-                    deviceId: this.selectedMicrophone?.deviceId,
-                    groupId: this.selectedMicrophone?.groupId,
-                } as MediaTrackConstraints,
-                video: false,
+        try {
+            console.log('AudioSettingsStore: Starting media stream update...');
+            await this.ensureAudioContextIsRunning();
+            
+            // Останавливаем предыдущий поток
+            if (this._stream) {
+                this._stream.getTracks().forEach(track => track.stop());
+            }
+            
+            runInAction(async () => {
+                console.log('AudioSettingsStore: Requesting getUserMedia...');
+                this._stream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        echoCancellation: this.echoCancellation,
+                        noiseSuppression: this.noiseSuppression,
+                        autoGainControl: this.autoGainControl,
+                        sampleRate: this.sampleRate,
+                        sampleSize: this.sampleSize,
+                        channelCount: this.channelCount,
+                        deviceId: this.selectedMicrophone?.deviceId,
+                        groupId: this.selectedMicrophone?.groupId,
+                    } as MediaTrackConstraints,
+                    video: false,
+                });
+                console.log('AudioSettingsStore: getUserMedia success, audio tracks:', this._stream.getAudioTracks().length);
+                this.prepareMediaStream();
             });
-            this.prepareMediaStream();
-        });
+        } catch (error) {
+            console.error('AudioSettingsStore: Error updating media stream:', error);
+        }
     }
     private prepareMediaStream() {
-        // Создаем источник из потока микрофона
-        this.audioSource = this.audioContext.createMediaStreamSource(this._stream);
+        try {
+            console.log('AudioSettingsStore: Preparing media stream...');
+            // Создаем источник из потока микрофона
+            this.audioSource = this.audioContext.createMediaStreamSource(this._stream);
 
-        // Создаем GainNode для регулировки громкости
-        this.gainNode = this.audioContext.createGain();
-        this.gainNode.gain.value = this.volume / 50; // Используем текущее значение громкости
+            // Создаем GainNode для регулировки громкости
+            this.gainNode = this.audioContext.createGain();
+            this.gainNode.gain.value = this.volume / 50; // Используем текущее значение громкости
 
-        // Подключаем источник к GainNode
-        this.audioSource.connect(this.gainNode);
+            // Подключаем источник к GainNode
+            this.audioSource.connect(this.gainNode);
 
-        // Создаем destination, в который будут включены фильтры
-        const destination = this.audioContext.createMediaStreamDestination();
+            // Создаем destination, в который будут включены фильтры
+            const destination = this.audioContext.createMediaStreamDestination();
 
-        // Создаем фильтры для улучшения голоса и подключаем их к GainNode
-        const { highpassFilter, lowpassFilter } = this.createVoiceEnhancementFilters();
-        this.gainNode.connect(highpassFilter);
-        highpassFilter.connect(lowpassFilter);
-        lowpassFilter.connect(destination); // Подключаем выходной поток фильтров к destination
+            // Создаем фильтры для улучшения голоса и подключаем их к GainNode
+            const { highpassFilter, lowpassFilter } = this.createVoiceEnhancementFilters();
+            this.gainNode.connect(highpassFilter);
+            highpassFilter.connect(lowpassFilter);
+            lowpassFilter.connect(destination); // Подключаем выходной поток фильтров к destination
 
-        // Сохраняем новый поток
-        this.stream = destination.stream;
+            // Сохраняем новый поток
+            this.stream = destination.stream;
+            console.log('AudioSettingsStore: Media stream prepared, output tracks:', this.stream.getAudioTracks().length);
+        } catch (error) {
+            console.error('AudioSettingsStore: Error preparing media stream:', error);
+        }
     }
 
     private async ensureAudioContextIsRunning() {

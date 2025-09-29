@@ -3,7 +3,7 @@ import { iceServers } from '../configs/iceServers';
 import { Signal } from '../types/WebRTCClient.types';
 import audioSettingsStore from '../store/AudioSettingsStore';
 import participantVolumeStore from '../store/ParticipantVolumeStore';
-import vadService from '../services/VoiceActivityDetectionService';
+import voiceActivityService from '../services/VoiceActivityService';
 class WebRTCClient {
     public sendSignal: null | ((signal: Signal) => void) = null;
 
@@ -22,15 +22,23 @@ class WebRTCClient {
 
     //управление Медиа
     public async initializeMedia() {
-        // Инициализируем VAD сервис
-        vadService.initialize();
+        console.log('WebRTCClient: Initializing media...');
+        // Инициализируем VoiceActivity сервис
+        voiceActivityService.initialize();
+        
+        // Проверяем, есть ли уже поток
+        if (audioSettingsStore.stream && audioSettingsStore.stream.getAudioTracks().length > 0) {
+            console.log('WebRTCClient: Stream already exists, setting up VoiceActivity immediately');
+            this.setupLocalVoiceActivity();
+        }
         
         reaction(
             () => audioSettingsStore.stream,
             (val) => {
-                console.log('🚀 ~ WebRTCClient ~ initializeMedia ~ val:', val);
+                console.log('🚀 ~ WebRTCClient ~ reaction triggered ~ stream:', val);
+                console.log('🚀 ~ WebRTCClient ~ reaction triggered ~ tracks:', val?.getAudioTracks().length || 0);
                 this.resendlocalStream();
-                this.setupLocalVAD();
+                this.setupLocalVoiceActivity();
             },
         );
     }
@@ -239,8 +247,8 @@ class WebRTCClient {
                 this.audioSources.set(id, source);
                 console.log('Аудио обработка настроена для участника:', id);
                 
-                // Настраиваем VAD для удаленного участника
-                this.setupRemoteVAD(id, remoteStream);
+                // Настраиваем VoiceActivity для удаленного участника
+                this.setupRemoteVoiceActivity(id, remoteStream);
             }
         } catch (error) {
             console.error('Ошибка при настройке аудио обработки для участника:', id, error);
@@ -341,8 +349,8 @@ class WebRTCClient {
         this.gainNodes.delete(id);
         this.audioSources.delete(id);
 
-        // Останавливаем VAD для этого участника
-        vadService.stopMonitoring(id);
+        // Останавливаем VoiceActivity для этого участника
+        voiceActivityService.stopMonitoring(id);
 
         // Удаляем из store громкости
         participantVolumeStore.removeParticipant(id);
@@ -379,33 +387,35 @@ class WebRTCClient {
         // Очищаем store громкости
         participantVolumeStore.resetAllVolumes();
         
-        // Очищаем VAD сервис
-        vadService.cleanup();
+        // Очищаем VoiceActivity сервис
+        voiceActivityService.cleanup();
     }
 
-    // Настройка VAD для локального потока (после gain)
-    private setupLocalVAD(): void {
+    // Настройка VoiceActivity для локального потока
+    private setupLocalVoiceActivity(): void {
         if (audioSettingsStore.stream) {
-            // Используем обработанный поток после gain и фильтров
-            vadService.startMonitoring('local', audioSettingsStore.stream);
-            console.log('VAD настроен для локального потока');
+            console.log('Setting up local VoiceActivity, stream tracks:', audioSettingsStore.stream.getAudioTracks().length);
+            voiceActivityService.startMonitoring('local', audioSettingsStore.stream);
+            console.log('VoiceActivity настроен для локального потока');
+        } else {
+            console.log('No stream available for local VoiceActivity setup');
         }
     }
 
-    // Настройка VAD для удаленного участника
-    private setupRemoteVAD(userId: string, remoteStream: MediaStream): void {
-        vadService.startMonitoring(userId, remoteStream);
-        console.log(`VAD настроен для удаленного участника: ${userId}`);
+    // Настройка VoiceActivity для удаленного участника
+    private setupRemoteVoiceActivity(userId: string, remoteStream: MediaStream): void {
+        voiceActivityService.startMonitoring(userId, remoteStream);
+        console.log(`VoiceActivity настроен для удаленного участника: ${userId}`);
     }
 
     // Получить состояние активности речи пользователя
     public getUserVoiceActivity(userId: string): boolean {
-        return vadService.getUserActivity(userId);
+        return voiceActivityService.getUserActivity(userId);
     }
 
     // Получить уровень громкости пользователя
     public getUserVolumeLevel(userId: string): number {
-        return vadService.getUserVolume(userId);
+        return voiceActivityService.getUserVolume(userId);
     }
 }
 
