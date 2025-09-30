@@ -8,21 +8,53 @@ class AudioSettingsStore {
     public selectedMicrophone?: MediaDeviceInfo;
     public selectedSpeaker?: MediaDeviceInfo;
 
-    public echoCancellation = true; // Включает или отключает подавление эха, что помогает избежать эхо-сигналов при передаче звука.
-    public noiseSuppression = true; // Включает или отключает подавление шума, что улучшает качество звука, уменьшая фоновый шум.
-    public autoGainControl = true; // Включает или отключает автоматическое управление уровнем звука, что помогает автоматически регулировать громкость входящего сигнала.
-    public sampleRate = 16000; // Частота дискретизации в Гц. Чем выше частота, тем выше качество звука, но и больше нагрузка на систему.
-    public sampleSize = 16; // Размер выборки в битах, определяет точность обработки звука. Чем больше размер, тем лучше качество, но и больше нагрузка.
-    public channelCount = 1; // Количество каналов в звуковом потоке. 1 — моно, 2 — стерео.
-    public latency = 300; // Задержка в миллисекундах. Указывает на желаемую задержку в обработке звука (например, в реальном времени). Чем ниже значение, тем меньше задержка, но может быть большее использование процессора.
-    public volume = 50; // Уровень громкости, где 1.0 — максимальная громкость, а 0 — выключенная.
-    public isMicrophoneMuted = false; // Состояние отключения микрофона
-    public isSpeakerMuted = false; // Состояние отключения колонок
+    // Режимы настроек
+    public settingsMode: 'simple' | 'detailed' = 'simple';
+    public audioQuality: 'low' | 'medium' | 'high' = 'medium';
+
+    // Основные настройки
+    public echoCancellation = true;
+    public noiseSuppression = true;
+    public autoGainControl = true;
+    public sampleRate = 24000; // Улучшенная частота дискретизации по умолчанию
+    public sampleSize = 16;
+    public channelCount = 1;
+    public latency = 150; // Уменьшенная задержка по умолчанию
+    public volume = 70; // Более разумная громкость по умолчанию
+    public isMicrophoneMuted = false;
+    public isSpeakerMuted = false;
+
+    // Дополнительные настройки для детального режима
+    public bitrate = 128; // Битрейт в kbps
+    public bufferSize = 4096; // Размер буфера
+    public compressionLevel = 0.3; // Уменьшенный уровень сжатия
+    public voiceEnhancement = true; // Улучшение голоса
+    public voiceClarity = 0.5; // Более мягкая четкость голоса
+    public backgroundNoiseReduction = 0.6; // Умеренное снижение шума
+    public voiceBoost = 0.2; // Умеренное усиление голоса
+    public bassBoost = 0.1; // Легкое усиление басов
+    public trebleBoost = 0.1; // Легкое усиление высоких частот
+    public stereoEnhancement = false; // Стерео улучшение
+    public spatialAudio = false; // Пространственный звук
+    public voiceIsolation = true; // Изоляция голоса
+    public dynamicRangeCompression = 0.3; // Умеренное динамическое сжатие
 
     private _stream: MediaStream = new MediaStream();
     private audioContext = new AudioContext();
     private gainNode: GainNode = new GainNode(this.audioContext);
     private audioSource: MediaStreamAudioSourceNode | null = null;
+    
+    // Кэш для аудио процессоров для обновления в реальном времени
+    private audioProcessors: {
+        voiceEnhancer?: BiquadFilterNode;
+        voiceIsolator?: BiquadFilterNode;
+        voiceBooster?: BiquadFilterNode;
+        bassBooster?: BiquadFilterNode;
+        trebleBooster?: BiquadFilterNode;
+        compressor?: DynamicsCompressorNode;
+        stereoEnhancer?: BiquadFilterNode;
+        spatialProcessor?: BiquadFilterNode;
+    } = {};
 
     public constructor() {
         makeAutoObservable(this);
@@ -64,38 +96,116 @@ class AudioSettingsStore {
         this.gainNode = new GainNode(this.audioContext);
         this.audioSource = null;
         
+        // Очищаем кэш процессоров
+        this.audioProcessors = {};
+        
         console.log('AudioSettingsStore: Media resources cleaned up');
     }
 
-    // Методы для изменения настроек
+    // Методы для управления режимами
+    public setSettingsMode(mode: 'simple' | 'detailed') {
+        this.settingsMode = mode;
+        if (mode === 'simple') {
+            this.applySimpleQualitySettings();
+        }
+    }
+
+    public setAudioQuality(quality: 'low' | 'medium' | 'high') {
+        this.audioQuality = quality;
+        this.applySimpleQualitySettings();
+    }
+
+    private applySimpleQualitySettings() {
+        switch (this.audioQuality) {
+            case 'low':
+                this.sampleRate = 16000;
+                this.sampleSize = 16;
+                this.bitrate = 64;
+                this.latency = 200;
+                this.echoCancellation = true;
+                this.noiseSuppression = true;
+                this.autoGainControl = true;
+                this.voiceEnhancement = false;
+                this.voiceIsolation = false;
+                this.voiceClarity = 0.3;
+                this.backgroundNoiseReduction = 0.5;
+                this.voiceBoost = 0.1;
+                this.bassBoost = 0.0;
+                this.trebleBoost = 0.0;
+                this.dynamicRangeCompression = 0.2;
+                break;
+            case 'medium':
+                this.sampleRate = 24000;
+                this.sampleSize = 16;
+                this.bitrate = 128;
+                this.latency = 150;
+                this.echoCancellation = true;
+                this.noiseSuppression = true;
+                this.autoGainControl = true;
+                this.voiceEnhancement = true;
+                this.voiceIsolation = true;
+                this.voiceClarity = 0.5;
+                this.backgroundNoiseReduction = 0.6;
+                this.voiceBoost = 0.2;
+                this.bassBoost = 0.1;
+                this.trebleBoost = 0.1;
+                this.dynamicRangeCompression = 0.3;
+                break;
+            case 'high':
+                this.sampleRate = 48000;
+                this.sampleSize = 24;
+                this.bitrate = 256;
+                this.latency = 100;
+                this.echoCancellation = true;
+                this.noiseSuppression = true;
+                this.autoGainControl = true;
+                this.voiceEnhancement = true;
+                this.voiceIsolation = true;
+                this.voiceClarity = 0.7;
+                this.backgroundNoiseReduction = 0.7;
+                this.voiceBoost = 0.3;
+                this.bassBoost = 0.2;
+                this.trebleBoost = 0.2;
+                this.dynamicRangeCompression = 0.4;
+                break;
+        }
+        this.updateMediaStream();
+    }
+
+    // Методы для изменения настроек (требуют пересоздания потока)
     public setEchoCancellation(value: boolean) {
         if (this.echoCancellation === value) return;
         this.echoCancellation = value;
         this.updateMediaStream();
+        this.updateWebRTCStream();
     }
 
     public setNoiseSuppression(value: boolean) {
         if (this.noiseSuppression === value) return;
         this.noiseSuppression = value;
         this.updateMediaStream();
+        this.updateWebRTCStream();
     }
 
     public setAutoGainControl(value: boolean) {
         if (this.autoGainControl === value) return;
         this.autoGainControl = value;
         this.updateMediaStream();
+        this.updateWebRTCStream();
     }
 
     public setSampleRate(rate: number) {
         if (this.sampleRate === rate) return;
         this.sampleRate = rate;
         this.updateMediaStream();
+        this.updateWebRTCStream();
     }
 
     public setSampleSize(size: number) {
         if (this.sampleSize === size) return;
         this.sampleSize = size;
         this.updateMediaStream();
+        this.updateWebRTCStream();
     }
 
     public setLatency(latency: number) {
@@ -133,6 +243,105 @@ class AudioSettingsStore {
             this.gainNode.gain.value = this.volume / 50;
         }
         // Не пересоздаем поток для изменения громкости
+    }
+
+    // Методы для дополнительных настроек (требуют пересоздания потока)
+    public setBitrate(bitrate: number): void {
+        if (this.bitrate === bitrate) return;
+        this.bitrate = bitrate;
+        this.updateMediaStream();
+        this.updateWebRTCStream();
+    }
+
+    public setBufferSize(bufferSize: number): void {
+        if (this.bufferSize === bufferSize) return;
+        this.bufferSize = bufferSize;
+        this.updateMediaStream();
+        this.updateWebRTCStream();
+    }
+
+    public setCompressionLevel(level: number): void {
+        if (this.compressionLevel === level) return;
+        this.compressionLevel = Math.max(0, Math.min(1, level));
+        this.updateMediaStream();
+        this.updateWebRTCStream();
+    }
+
+    // Метод для принудительного обновления WebRTC потока
+    public updateWebRTCStream(): void {
+        try {
+            console.log('AudioSettingsStore: Updating WebRTC stream...');
+            // Импортируем roomStore динамически, чтобы избежать циклических зависимостей
+            import('./roomStore').then(({ default: roomStore }) => {
+                if (roomStore.webRTCClient && typeof roomStore.webRTCClient.resendlocalStream === 'function') {
+                    roomStore.webRTCClient.resendlocalStream();
+                    console.log('AudioSettingsStore: WebRTC stream updated successfully');
+                }
+            });
+        } catch (error) {
+            console.error('AudioSettingsStore: Error updating WebRTC stream:', error);
+        }
+    }
+
+    // Методы для настроек в реальном времени (не требуют пересоздания потока)
+    public setVoiceEnhancement(enabled: boolean): void {
+        if (this.voiceEnhancement === enabled) return;
+        this.voiceEnhancement = enabled;
+        this.updateRealtimeSettings();
+    }
+
+    public setVoiceClarity(clarity: number): void {
+        if (this.voiceClarity === clarity) return;
+        this.voiceClarity = Math.max(0, Math.min(1, clarity));
+        this.updateRealtimeSettings();
+    }
+
+    public setBackgroundNoiseReduction(reduction: number): void {
+        if (this.backgroundNoiseReduction === reduction) return;
+        this.backgroundNoiseReduction = Math.max(0, Math.min(1, reduction));
+        this.updateRealtimeSettings();
+    }
+
+    public setVoiceBoost(boost: number): void {
+        if (this.voiceBoost === boost) return;
+        this.voiceBoost = Math.max(0, Math.min(1, boost));
+        this.updateRealtimeSettings();
+    }
+
+    public setBassBoost(boost: number): void {
+        if (this.bassBoost === boost) return;
+        this.bassBoost = Math.max(0, Math.min(1, boost));
+        this.updateRealtimeSettings();
+    }
+
+    public setTrebleBoost(boost: number): void {
+        if (this.trebleBoost === boost) return;
+        this.trebleBoost = Math.max(0, Math.min(1, boost));
+        this.updateRealtimeSettings();
+    }
+
+    public setStereoEnhancement(enabled: boolean): void {
+        if (this.stereoEnhancement === enabled) return;
+        this.stereoEnhancement = enabled;
+        this.updateRealtimeSettings();
+    }
+
+    public setSpatialAudio(enabled: boolean): void {
+        if (this.spatialAudio === enabled) return;
+        this.spatialAudio = enabled;
+        this.updateRealtimeSettings();
+    }
+
+    public setVoiceIsolation(enabled: boolean): void {
+        if (this.voiceIsolation === enabled) return;
+        this.voiceIsolation = enabled;
+        this.updateRealtimeSettings();
+    }
+
+    public setDynamicRangeCompression(compression: number): void {
+        if (this.dynamicRangeCompression === compression) return;
+        this.dynamicRangeCompression = Math.max(0, Math.min(1, compression));
+        this.updateRealtimeSettings();
     }
 
     public toggleMicrophoneMute(): void {
@@ -235,32 +444,150 @@ class AudioSettingsStore {
     }
     private prepareMediaStream() {
         try {
-            console.log('AudioSettingsStore: Preparing media stream...');
+            console.log('AudioSettingsStore: Preparing media stream with enhanced settings...');
             // Создаем источник из потока микрофона
             this.audioSource = this.audioContext.createMediaStreamSource(this._stream);
 
             // Создаем GainNode для регулировки громкости
             this.gainNode = this.audioContext.createGain();
-            this.gainNode.gain.value = this.volume / 50; // Используем текущее значение громкости
+            this.gainNode.gain.value = this.volume / 50;
 
             // Подключаем источник к GainNode
             this.audioSource.connect(this.gainNode);
 
-            // Создаем destination, в который будут включены фильтры
+            // Создаем destination для выходного потока
             const destination = this.audioContext.createMediaStreamDestination();
 
-            // Создаем фильтры для улучшения голоса и подключаем их к GainNode
-            const { highpassFilter, lowpassFilter } = this.createVoiceEnhancementFilters();
-            this.gainNode.connect(highpassFilter);
-            highpassFilter.connect(lowpassFilter);
-            lowpassFilter.connect(destination); // Подключаем выходной поток фильтров к destination
+            // Создаем цепочку обработки аудио
+            const audioChain = this.createAudioProcessingChain();
+            
+            // Подключаем цепочку обработки
+            this.gainNode.connect(audioChain.input);
+            audioChain.output.connect(destination);
 
             // Сохраняем новый поток
             this.stream = destination.stream;
-            console.log('AudioSettingsStore: Media stream prepared, output tracks:', this.stream.getAudioTracks().length);
+            console.log('AudioSettingsStore: Enhanced media stream prepared, output tracks:', this.stream.getAudioTracks().length);
         } catch (error) {
             console.error('AudioSettingsStore: Error preparing media stream:', error);
         }
+    }
+
+    // Обновление настроек в реальном времени без пересоздания потока
+    private updateRealtimeSettings() {
+        try {
+            console.log('AudioSettingsStore: Updating realtime audio settings...');
+            
+            // Обновляем параметры существующих процессоров
+            if (this.audioProcessors.voiceEnhancer) {
+                this.audioProcessors.voiceEnhancer.gain.value = this.voiceClarity * 3;
+            }
+            
+            if (this.audioProcessors.voiceBooster) {
+                this.audioProcessors.voiceBooster.gain.value = this.voiceBoost * 8;
+            }
+            
+            if (this.audioProcessors.bassBooster) {
+                this.audioProcessors.bassBooster.gain.value = this.bassBoost * 5;
+            }
+            
+            if (this.audioProcessors.trebleBooster) {
+                this.audioProcessors.trebleBooster.gain.value = this.trebleBoost * 5;
+            }
+            
+            if (this.audioProcessors.compressor) {
+                const compressionRatio = 1 + (this.dynamicRangeCompression * 8); // 1-9
+                this.audioProcessors.compressor.ratio.value = compressionRatio;
+            }
+            
+            console.log('AudioSettingsStore: Realtime settings updated successfully');
+        } catch (error) {
+            console.error('AudioSettingsStore: Error updating realtime settings:', error);
+        }
+    }
+
+    private createAudioProcessingChain() {
+        const input = this.audioContext.createGain();
+        const output = this.audioContext.createGain();
+        
+        let currentNode = input;
+
+        // Базовые фильтры
+        if (this.echoCancellation || this.noiseSuppression || this.autoGainControl) {
+            const { highpassFilter, lowpassFilter } = this.createVoiceEnhancementFilters();
+            currentNode.connect(highpassFilter);
+            currentNode = highpassFilter;
+            currentNode.connect(lowpassFilter);
+            currentNode = lowpassFilter;
+        }
+
+        // Улучшение голоса
+        if (this.voiceEnhancement) {
+            const voiceEnhancer = this.createVoiceEnhancer();
+            this.audioProcessors.voiceEnhancer = voiceEnhancer;
+            currentNode.connect(voiceEnhancer);
+            currentNode = voiceEnhancer;
+        }
+
+        // Изоляция голоса
+        if (this.voiceIsolation) {
+            const voiceIsolator = this.createVoiceIsolator();
+            this.audioProcessors.voiceIsolator = voiceIsolator;
+            currentNode.connect(voiceIsolator);
+            currentNode = voiceIsolator;
+        }
+
+        // Усиление голоса
+        if (this.voiceBoost > 0) {
+            const voiceBooster = this.createVoiceBooster();
+            this.audioProcessors.voiceBooster = voiceBooster;
+            currentNode.connect(voiceBooster);
+            currentNode = voiceBooster;
+        }
+
+        // Усиление басов
+        if (this.bassBoost > 0) {
+            const bassBooster = this.createBassBooster();
+            this.audioProcessors.bassBooster = bassBooster;
+            currentNode.connect(bassBooster);
+            currentNode = bassBooster;
+        }
+
+        // Усиление высоких частот
+        if (this.trebleBoost > 0) {
+            const trebleBooster = this.createTrebleBooster();
+            this.audioProcessors.trebleBooster = trebleBooster;
+            currentNode.connect(trebleBooster);
+            currentNode = trebleBooster;
+        }
+
+        // Динамическое сжатие
+        if (this.dynamicRangeCompression > 0) {
+            const compressor = this.createDynamicCompressor();
+            this.audioProcessors.compressor = compressor;
+            currentNode.connect(compressor);
+            currentNode = compressor;
+        }
+
+        // Стерео улучшение
+        if (this.stereoEnhancement) {
+            const stereoEnhancer = this.createStereoEnhancer();
+            this.audioProcessors.stereoEnhancer = stereoEnhancer;
+            currentNode.connect(stereoEnhancer);
+            currentNode = stereoEnhancer;
+        }
+
+        // Пространственный звук
+        if (this.spatialAudio) {
+            const spatialProcessor = this.createSpatialProcessor();
+            this.audioProcessors.spatialProcessor = spatialProcessor;
+            currentNode.connect(spatialProcessor);
+            currentNode = spatialProcessor;
+        }
+
+        currentNode.connect(output);
+
+        return { input, output };
     }
 
     private async ensureAudioContextIsRunning() {
@@ -270,17 +597,89 @@ class AudioSettingsStore {
     }
 
     private createVoiceEnhancementFilters() {
-        // Создаем высокочастотный фильтр для удаления низкочастотных шумов
+        // Создаем более мягкие фильтры для предотвращения эффекта "бочки"
         const highpassFilter = this.audioContext.createBiquadFilter();
         highpassFilter.type = 'highpass';
-        highpassFilter.frequency.value = 300; // Срезаем частоты ниже 300 Гц
+        highpassFilter.frequency.value = 80; // Более мягкий срез низких частот
+        highpassFilter.Q.value = 0.5; // Мягкий переход
 
         // Создаем низкочастотный фильтр для удаления высокочастотных шумов
         const lowpassFilter = this.audioContext.createBiquadFilter();
         lowpassFilter.type = 'lowpass';
-        lowpassFilter.frequency.value = 3400; // Срезаем частоты выше 3400 Гц
+        lowpassFilter.frequency.value = 8000; // Расширяем диапазон для лучшего качества голоса
+        lowpassFilter.Q.value = 0.5; // Мягкий переход
 
         return { highpassFilter, lowpassFilter };
+    }
+
+    private createVoiceEnhancer() {
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'peaking';
+        filter.frequency.value = 1500; // Оптимальная частота для голоса
+        filter.Q.value = 0.7; // Более мягкий резонанс
+        filter.gain.value = this.voiceClarity * 3; // Уменьшенное усиление для предотвращения искажений
+        return filter;
+    }
+
+    private createVoiceIsolator() {
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1200; // Оптимальная частота для речи
+        filter.Q.value = 1.2; // Более мягкая изоляция
+        return filter;
+    }
+
+    private createVoiceBooster() {
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'peaking';
+        filter.frequency.value = 1200; // Оптимальная частота для голоса
+        filter.Q.value = 0.5; // Мягкий резонанс
+        filter.gain.value = this.voiceBoost * 8; // Уменьшенное усиление
+        return filter;
+    }
+
+    private createBassBooster() {
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'lowshelf';
+        filter.frequency.value = 250;
+        filter.gain.value = this.bassBoost * 10; // Усиление басов
+        return filter;
+    }
+
+    private createTrebleBooster() {
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'highshelf';
+        filter.frequency.value = 3000;
+        filter.gain.value = this.trebleBoost * 10; // Усиление высоких частот
+        return filter;
+    }
+
+    private createDynamicCompressor() {
+        const compressor = this.audioContext.createDynamicsCompressor();
+        compressor.threshold.value = -24;
+        compressor.knee.value = 30;
+        compressor.ratio.value = 12;
+        compressor.attack.value = 0.003;
+        compressor.release.value = 0.25;
+        return compressor as any; // Приводим к типу AudioNode для совместимости
+    }
+
+    private createStereoEnhancer() {
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'peaking';
+        filter.frequency.value = 2000;
+        filter.Q.value = 0.3;
+        filter.gain.value = 3; // Легкое стерео улучшение
+        return filter;
+    }
+
+    private createSpatialProcessor() {
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'peaking';
+        filter.frequency.value = 1000;
+        filter.Q.value = 0.5;
+        filter.gain.value = 2; // Пространственный эффект
+        return filter;
     }
 
     public testSpeakers(): void {

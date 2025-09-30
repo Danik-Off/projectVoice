@@ -251,52 +251,338 @@ const VoiceControls: React.FC = observer(() => {
                         </div>
                         
                         <div className="voice-controls__audio-modal-content">
-                            {/* Фильтры звука */}
+                            {/* Переключатель режимов */}
                             <div className="voice-controls__audio-section">
-                                <h4>🔧 Фильтры звука</h4>
-                                
-                                <div className="voice-controls__audio-setting">
-                                    <label className="voice-controls__audio-label">
-                                        <input
-                                            type="checkbox"
-                                            checked={audioSettingsStore.echoCancellation}
-                                            onChange={(e) => audioSettingsStore.setEchoCancellation(e.target.checked)}
-                                        />
-                                        <span>Подавление эха</span>
-                                    </label>
-                                    <div className="voice-controls__audio-description">
-                                        Убирает эхо и обратную связь
-                                    </div>
-                                </div>
-
-                                <div className="voice-controls__audio-setting">
-                                    <label className="voice-controls__audio-label">
-                                        <input
-                                            type="checkbox"
-                                            checked={audioSettingsStore.noiseSuppression}
-                                            onChange={(e) => audioSettingsStore.setNoiseSuppression(e.target.checked)}
-                                        />
-                                        <span>Шумоподавление</span>
-                                    </label>
-                                    <div className="voice-controls__audio-description">
-                                        Убирает фоновые шумы
-                                    </div>
-                                </div>
-
-                                <div className="voice-controls__audio-setting">
-                                    <label className="voice-controls__audio-label">
-                                        <input
-                                            type="checkbox"
-                                            checked={audioSettingsStore.autoGainControl}
-                                            onChange={(e) => audioSettingsStore.setAutoGainControl(e.target.checked)}
-                                        />
-                                        <span>Автоконтроль громкости</span>
-                                    </label>
-                                    <div className="voice-controls__audio-description">
-                                        Автоматически регулирует уровень звука
-                                    </div>
+                                <h4>⚙️ Режим настроек</h4>
+                                <div className="voice-controls__mode-switcher">
+                                    <button 
+                                        className={`voice-controls__mode-btn ${audioSettingsStore.settingsMode === 'simple' ? 'active' : ''}`}
+                                        onClick={() => audioSettingsStore.setSettingsMode('simple')}
+                                    >
+                                        Простой
+                                    </button>
+                                    <button 
+                                        className={`voice-controls__mode-btn ${audioSettingsStore.settingsMode === 'detailed' ? 'active' : ''}`}
+                                        onClick={() => audioSettingsStore.setSettingsMode('detailed')}
+                                    >
+                                        Детальный
+                                    </button>
                                 </div>
                             </div>
+
+                            {/* Простой режим */}
+                            {audioSettingsStore.settingsMode === 'simple' && (
+                                <div className="voice-controls__audio-section">
+                                    <h4>🎵 Качество звука</h4>
+                                    <div className="voice-controls__quality-selector">
+                                        <button 
+                                            className={`voice-controls__quality-btn ${audioSettingsStore.audioQuality === 'low' ? 'active' : ''}`}
+                                            onClick={() => audioSettingsStore.setAudioQuality('low')}
+                                        >
+                                            <div className="voice-controls__quality-title">Низкое</div>
+                                            <div className="voice-controls__quality-desc">Экономия трафика, базовая обработка</div>
+                                        </button>
+                                        <button 
+                                            className={`voice-controls__quality-btn ${audioSettingsStore.audioQuality === 'medium' ? 'active' : ''}`}
+                                            onClick={() => audioSettingsStore.setAudioQuality('medium')}
+                                        >
+                                            <div className="voice-controls__quality-title">Среднее</div>
+                                            <div className="voice-controls__quality-desc">Оптимальный баланс качества и производительности</div>
+                                        </button>
+                                        <button 
+                                            className={`voice-controls__quality-btn ${audioSettingsStore.audioQuality === 'high' ? 'active' : ''}`}
+                                            onClick={() => audioSettingsStore.setAudioQuality('high')}
+                                        >
+                                            <div className="voice-controls__quality-title">Высокое</div>
+                                            <div className="voice-controls__quality-desc">Максимальное качество звука</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Детальный режим */}
+                            {audioSettingsStore.settingsMode === 'detailed' && (
+                                <>
+                                    {/* Основные настройки */}
+                                    <div className="voice-controls__audio-section">
+                                        <h4>🔧 Основные настройки</h4>
+                                        
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={audioSettingsStore.echoCancellation}
+                                                    onChange={(e) => audioSettingsStore.setEchoCancellation(e.target.checked)}
+                                                />
+                                                <span>Подавление эха</span>
+                                            </label>
+                                            <div className="voice-controls__audio-description">
+                                                Убирает эхо и обратную связь
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={audioSettingsStore.noiseSuppression}
+                                                    onChange={(e) => audioSettingsStore.setNoiseSuppression(e.target.checked)}
+                                                />
+                                                <span>Шумоподавление</span>
+                                            </label>
+                                            <div className="voice-controls__audio-description">
+                                                Убирает фоновые шумы
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={audioSettingsStore.autoGainControl}
+                                                    onChange={(e) => audioSettingsStore.setAutoGainControl(e.target.checked)}
+                                                />
+                                                <span>Автоконтроль громкости</span>
+                                            </label>
+                                            <div className="voice-controls__audio-description">
+                                                Автоматически регулирует уровень звука
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Улучшение голоса */}
+                                    <div className="voice-controls__audio-section">
+                                        <h4>🎤 Улучшение голоса</h4>
+                                        
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={audioSettingsStore.voiceEnhancement}
+                                                    onChange={(e) => audioSettingsStore.setVoiceEnhancement(e.target.checked)}
+                                                />
+                                                <span>Улучшение голоса</span>
+                                            </label>
+                                            <div className="voice-controls__audio-description">
+                                                Общее улучшение качества голоса
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Четкость голоса</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={audioSettingsStore.voiceClarity * 100}
+                                                    onChange={(e) => audioSettingsStore.setVoiceClarity(Number(e.target.value) / 100)}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{Math.round(audioSettingsStore.voiceClarity * 100)}%</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Снижение фонового шума</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={audioSettingsStore.backgroundNoiseReduction * 100}
+                                                    onChange={(e) => audioSettingsStore.setBackgroundNoiseReduction(Number(e.target.value) / 100)}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{Math.round(audioSettingsStore.backgroundNoiseReduction * 100)}%</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Усиление голоса</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={audioSettingsStore.voiceBoost * 100}
+                                                    onChange={(e) => audioSettingsStore.setVoiceBoost(Number(e.target.value) / 100)}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{Math.round(audioSettingsStore.voiceBoost * 100)}%</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={audioSettingsStore.voiceIsolation}
+                                                    onChange={(e) => audioSettingsStore.setVoiceIsolation(e.target.checked)}
+                                                />
+                                                <span>Изоляция голоса</span>
+                                            </label>
+                                            <div className="voice-controls__audio-description">
+                                                Выделяет только голосовые частоты
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Эквалайзер */}
+                                    <div className="voice-controls__audio-section">
+                                        <h4>🎛️ Эквалайзер</h4>
+                                        
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Усиление басов</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={audioSettingsStore.bassBoost * 100}
+                                                    onChange={(e) => audioSettingsStore.setBassBoost(Number(e.target.value) / 100)}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{Math.round(audioSettingsStore.bassBoost * 100)}%</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Усиление высоких частот</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={audioSettingsStore.trebleBoost * 100}
+                                                    onChange={(e) => audioSettingsStore.setTrebleBoost(Number(e.target.value) / 100)}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{Math.round(audioSettingsStore.trebleBoost * 100)}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Дополнительные эффекты */}
+                                    <div className="voice-controls__audio-section">
+                                        <h4>✨ Дополнительные эффекты</h4>
+                                        
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={audioSettingsStore.stereoEnhancement}
+                                                    onChange={(e) => audioSettingsStore.setStereoEnhancement(e.target.checked)}
+                                                />
+                                                <span>Стерео улучшение</span>
+                                            </label>
+                                            <div className="voice-controls__audio-description">
+                                                Улучшает стерео эффект
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={audioSettingsStore.spatialAudio}
+                                                    onChange={(e) => audioSettingsStore.setSpatialAudio(e.target.checked)}
+                                                />
+                                                <span>Пространственный звук</span>
+                                            </label>
+                                            <div className="voice-controls__audio-description">
+                                                Создает эффект объемного звучания
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Динамическое сжатие</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={audioSettingsStore.dynamicRangeCompression * 100}
+                                                    onChange={(e) => audioSettingsStore.setDynamicRangeCompression(Number(e.target.value) / 100)}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{Math.round(audioSettingsStore.dynamicRangeCompression * 100)}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Технические настройки */}
+                                    <div className="voice-controls__audio-section">
+                                        <h4>⚙️ Технические настройки</h4>
+                                        
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Частота дискретизации</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="8000"
+                                                    max="48000"
+                                                    step="8000"
+                                                    value={audioSettingsStore.sampleRate}
+                                                    onChange={(e) => audioSettingsStore.setSampleRate(Number(e.target.value))}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{audioSettingsStore.sampleRate} Гц</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Битрейт</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="64"
+                                                    max="320"
+                                                    step="32"
+                                                    value={audioSettingsStore.bitrate}
+                                                    onChange={(e) => audioSettingsStore.setBitrate(Number(e.target.value))}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{audioSettingsStore.bitrate} kbps</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="voice-controls__audio-setting">
+                                            <label className="voice-controls__audio-label">
+                                                <span>Задержка</span>
+                                            </label>
+                                            <div className="voice-controls__audio-control">
+                                                <input
+                                                    type="range"
+                                                    min="50"
+                                                    max="1000"
+                                                    step="50"
+                                                    value={audioSettingsStore.latency}
+                                                    onChange={(e) => audioSettingsStore.setLatency(Number(e.target.value))}
+                                                    className="voice-controls__audio-slider"
+                                                />
+                                                <span className="voice-controls__audio-value">{audioSettingsStore.latency} мс</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
 
                             {/* Настройки громкости */}
                             <div className="voice-controls__audio-section">
@@ -336,6 +622,17 @@ const VoiceControls: React.FC = observer(() => {
                                         onClick={() => audioSettingsStore.testSpeakers()}
                                     >
                                         🔊 Тест динамиков
+                                    </button>
+                                    <button 
+                                        className="voice-controls__audio-test-btn voice-controls__audio-test-btn--advanced"
+                                        onClick={() => {
+                                            import('../../../../../../utils/audioTest').then(({ audioTest }) => {
+                                                audioTest.testDefaultSettings();
+                                                audioTest.testAudioQuality();
+                                            });
+                                        }}
+                                    >
+                                        🔬 Полный тест
                                     </button>
                                 </div>
                             </div>

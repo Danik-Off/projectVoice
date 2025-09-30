@@ -242,8 +242,20 @@ class WebRTCClient {
             // Создаем источник только если его еще нет и контекст активен
             if (!audioContext.state.includes('closed')) {
                 const source = audioContext.createMediaStreamSource(remoteStream);
-                source.connect(gainNode);
+                
+                // Создаем простую цепочку обработки без избыточных фильтров
+                const compressor = audioContext.createDynamicsCompressor();
+                compressor.threshold.value = -20;
+                compressor.knee.value = 10;
+                compressor.ratio.value = 3;
+                compressor.attack.value = 0.01;
+                compressor.release.value = 0.1;
+                
+                // Подключаем цепочку: источник -> компрессор -> gain -> выход
+                source.connect(compressor);
+                compressor.connect(gainNode);
                 gainNode.connect(audioContext.destination);
+                
                 this.audioSources.set(id, source);
                 console.log('Аудио обработка настроена для участника:', id);
                 
@@ -255,7 +267,7 @@ class WebRTCClient {
         }
     }
 
-    private resendlocalStream() {
+    public resendlocalStream() {
         if (audioSettingsStore.stream) {
             this.peerConnections.forEach((peerConnection) => {
                 const newAudioTrack = audioSettingsStore.stream.getAudioTracks()[0];
