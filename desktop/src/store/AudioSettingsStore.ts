@@ -229,11 +229,34 @@ class AudioSettingsStore {
         }
     }
 
-    public setMicrophone(deviceId: string): void {
+    public async setMicrophone(deviceId: string): Promise<void> {
         const device = this.microphoneDevices.find((device) => device.deviceId === deviceId);
         if (device && this.selectedMicrophone?.deviceId !== deviceId) {
+            console.log('AudioSettingsStore: Switching microphone from', this.selectedMicrophone?.deviceId, 'to', deviceId);
             this.selectedMicrophone = device;
-            this.updateMediaStream();
+            
+            try {
+                // Принудительно обновляем поток при смене микрофона
+                await this.updateMediaStream(true);
+                
+                // Показываем уведомление об успехе
+                import('./NotificationStore').then(({ default: notificationStore }) => {
+                    notificationStore.addNotification(
+                        `Микрофон изменен на: ${device.label || 'Неизвестное устройство'}`,
+                        'success'
+                    );
+                });
+            } catch (error) {
+                console.error('AudioSettingsStore: Error switching microphone:', error);
+                
+                // Показываем уведомление об ошибке
+                import('./NotificationStore').then(({ default: notificationStore }) => {
+                    notificationStore.addNotification(
+                        `Ошибка при смене микрофона: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`,
+                        'error'
+                    );
+                });
+            }
         }
     }
 
@@ -400,13 +423,14 @@ class AudioSettingsStore {
         }
     };
 
-    private async updateMediaStream() {
+    private async updateMediaStream(forceUpdate: boolean = false) {
         try {
-            console.log('AudioSettingsStore: Starting media stream update...');
+            console.log('AudioSettingsStore: Starting media stream update...', forceUpdate ? '(forced)' : '');
             await this.ensureAudioContextIsRunning();
             
             // Проверяем, нужно ли пересоздавать поток
-            const needsRecreation = !this._stream || 
+            const needsRecreation = forceUpdate || 
+                !this._stream || 
                 this._stream.getAudioTracks().length === 0 ||
                 this._stream.getAudioTracks().some(track => track.readyState === 'ended');
             
@@ -415,13 +439,15 @@ class AudioSettingsStore {
                 return;
             }
             
+            console.log('AudioSettingsStore: Recreating media stream...');
+            
             // Останавливаем предыдущий поток
             if (this._stream) {
                 this._stream.getTracks().forEach(track => track.stop());
             }
             
             runInAction(async () => {
-                console.log('AudioSettingsStore: Requesting getUserMedia...');
+                console.log('AudioSettingsStore: Requesting getUserMedia with device:', this.selectedMicrophone?.deviceId);
                 this._stream = await navigator.mediaDevices.getUserMedia({
                     audio: {
                         echoCancellation: this.echoCancellation,
@@ -437,6 +463,12 @@ class AudioSettingsStore {
                 });
                 console.log('AudioSettingsStore: getUserMedia success, audio tracks:', this._stream.getAudioTracks().length);
                 this.prepareMediaStream();
+                
+                // Обновляем WebRTC поток после смены микрофона
+                if (forceUpdate) {
+                    console.log('AudioSettingsStore: Updating WebRTC stream after microphone change...');
+                    this.updateWebRTCStream();
+                }
             });
         } catch (error) {
             console.error('AudioSettingsStore: Error updating media stream:', error);

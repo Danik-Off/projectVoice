@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, action } from 'mobx';
 
 export interface VoiceActivityEvent {
     userId: string;
@@ -34,16 +34,16 @@ class VoiceActivityService {
         }
     }
 
-    public addCallback(callback: (event: VoiceActivityEvent) => void): void {
+    public addCallback = action((callback: (event: VoiceActivityEvent) => void): void => {
         this.callbacks.push(callback);
-    }
+    });
 
-    public removeCallback(callback: (event: VoiceActivityEvent) => void): void {
+    public removeCallback = action((callback: (event: VoiceActivityEvent) => void): void => {
         const index = this.callbacks.indexOf(callback);
         if (index > -1) {
             this.callbacks.splice(index, 1);
         }
-    }
+    });
 
     private notifyCallbacks(event: VoiceActivityEvent): void {
         this.callbacks.forEach(callback => {
@@ -55,7 +55,7 @@ class VoiceActivityService {
         });
     }
 
-    public startMonitoring(userId: string, audioStream: MediaStream): void {
+    public startMonitoring = action((userId: string, audioStream: MediaStream): void => {
         console.log(`VoiceActivityService: Starting monitoring for user: ${userId}`);
         
         if (!this.audioContext) {
@@ -91,9 +91,9 @@ class VoiceActivityService {
         } catch (error) {
             console.error(`VoiceActivityService: Error starting monitoring for user ${userId}:`, error);
         }
-    }
+    });
 
-    public stopMonitoring(userId: string): void {
+    public stopMonitoring = action((userId: string): void => {
         const animationFrame = this.animationFrames.get(userId);
         if (animationFrame) {
             cancelAnimationFrame(animationFrame);
@@ -106,7 +106,7 @@ class VoiceActivityService {
         this.volumes.delete(userId);
         
         console.log(`VoiceActivityService: Monitoring stopped for user: ${userId}`);
-    }
+    });
 
     private monitorUser(userId: string): void {
         const analyser = this.analysers.get(userId);
@@ -127,8 +127,8 @@ class VoiceActivityService {
             const isCurrentlyActive = smoothedVolume > threshold;
             const wasActive = this.isActive.get(userId) || false;
             
-            this.volumes.set(userId, smoothedVolume);
-            this.isActive.set(userId, isCurrentlyActive);
+            // Обертываем изменения observable значений в action
+            this.updateUserState(userId, smoothedVolume, isCurrentlyActive);
             
             if (isCurrentlyActive !== wasActive) {
                 const event: VoiceActivityEvent = {
@@ -142,7 +142,7 @@ class VoiceActivityService {
             }
             
             const frameId = requestAnimationFrame(animate);
-            this.animationFrames.set(userId, frameId);
+            this.updateAnimationFrame(userId, frameId);
         };
 
         animate();
@@ -161,6 +161,17 @@ class VoiceActivityService {
         return previousVolume * this.config.smoothingFactor + currentVolume * (1 - this.config.smoothingFactor);
     }
 
+    // Action для обновления состояния пользователя
+    private updateUserState = action((userId: string, volume: number, isActive: boolean) => {
+        this.volumes.set(userId, volume);
+        this.isActive.set(userId, isActive);
+    });
+
+    // Action для обновления animation frame
+    private updateAnimationFrame = action((userId: string, frameId: number) => {
+        this.animationFrames.set(userId, frameId);
+    });
+
     public getUserActivity(userId: string): boolean {
         return this.isActive.get(userId) || false;
     }
@@ -169,7 +180,7 @@ class VoiceActivityService {
         return this.volumes.get(userId) || 0;
     }
 
-    public cleanup(): void {
+    public cleanup = action((): void => {
         this.analysers.forEach((_, userId) => {
             this.stopMonitoring(userId);
         });
@@ -187,7 +198,7 @@ class VoiceActivityService {
         }
         
         console.log('VoiceActivityService: Cleaned up');
-    }
+    });
 }
 
 const voiceActivityService = new VoiceActivityService();

@@ -23,7 +23,6 @@ const VoiceControls: React.FC = observer(() => {
     const currentVoiceChannel = voiceRoomStore.currentVoiceChannel;
     const participants = voiceRoomStore.participants;
     const isLocalSpeaking = voiceRoomStore.getLocalSpeakingState();
-    const localVolumeLevel = voiceRoomStore.getLocalVolumeLevel();
     
     // Фильтруем участников, исключая текущего пользователя
     const otherParticipants = participants.filter(participant => 
@@ -90,18 +89,13 @@ const VoiceControls: React.FC = observer(() => {
                                 user={currentUser}
                                 size="medium"
                                 onClick={() => openProfile(currentUser, true)}
-                                className="voice-controls__avatar"
+                                className={`voice-controls__avatar ${isLocalSpeaking ? 'voice-controls__avatar--speaking' : ''}`}
                             />
                         )}
                         <div className="voice-controls__user-details">
                             <span className="voice-controls__username">{currentUser?.username || 'User'}</span>
                             <span className={`voice-controls__status ${isLocalSpeaking ? 'voice-controls__status--speaking' : ''}`}>
-                                {isLocalSpeaking ? '🎤 Говорит' : (isMicOn ? t('voiceControls.micOn') : t('voiceControls.micOff'))}
-                                {isLocalSpeaking && (
-                                    <span className="voice-controls__volume-level">
-                                        ({localVolumeLevel.toFixed(0)}%)
-                                    </span>
-                                )}
+                                {isLocalSpeaking ? 'Говорит' : (isMicOn ? 'Молчит' : 'Микрофон выключен')}
                             </span>
                         </div>
                     </div>
@@ -169,29 +163,31 @@ const VoiceControls: React.FC = observer(() => {
                                                 status: 'online'
                                             }}
                                             size="small"
-                                                                                onClick={() => {
-                                        if (participant.userData) {
-                                            openProfile({
-                                                ...participant.userData,
-                                                email: `${participant.userData.username}@temp.com`,
-                                                isActive: true,
-                                                createdAt: new Date().toISOString(),
-                                                status: 'online'
-                                            }, false);
-                                        }
-                                    }}
-                                            className="voice-controls__participant-avatar"
+                                            onClick={() => {
+                                                if (participant.userData) {
+                                                    openProfile({
+                                                        ...participant.userData,
+                                                        email: `${participant.userData.username}@temp.com`,
+                                                        isActive: true,
+                                                        createdAt: new Date().toISOString(),
+                                                        status: 'online'
+                                                    }, false);
+                                                }
+                                            }}
+                                            className={`voice-controls__participant-avatar ${participant.isSpeaking ? 'voice-controls__participant-avatar--speaking' : ''}`}
                                         />
                                     )}
-                                    {participant.isSpeaking && (
-                                        <div className="voice-controls__speaking-indicator"></div>
-                                    )}
+
                                     <div className="voice-controls__participant-info">
                                         <span className="voice-controls__participant-name">
                                             {participant.userData?.username || 'Unknown User'}
                                         </span>
                                         <span className={`voice-controls__participant-status ${participant.isSpeaking ? 'voice-controls__participant-status--speaking' : ''}`}>
-                                            {participant.isSpeaking ? `🎤 Говорит (${voiceRoomStore.getParticipantVolumeLevel(participant.socketId).toFixed(0)}%)` : (participant.micToggle ? '🔇 Молчит' : '🔇 Выключен')}
+                                            {participant.isSpeaking
+                                                ? 'Говорит'
+                                                : (participant.micToggle
+                                                    ? 'Молчит'
+                                                    : 'Микрофон выключен')}
                                         </span>
                                     </div>
                                     <div className="voice-controls__participant-controls">

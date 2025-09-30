@@ -11,11 +11,7 @@ const VoiceRoom: React.FC = observer(() => {
     const currentUser = authStore.user;
     const users = voiceRoomStore.participants;
     const isLocalSpeaking = voiceRoomStore.getLocalSpeakingState();
-    const localVolumeLevel = voiceRoomStore.getLocalVolumeLevel();
-    
-    console.log("Участники голосовой комнаты:", users);
-    console.log("Локальный пользователь говорит:", isLocalSpeaking, "Громкость:", localVolumeLevel);
-    
+
     return (
         <div className="voice-room">
             <h2>Voice Room</h2>
@@ -43,11 +39,6 @@ const VoiceRoom: React.FC = observer(() => {
                     </div>
                     <div className="user-status">
                         {isLocalSpeaking ? '🎤 Говорит' : '🔇 Молчит'}
-                        {isLocalSpeaking && (
-                            <div className="volume-indicator">
-                                Громкость: {localVolumeLevel.toFixed(0)}%
-                            </div>
-                        )}
                     </div>
                 </div>
             )}
@@ -95,11 +86,6 @@ const VoiceRoom: React.FC = observer(() => {
                         </div>
                         <div className="user-status">
                             {user.isSpeaking ? '🎤 Говорит' : (user.micToggle ? '🔇 Молчит' : '🔇 Выключен')}
-                            {user.isSpeaking && (
-                                <div className="volume-indicator">
-                                    Громкость: {voiceRoomStore.getParticipantVolumeLevel(user.socketId).toFixed(0)}%
-                                </div>
-                            )}
                         </div>
                     </div>
                 ))}

@@ -7,6 +7,20 @@ import './audioSettings.scss';
 const AudioSettings: React.FC = observer(() => {
     const { t } = useTranslation();
     const [activeSection, setActiveSection] = useState<'devices' | 'quality' | 'advanced'>('devices');
+    const [isChangingMicrophone, setIsChangingMicrophone] = useState(false);
+
+    const handleMicrophoneChange = async (deviceId: string) => {
+        if (deviceId && deviceId !== audioSettingsStore.selectedMicrophone?.deviceId) {
+            setIsChangingMicrophone(true);
+            try {
+                await audioSettingsStore.setMicrophone(deviceId);
+            } catch (error) {
+                console.error('Error changing microphone:', error);
+            } finally {
+                setIsChangingMicrophone(false);
+            }
+        }
+    };
 
     return (
         <div className="settings-section">
@@ -62,13 +76,16 @@ const AudioSettings: React.FC = observer(() => {
                                     <div className="setting-group">
                                         <label className="setting-label">
                                             <span>Устройство записи</span>
-                                            <span className="setting-description">Выберите микрофон для записи голоса</span>
+                                            <span className="setting-description">
+                                                {isChangingMicrophone ? 'Меняем микрофон...' : 'Выберите микрофон для записи голоса'}
+                                            </span>
                                         </label>
                                         <div className="setting-control">
                                             <select
                                                 value={audioSettingsStore.selectedMicrophone?.deviceId || ''}
-                                                onChange={(e) => audioSettingsStore.setMicrophone(e.target.value)}
+                                                onChange={(e) => handleMicrophoneChange(e.target.value)}
                                                 className="device-select"
+                                                disabled={isChangingMicrophone}
                                             >
                                                 <option value="">Выберите микрофон</option>
                                                 {audioSettingsStore.microphoneDevices.map((device) => (

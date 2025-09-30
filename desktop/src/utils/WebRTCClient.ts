@@ -268,19 +268,25 @@ class WebRTCClient {
     }
 
     public resendlocalStream() {
+        console.log('WebRTCClient: Resending local stream...');
         if (audioSettingsStore.stream) {
-            this.peerConnections.forEach((peerConnection) => {
-                const newAudioTrack = audioSettingsStore.stream.getAudioTracks()[0];
+            const newAudioTrack = audioSettingsStore.stream.getAudioTracks()[0];
+            console.log('WebRTCClient: New audio track:', newAudioTrack?.label, 'enabled:', newAudioTrack?.enabled);
+            
+            this.peerConnections.forEach((peerConnection, socketId) => {
                 const sender = peerConnection.getSenders().find((s) => s.track?.kind === 'audio');
                 if (sender && newAudioTrack) {
+                    console.log('WebRTCClient: Replacing audio track for peer:', socketId);
                     sender.replaceTrack(newAudioTrack);
                     // Синхронизируем состояние mute
                     newAudioTrack.enabled = !audioSettingsStore.isMicrophoneMuted;
+                    console.log('WebRTCClient: Audio track replaced, enabled:', newAudioTrack.enabled);
+                } else {
+                    console.warn('WebRTCClient: No audio sender found for peer:', socketId);
                 }
             });
         } else {
-            console.log('🚀 ~ WebRTCClient ~ addLocalStream ~ localStream:', this.localStream);
-            console.error('чего то нет ');
+            console.error('WebRTCClient: No local stream available for resending');
         }
     }
 
