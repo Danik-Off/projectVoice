@@ -41,6 +41,19 @@ class VoiceRoomStore {
     }
 
     public connectToRoom(roomId: number, channelName?: string): void {
+        // Проверяем, не подключен ли уже пользователь к голосовой комнате
+        if (this.currentVoiceChannel) {
+            if (this.currentVoiceChannel.id === roomId) {
+                console.log('VoiceRoomStore: Already connected to this voice channel, just opening interface');
+                notificationStore.addNotification(`Вы уже подключены к голосовому каналу: ${this.currentVoiceChannel.name}`, 'info');
+                return;
+            } else {
+                console.log('VoiceRoomStore: Switching from channel', this.currentVoiceChannel.id, 'to channel', roomId);
+                // Отключаемся от текущего канала перед подключением к новому
+                this.disconnectToRoom();
+            }
+        }
+        
         // eslint-disable-next-line max-len
         const token = getCookie('token'); //TODO отказаться от токена здесь и отправлять его при завпросе на подключение к серверу
         this.socketClient.socketEmit('join-room', roomId, token);
@@ -58,6 +71,16 @@ class VoiceRoomStore {
         });
         notificationStore.addNotification(`Подключились к голосовому каналу: ${channelName || `Voice Channel ${roomId}`}`, 'info');
     }
+    // Проверка, подключен ли пользователь к голосовой комнате
+    public isConnectedToVoiceChannel(): boolean {
+        return this.currentVoiceChannel !== null;
+    }
+
+    // Получение информации о текущем голосовом канале
+    public getCurrentVoiceChannel(): { id: number; name: string } | null {
+        return this.currentVoiceChannel;
+    }
+
     public disconnectToRoom(): void {
         this.socketClient.socketEmit('leave-room');
         this.webRTCClient.disconect();
@@ -153,11 +176,7 @@ class VoiceRoomStore {
                 const participant = this.participants.find(p => p.socketId === event.userId);
                 if (participant) {
                     participant.isSpeaking = event.isActive;
-                    console.log(`VoiceActivity: ${participant.userData?.username || event.userId} ${event.isActive ? 'говорит' : 'молчит'} (${event.volume.toFixed(1)}%)`);
-                } else if (event.userId === 'local') {
-                    // Обрабатываем локального пользователя
-                    console.log(`VoiceActivity: Локальный пользователь ${event.isActive ? 'говорит' : 'молчит'} (${event.volume.toFixed(1)}%)`);
-                }
+                } 
             });
         });
     }
