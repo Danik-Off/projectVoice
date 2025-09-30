@@ -12,8 +12,7 @@ import participantVolumeStore from '../../../../../../store/ParticipantVolumeSto
 
 const VoiceControls: React.FC = observer(() => {
     const { t } = useTranslation();
-    const [isMicOn, setIsMicOn] = useState<boolean>(true);
-    const [isDeafened, setIsDeafened] = useState<boolean>(false);
+    // Убираем локальные состояния, используем данные из store
     const [showVolumeSlider] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [showAudioSettingsModal, setShowAudioSettingsModal] = useState<boolean>(false);
@@ -31,7 +30,6 @@ const VoiceControls: React.FC = observer(() => {
 
     const handleMicToggle = (): void => {
         audioSettingsStore.toggleMicrophoneMute();
-        setIsMicOn(!audioSettingsStore.isMicrophoneMuted);
         notificationStore.addNotification(
             audioSettingsStore.isMicrophoneMuted ? t('voiceControls.micOff') : t('voiceControls.micOn'), 
             'info'
@@ -40,7 +38,6 @@ const VoiceControls: React.FC = observer(() => {
 
     const handleDeafenToggle = (): void => {
         audioSettingsStore.toggleSpeakerMute();
-        setIsDeafened(audioSettingsStore.isSpeakerMuted);
         notificationStore.addNotification(
             audioSettingsStore.isSpeakerMuted ? t('voiceControls.deafenOn') : t('voiceControls.deafenOff'), 
             'info'
@@ -95,26 +92,26 @@ const VoiceControls: React.FC = observer(() => {
                         <div className="voice-controls__user-details">
                             <span className="voice-controls__username">{currentUser?.username || 'User'}</span>
                             <span className={`voice-controls__status ${isLocalSpeaking ? 'voice-controls__status--speaking' : ''}`}>
-                                {isLocalSpeaking ? 'Говорит' : (isMicOn ? 'Молчит' : 'Микрофон выключен')}
+                                {isLocalSpeaking ? 'Говорит' : (audioSettingsStore.isMicrophoneMuted ? 'Микрофон выключен' : 'Молчит')}
                             </span>
                         </div>
                     </div>
 
                     <div className="voice-controls__controls">
                         <button 
-                            className={`voice-controls__button ${!isMicOn ? 'voice-controls__button--muted' : ''}`}
+                            className={`voice-controls__button ${audioSettingsStore.isMicrophoneMuted ? 'voice-controls__button--muted' : ''}`}
                             onClick={handleMicToggle}
-                            title={isMicOn ? t('voiceControls.micOff') : t('voiceControls.micOn')}
+                            title={audioSettingsStore.isMicrophoneMuted ? t('voiceControls.micOn') : t('voiceControls.micOff')}
                         >
-                            {isMicOn ? '🎤' : '🔇'}
+                            {audioSettingsStore.isMicrophoneMuted ? '🔇' : '🎤'}
                         </button>
                         
                         <button 
-                            className={`voice-controls__button ${isDeafened ? 'voice-controls__button--deafened' : ''}`}
+                            className={`voice-controls__button ${audioSettingsStore.isSpeakerMuted ? 'voice-controls__button--deafened' : ''}`}
                             onClick={handleDeafenToggle}
-                            title={isDeafened ? t('voiceControls.deafenOff') : t('voiceControls.deafenOn')}
+                            title={audioSettingsStore.isSpeakerMuted ? t('voiceControls.deafenOff') : t('voiceControls.deafenOn')}
                         >
-                            {isDeafened ? '🔇' : '🔊'}
+                            {audioSettingsStore.isSpeakerMuted ? '🔇' : '🔊'}
                         </button>
                         
                         <button 

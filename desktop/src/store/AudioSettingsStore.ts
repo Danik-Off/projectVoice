@@ -392,19 +392,14 @@ class AudioSettingsStore {
 
     public toggleSpeakerMute(): void {
         this.isSpeakerMuted = !this.isSpeakerMuted;
-        if (this.isSpeakerMuted) {
-            // Отключаем звук колонок
-            this.gainNode.gain.value = 0;
-        } else {
-            // Включаем звук колонок
-            this.gainNode.gain.value = this.volume / 50;
-        }
         
         // Управляем удаленными аудиоэлементами через roomStore
         import('./roomStore').then(({ default: roomStore }) => {
             // Используем экземпляр WebRTCClient из roomStore
             (roomStore as any).webRTCClient?.setRemoteAudioMuted(this.isSpeakerMuted);
         });
+        
+        console.log('Speaker mute toggled:', this.isSpeakerMuted);
     }
 
     // Получение списка аудиоустройств
