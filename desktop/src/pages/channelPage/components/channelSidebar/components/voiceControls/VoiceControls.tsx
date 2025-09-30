@@ -14,8 +14,9 @@ const VoiceControls: React.FC = observer(() => {
     const { t } = useTranslation();
     const [isMicOn, setIsMicOn] = useState<boolean>(true);
     const [isDeafened, setIsDeafened] = useState<boolean>(false);
-    const [showVolumeSlider, setShowVolumeSlider] = useState<boolean>(false);
+    const [showVolumeSlider] = useState<boolean>(false);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [showAudioSettingsModal, setShowAudioSettingsModal] = useState<boolean>(false);
     const { openProfile } = useUserProfile();
 
     const currentUser = authStore.user;
@@ -124,8 +125,8 @@ const VoiceControls: React.FC = observer(() => {
                         
                         <button 
                             className="voice-controls__button voice-controls__button--settings"
-                            onClick={() => setShowVolumeSlider(!showVolumeSlider)}
-                            title={t('voiceControls.volume')}
+                            onClick={() => setShowAudioSettingsModal(!showAudioSettingsModal)}
+                            title="Настройки звука"
                         >
                             ⚙️
                         </button>
@@ -232,6 +233,114 @@ const VoiceControls: React.FC = observer(() => {
                             </div>
                         </div>
                     )}
+                </div>
+            )}
+
+            {/* Модальное окно настроек звука */}
+            {showAudioSettingsModal && (
+                <div className="voice-controls__audio-modal-overlay" onClick={() => setShowAudioSettingsModal(false)}>
+                    <div className="voice-controls__audio-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="voice-controls__audio-modal-header">
+                            <h3>Настройки звука</h3>
+                            <button 
+                                className="voice-controls__audio-modal-close"
+                                onClick={() => setShowAudioSettingsModal(false)}
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        
+                        <div className="voice-controls__audio-modal-content">
+                            {/* Фильтры звука */}
+                            <div className="voice-controls__audio-section">
+                                <h4>🔧 Фильтры звука</h4>
+                                
+                                <div className="voice-controls__audio-setting">
+                                    <label className="voice-controls__audio-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={audioSettingsStore.echoCancellation}
+                                            onChange={(e) => audioSettingsStore.setEchoCancellation(e.target.checked)}
+                                        />
+                                        <span>Подавление эха</span>
+                                    </label>
+                                    <div className="voice-controls__audio-description">
+                                        Убирает эхо и обратную связь
+                                    </div>
+                                </div>
+
+                                <div className="voice-controls__audio-setting">
+                                    <label className="voice-controls__audio-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={audioSettingsStore.noiseSuppression}
+                                            onChange={(e) => audioSettingsStore.setNoiseSuppression(e.target.checked)}
+                                        />
+                                        <span>Шумоподавление</span>
+                                    </label>
+                                    <div className="voice-controls__audio-description">
+                                        Убирает фоновые шумы
+                                    </div>
+                                </div>
+
+                                <div className="voice-controls__audio-setting">
+                                    <label className="voice-controls__audio-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={audioSettingsStore.autoGainControl}
+                                            onChange={(e) => audioSettingsStore.setAutoGainControl(e.target.checked)}
+                                        />
+                                        <span>Автоконтроль громкости</span>
+                                    </label>
+                                    <div className="voice-controls__audio-description">
+                                        Автоматически регулирует уровень звука
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Настройки громкости */}
+                            <div className="voice-controls__audio-section">
+                                <h4>🔊 Громкость</h4>
+                                
+                                <div className="voice-controls__audio-setting">
+                                    <label className="voice-controls__audio-label">
+                                        <span>Громкость микрофона</span>
+                                    </label>
+                                    <div className="voice-controls__audio-control">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            value={audioSettingsStore.volume}
+                                            onChange={(e) => audioSettingsStore.setVolume(Number(e.target.value))}
+                                            className="voice-controls__audio-slider"
+                                        />
+                                        <span className="voice-controls__audio-value">{audioSettingsStore.volume}%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Тестирование */}
+                            <div className="voice-controls__audio-section">
+                                <h4>🧪 Тестирование</h4>
+                                
+                                <div className="voice-controls__audio-test-buttons">
+                                    <button 
+                                        className="voice-controls__audio-test-btn"
+                                        onClick={() => audioSettingsStore.testMicrophone()}
+                                    >
+                                        🎤 Тест микрофона
+                                    </button>
+                                    <button 
+                                        className="voice-controls__audio-test-btn"
+                                        onClick={() => audioSettingsStore.testSpeakers()}
+                                    >
+                                        🔊 Тест динамиков
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
             

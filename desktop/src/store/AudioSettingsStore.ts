@@ -30,31 +30,70 @@ class AudioSettingsStore {
     }
 
     public initMedia() {
+        // Проверяем, не инициализирован ли уже поток
+        if (this._stream && this._stream.getAudioTracks().length > 0) {
+            console.log('AudioSettingsStore: Media stream already exists, skipping initialization');
+            return;
+        }
+        console.log('AudioSettingsStore: Initializing media stream...');
         this.updateMediaStream();
+    }
+
+    public cleanup() {
+        console.log('AudioSettingsStore: Cleaning up media resources...');
+        
+        // Останавливаем все треки
+        if (this._stream) {
+            this._stream.getTracks().forEach(track => track.stop());
+        }
+        if (this.stream) {
+            this.stream.getTracks().forEach(track => track.stop());
+        }
+        
+        // Закрываем аудио контекст
+        if (this.audioContext && this.audioContext.state !== 'closed') {
+            this.audioContext.close();
+        }
+        
+        // Сбрасываем потоки
+        this._stream = new MediaStream();
+        this.stream = new MediaStream();
+        
+        // Пересоздаем аудио контекст для следующего использования
+        this.audioContext = new AudioContext();
+        this.gainNode = new GainNode(this.audioContext);
+        this.audioSource = null;
+        
+        console.log('AudioSettingsStore: Media resources cleaned up');
     }
 
     // Методы для изменения настроек
     public setEchoCancellation(value: boolean) {
+        if (this.echoCancellation === value) return;
         this.echoCancellation = value;
         this.updateMediaStream();
     }
 
     public setNoiseSuppression(value: boolean) {
+        if (this.noiseSuppression === value) return;
         this.noiseSuppression = value;
         this.updateMediaStream();
     }
 
     public setAutoGainControl(value: boolean) {
+        if (this.autoGainControl === value) return;
         this.autoGainControl = value;
         this.updateMediaStream();
     }
 
     public setSampleRate(rate: number) {
+        if (this.sampleRate === rate) return;
         this.sampleRate = rate;
         this.updateMediaStream();
     }
 
     public setSampleSize(size: number) {
+        if (this.sampleSize === size) return;
         this.sampleSize = size;
         this.updateMediaStream();
     }
@@ -82,7 +121,7 @@ class AudioSettingsStore {
 
     public setMicrophone(deviceId: string): void {
         const device = this.microphoneDevices.find((device) => device.deviceId === deviceId);
-        if (device) {
+        if (device && this.selectedMicrophone?.deviceId !== deviceId) {
             this.selectedMicrophone = device;
             this.updateMediaStream();
         }
@@ -156,6 +195,16 @@ class AudioSettingsStore {
         try {
             console.log('AudioSettingsStore: Starting media stream update...');
             await this.ensureAudioContextIsRunning();
+            
+            // Проверяем, нужно ли пересоздавать поток
+            const needsRecreation = !this._stream || 
+                this._stream.getAudioTracks().length === 0 ||
+                this._stream.getAudioTracks().some(track => track.readyState === 'ended');
+            
+            if (!needsRecreation) {
+                console.log('AudioSettingsStore: Existing media stream is still valid, skipping recreation');
+                return;
+            }
             
             // Останавливаем предыдущий поток
             if (this._stream) {
