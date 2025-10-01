@@ -61,6 +61,10 @@ This repository contains complete documentation for the ProjectVoice project:
 - [👨‍💼 Admin Guide](docs/admin.md) - Administration and deployment
 - [📋 Documentation Rules](docs/rulesOfDocs.md) - Standards and rules for writing documentation
 
+## ⚙️ Server Configuration
+
+Detailed server configuration information is available in the [Backend Documentation](docs/backend.md).
+
 ## 📊 Project Status
 
 | Component | Status | Description |
@@ -81,20 +85,31 @@ This repository contains complete documentation for the ProjectVoice project:
 - ✅ Text and voice channels
 
 ### Version 1.0 (Planned - Q1 2026) 🚧
-- 🔮 Audio settings and enhanced chat
-- 🔮 Role system and admin panel
-- 🔮 Server management overhaul
-- 🔮 Dark theme
+- 🔮 **Audio Settings**: Microphone, speakers, volume levels
+- 🔮 **Enhanced Chat**: Message editing, reactions, quoting
+- 🔮 **Role System**: Administrators, moderators, users
+- 🔮 **Improved Admin Panel**: Server management via web interface
+- 🔮 **Server Management Overhaul**: Invitations, privacy settings
+- 🔮 **Dark Theme**: Toggle between light and dark themes
 
 ### Future 🔮
-- 🔮 Direct messages and encryption
-- 🔮 Files & media support
-- 🔮 Video calls and screen sharing
-- 🔮 Mobile application
+- 🔮 **Direct Messages**: Private messaging between users
+- 🔮 **Encryption**: End-to-end encryption for private chats
+- 🔮 **Files & Media**: Image, document, and audio uploads
+- 🔮 **Video Calls**: One-on-one and group video communication
+- 🔮 **Screen Sharing**: Screen sharing in voice channels
+- 🔮 **Mobile Application**: iOS and Android versions
 
 ## ⚠️ Disclaimer
 
-**IMPORTANT**: This project is developed primarily for personal use. The author assumes no responsibility for any issues or problems. Use at your own risk.
+**IMPORTANT**: This project is primarily developed for the author's personal use.
+
+- The author **ASSUMES NO RESPONSIBILITY** for any problems, errors, data loss, or other negative consequences of using this software
+- The project is provided "as is" without any warranties
+- Use of this software is at your own risk
+- If you have any complaints or dissatisfaction - you can go pound sand 🏖️
+- The author is not obligated to provide technical support or fix bugs
+- Any changes to code or functionality may be made without prior notice
 
 ## 📄 License
 
