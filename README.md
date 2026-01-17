@@ -34,8 +34,8 @@ The project has been restructured into two repositories! This is no longer just 
 
 ## 🔗 Related Repositories
 
-- **🖥️ Electron Desktop App**: [projectVoice-electron](https://github.com/yourusername/projectVoice-electron) - The main Electron application
-- **⚙️ Backend API**: [projectVoice-backend](https://github.com/yourusername/projectVoice-backend) - Express.js server and API
+- **🖥️ Electron Desktop App**: [Desktop app](https://github.com/Danik-Off/projectVoice_electron-app) - The main Electron application
+- **⚙️ Backend API**: [backend](https://github.com/yourusername/projectVoice-backend) - Express.js server and API
 
 ## 🚀 Quick Start
 
