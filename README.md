@@ -52,20 +52,6 @@ This repository contains only the ProjectVoice project documentation.
 1. Download the pre-built application from [Releases](https://github.com/Danik-Off/projectVoice_electron-app/releases) of the main repository
 2. Or follow the documentation instructions to build it yourself
 
-## 📚 Documentation
-
-This repository contains the complete ProjectVoice project documentation:
-
-- [📖 API Documentation](docs/api.md) - Complete API reference
-- [🖥️ Frontend Documentation](docs/frontend.md) - Frontend development guide
-- [⚙️ Backend Documentation](docs/backend.md) - Backend development guide
-- [👨‍💼 Admin Guide](docs/admin.md) - Administration and deployment
-- [📋 Documentation Guidelines](docs/rulesOfDocs.md) - Documentation standards and rules
-
-## ⚙️ Server Setup
-
-Detailed server setup information is available in the [Backend Documentation](docs/backend.md).
-
 ## 🗺️ Roadmap
 
 Decision made to reconsider the roadmap (project is more of a hobby and there's not enough time to do everything alone).
