@@ -9,7 +9,7 @@
 
 **Современное голосовое чат-приложение, созданное с использованием Electron, WebRTC и современных веб-технологий**
 
-[English](../README.md) | [Русский](README_RU.md)
+[English](README.md) | [Русский](README_RU.md)
 
 </div>
 
