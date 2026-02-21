@@ -7,7 +7,7 @@
 ![Tech Stack](https://img.shields.io/badge/tech-React%20%7C%20Express%20%7C%20MobX-orange.svg)
 ![WebRTC](https://img.shields.io/badge/WebRTC-Peer--to--Peer-red.svg)
 
-**A modern voice chat application built with Electron, WebRTC, and modern web technologies**
+**Modern voice chat application built with Electron, WebRTC, and modern web technologies**
 
 [English](README_EN.md) | [Русский](README_RU.md)
 
@@ -17,88 +17,73 @@
 
 ## 🚀 What's New
 
-The project has been restructured into two repositories! This is no longer just a frontend project - it's now primarily focused on being an Electron desktop application with a comprehensive backend system.
+- Backend rewritten with Nest.js
+- Frontend: Migration to MUI started, plus code cleanup in progress
 
 ## 📋 Overview
 
-**ProjectVoice** is a modern voice chat application distributed under the MIT license. Built on WebRTC technology with React, Express, and MobX, it provides peer-to-peer voice communication capabilities.
+**ProjectVoice** is a modern voice chat application distributed under the MIT license. Built on WebRTC technology using React, Express, and MobX, it provides peer-to-peer voice communication.
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: React, MobX, TypeScript
 - **Desktop**: Electron
-- **Backend**: Express.js, Node.js
+- **Backend**: Nest.js, Node.js
 - **Communication**: WebRTC (Peer-to-Peer)
 - **Database**: MySQL/PostgreSQL
 - **Authentication**: JWT
 
 ## 🔗 Related Repositories
 
-- **🖥️ Electron Desktop App**: [Desktop app](https://github.com/Danik-Off/projectVoice_electron-app) - The main Electron application
-- **⚙️ Backend API**: [backend](https://github.com/yourusername/projectVoice-backend) - Express.js server and API
+- **🖥️ Electron Desktop App**: [projectVoice-electron](https://github.com/Danik-Off/projectVoice_electron-app) - Main Electron application
+- **⚙️ Backend API**: [projectVoice-backend](https://github.com/Danik-Off/projectVoice_backend) - Express.js server and API
 
 ## 🚀 Quick Start
 
-This repository contains only documentation for the ProjectVoice project.
+This repository contains only the ProjectVoice project documentation.
 
 ### For Developers:
-1. Study the documentation in the `docs/` folder
-2. Go to the main project repositories:
-   - **Electron Application**: [projectVoice-electron](https://github.com/yourusername/projectVoice-electron)
-   - **Backend API**: [projectVoice-backend](https://github.com/yourusername/projectVoice-backend)
+1. Review the documentation in the `docs/` folder
+2. Navigate to the main project repositories:
+   - **Electron App**: [projectVoice-electron](https://github.com/Danik-Off/projectVoice_electron-app)
+   - **Backend API**: [projectVoice-backend](https://github.com/Danik-Off/projectVoice_backend)
 
 ### For Users:
-1. Download the ready-made application from [Releases](../../releases) of the main repository
-2. Or follow the instructions in the documentation for self-build
+1. Download the pre-built application from [Releases](https://github.com/Danik-Off/projectVoice_electron-app/releases) of the main repository
+2. Or follow the documentation instructions to build it yourself
 
 ## 📚 Documentation
 
-This repository contains complete documentation for the ProjectVoice project:
+This repository contains the complete ProjectVoice project documentation:
 
 - [📖 API Documentation](docs/api.md) - Complete API reference
 - [🖥️ Frontend Documentation](docs/frontend.md) - Frontend development guide
 - [⚙️ Backend Documentation](docs/backend.md) - Backend development guide
 - [👨‍💼 Admin Guide](docs/admin.md) - Administration and deployment
-- [📋 Documentation Rules](docs/rulesOfDocs.md) - Standards and rules for writing documentation
+- [📋 Documentation Guidelines](docs/rulesOfDocs.md) - Documentation standards and rules
 
-## 📊 Project Status
+## ⚙️ Server Setup
 
-| Component | Status | Description |
-|-----------|--------|-------------|
-| 🖥️ Frontend | only within electron | React + MobX interface |
-| ⚙️ Backend | 🚧 In Progress | Express.js API server |
-| 🎤 WebRTC | 🚧 In Progress | Voice communication |
-| 📱 Electron | 🚧 In Progress | Desktop application |
+Detailed server setup information is available in the [Backend Documentation](docs/backend.md).
 
 ## 🗺️ Roadmap
 
-### Version 0.1 (Current) ✅
-- ✅ Basic authentication and authorization
-- ✅ Chat interface with WebSocket
-- ✅ Voice communication via WebRTC
-- ✅ Electron desktop application
-- ✅ Server creation and management
-- ✅ Text and voice channels
-
-### Version 1.0 (Planned - Q1 2026) 🚧
-- 🔮 Audio settings and enhanced chat
-- 🔮 Role system and admin panel
-- 🔮 Server management overhaul
-- 🔮 Dark theme
-
-### Future 🔮
-- 🔮 Direct messages and encryption
-- 🔮 Files & media support
-- 🔮 Video calls and screen sharing
-- 🔮 Mobile application
+Decision made to reconsider the roadmap (project is more of a hobby and there's not enough time to do everything alone).
 
 ## ⚠️ Disclaimer
 
-**IMPORTANT**: This project is developed primarily for personal use. The author assumes no responsibility for any issues or problems. Use at your own risk.
+**IMPORTANT**: This project is primarily developed for the author's personal use.
+
+- The author **ASSUMES NO RESPONSIBILITY** for any issues, errors, data loss, or other negative consequences resulting from the use of this software
+- The project is provided "as is" without any warranties
+- Use of this software is at your own risk
+- If you have any complaints or dissatisfaction — you can get lost 🌲
+- The author is not obligated to provide technical support or fix bugs
+- Any changes to the code or functionality may be made without prior notice
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
 
