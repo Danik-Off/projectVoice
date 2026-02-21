@@ -46,7 +46,7 @@ This repository contains only the ProjectVoice project documentation.
 1. Review the documentation in the `docs/` folder
 2. Navigate to the main project repositories:
    - **Electron App**: [projectVoice-electron](https://github.com/Danik-Off/projectVoice_electron-app)
-   - **Backend API**: [projectVoice-backend](https://github.com/Danik-Off/projectVoice_backend)
+   - **Backend API**: [project-voice-nest](https://github.com/Danik-Off/project-voice-nest)
 
 ### For Users:
 1. Download the pre-built application from [Releases](https://github.com/Danik-Off/projectVoice_electron-app/releases) of the main repository
